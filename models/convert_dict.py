@@ -1,3 +1,4 @@
+import json
 from collections import defaultdict
 from pprint import pprint
 
@@ -5,6 +6,7 @@ class ConvertDict():
     def __init__(self, path_list, size_list) -> None:
         self.path_list = path_list
         self.size_list = size_list
+        self.load_language_colors()
         self.dict = self.get_path_dict()
 
     # Creates a default dictionary where each value is an other default dictionary.
@@ -25,10 +27,20 @@ class ConvertDict():
                 marcher = new_path_dict
                 for key in parts[:-1]:
                     marcher = marcher[key]
-                marcher['count'] = self.size_list[i]
-        return self.default_to_regular(new_path_dict)
+                marcher['$count'] = self.size_list[i]
+                marcher['$color'] = self.get_color(parts[-2].split('.')[-1])
+        return self.default_to_regular(new_path_dict)['']
 
-l1 = ['foo/e.txt','foo/bar/a.txt','foo/bar/b.cfg','foo/bar/c/d.txt', 'test.txt']
-l2 = [1, 2, 3, 4, 5]
-result = ConvertDict(l1, l2)
-pprint(result.dict)
+    def load_language_colors(self):
+        with open("config/language_colors.json") as json_file:
+            self.language_colors = json.load(json_file)
+    
+    def get_color(self, file):
+        if file in self.language_colors:
+            return self.language_colors[file]
+        return '#FEFEFE'
+
+# l1 = ['/foo/e.txt','/foo/bar/a.txt','/foo/bar/b.cfg','/foo/bar/c/d.txt', '/test.txt']
+# l2 = [1, 2, 3, 4, 5]
+# result = ConvertDict(l1, l2)
+# pprint(result.dict)

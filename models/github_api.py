@@ -44,7 +44,7 @@ def get_repo_tree(owner, repo):
     result = RequestGithubApi(link, headers)
     repo_tree = ConvertDict(result.path_list, result.size_list)
     pprint(repo_tree.dict)
-    with open("edk2.json", 'w') as f:
+    with open("data/Fyzhq.json", 'w') as f:
         f.write(json.dumps(repo_tree.dict))
 
-get_repo_tree("tianocore", "edk2")
+get_repo_tree("Uahh", "Fyzhq")

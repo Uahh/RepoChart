@@ -8,11 +8,11 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
 </head>
 
-<body style="height: 100%; margin: 0">
+<body style="height: 100%; margin: 0; background: #81a5aa;">
     <div id="main" style="height: 100%"></div>
     <script type="text/javascript">
         var ROOT_PATH =
-            '../data/edk2.json';
+            '../data/Fyzhq.json';
 
         var chartDom = document.getElementById('main');
         var myChart = echarts.init(chartDom);
@@ -46,6 +46,7 @@
                 seriesData.push({
                     id: basePath,
                     value: source.$count,
+                    color: source.$color,
                     depth: depth,
                     index: seriesData.length
                 });
@@ -56,7 +57,7 @@
                     }
                 }
             }
-            convert(rawData, 'edk2', 0);
+            convert(rawData, 'Fyzhq', 0);
             return {
                 seriesData: seriesData,
                 maxDepth: maxDepth
@@ -132,12 +133,12 @@
                             fontFamily: 'Arial',
                             width: node.r * 1.3,
                             overflow: 'truncate',
-                            fontSize: node.r / 5
+                            fontSize: node.r / 4
                         },
                         emphasis: {
                             style: {
                                 overflow: null,
-                                fontSize: Math.max(node.r / 5, 12)
+                                fontSize: Math.max(node.r / 4, 12)
                             }
                         }
                     },
@@ -164,17 +165,17 @@
                     source: seriesData
                 },
                 tooltip: {},
-                visualMap: [
-                    {
-                        show: false,
-                        min: 0,
-                        max: maxDepth,
-                        dimension: 'depth',
-                        inRange: {
-                            color: ['#006edd', '#e0ffff']
-                        }
-                    }
-                ],
+                // visualMap: [
+                //     {
+                //         show: false,
+                //         min: 0,
+                //         max: maxDepth,
+                //         dimension: 'depth',
+                //         inRange: {
+                //             color: ['#006edd', '#e0ffff']
+                //         }
+                //     }
+                // ],
                 hoverLayerThreshold: Infinity,
                 series: {
                     type: 'custom',
@@ -184,7 +185,12 @@
                     encode: {
                         tooltip: 'value',
                         itemName: 'id'
-                    }
+                    },
+                    itemStyle: {
+                        color: function (param) {
+                            return param.data.color;
+                        }
+                    },
                 }
             };
             myChart.setOption(option);

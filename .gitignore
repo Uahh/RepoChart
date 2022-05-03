@@ -1,3 +1,4 @@
 
 *.pyc
 models/private_config.py
+output/
