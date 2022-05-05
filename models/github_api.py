@@ -53,7 +53,7 @@ def get_repo_tree(owner, repo):
     result = RequestGithubApi(link, headers)
     repo_tree = ConvertDict(result.api_data)
     # pprint(repo_tree.dict)
-    with open("output/edk2.json", 'w') as f:
+    with open("output/StarTrack-js.json", 'w') as f:
         f.write(json.dumps(repo_tree.dict))
 
-get_repo_tree("tianocore", "edk2")
+get_repo_tree("seladb", "StarTrack-js")
