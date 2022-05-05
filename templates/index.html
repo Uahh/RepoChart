@@ -8,11 +8,11 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
 </head>
 
-<body style="height: 100%; margin: 0; background: #81a5aa;">
+<body style="height: 100%; margin: 0; background: #E5E7EB;">
     <div id="main" style="height: 100%"></div>
     <script type="text/javascript">
         var ROOT_PATH =
-            '../data/Fyzhq.json';
+            '../output/edk2.json';
 
         var chartDom = document.getElementById('main');
         var myChart = echarts.init(chartDom);
@@ -47,6 +47,8 @@
                     id: basePath,
                     value: source.$count,
                     color: source.$color,
+                    url: source.$url,
+                    sha: source.$sha,
                     depth: depth,
                     index: seriesData.length
                 });
@@ -146,12 +148,16 @@
                         position: 'inside'
                     },
                     style: {
-                        fill: api.visual('color')
+                        fill: api.visual('color'),
+                        stroke: '#000000',
+                        lineWidth: 1,
                     },
                     emphasis: {
                         style: {
                             fontFamily: 'Arial',
                             fontSize: 12,
+                            // stroke: '#000000',
+                            // lineWidth: 3,
                             shadowBlur: 20,
                             shadowOffsetX: 3,
                             shadowOffsetY: 5,
@@ -189,13 +195,19 @@
                     itemStyle: {
                         color: function (param) {
                             return param.data.color;
-                        }
+                        },
+                        borderWidth: 5
                     },
                 }
             };
             myChart.setOption(option);
             myChart.on('click', { seriesIndex: 0 }, function (params) {
                 drillDown(params.data.id);
+                if (!params.event.topTarget.textConfig){
+                    console.log(seriesData[params.value.index])
+                    window.open(seriesData[params.value.index].url)
+                }
+                
             });
             function drillDown(targetNodeId) {
                 displayRoot = stratify();
