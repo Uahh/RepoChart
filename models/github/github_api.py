@@ -1,4 +1,3 @@
-from cgitb import reset
 import json
 import requests
 from queue import Queue
@@ -23,8 +22,9 @@ class RequestGithubApi():
         self.current_path = '/'
         self.headers = headers
         self.api_data = GithubApiData()
-
         self.q = Queue()
+
+    def get_repo_data(self):
         self.q.put(self.current_path)
         while not self.q.empty():
             path = self.q.get(False)
@@ -50,10 +50,11 @@ class RequestGithubApi():
 
 def get_repo_tree(owner, repo):
     link = "https://api.github.com/repos/{}/{}/contents".format(owner, repo)
-    result = RequestGithubApi(link, headers)
-    repo_tree = ConvertDict(result.api_data)
+    r = RequestGithubApi(link, headers)
+    r.get_repo_data()
+    repo_tree = ConvertDict(r.api_data)
     # pprint(repo_tree.dict)
-    with open("output/StarTrack-js.json", 'w') as f:
+    with open("../../output/StarTrack-js.json", 'w') as f:
         f.write(json.dumps(repo_tree.dict))
 
 get_repo_tree("seladb", "StarTrack-js")

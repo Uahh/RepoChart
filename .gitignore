@@ -1,4 +1,6 @@
-
+__pycache__
 *.pyc
 models/private_config.py
-output/
+output/*.*
+repo_cache/
+.vscode

@@ -9,7 +9,9 @@ print('Waiting......')
 @app.route('/', methods=["GET", "POST"])
 @app.route('/index', methods=["GET", "POST"])
 def index():
-    pass
+    return render_template(
+        'index.html'
+    )
 
 
 @app.route('/error')
