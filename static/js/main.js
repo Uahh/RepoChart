@@ -20,7 +20,7 @@ v = {
         },
         // Echarts
         echartsInit() {
-            var ROOT_PATH = '../output/StarTrack-js.json';
+            var ROOT_PATH = '../output/seladb/StarTrack-js.json';
             var chartDom = document.getElementById('main');
             var myChart = echarts.init(chartDom);
             var option;
@@ -50,7 +50,7 @@ v = {
                     maxDepth = Math.max(depth, maxDepth);
                     seriesData.push({
                         id: basePath,
-                        value: source.$count,
+                        value: source.$size,
                         color: source.$color,
                         url: source.$url,
                         sha: source.$sha,
