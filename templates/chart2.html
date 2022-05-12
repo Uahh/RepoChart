@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://unpkg.com/vue@3.2.33/dist/vue.global.prod.js"></script>
+    <script src="https://unpkg.com/element-plus/dist/index.full.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="../static/css/uahh.css">
+    <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+            <el-menu-item index="1">Processing Center</el-menu-item>
+            <el-sub-menu index="2">
+                <template #title>Workspace</template>
+                <el-menu-item index="2-1">item one</el-menu-item>
+                <el-menu-item index="2-2">item two</el-menu-item>
+                <el-menu-item index="2-3">item three</el-menu-item>
+                <el-sub-menu index="2-4">
+                    <template #title>item four</template>
+                    <el-menu-item index="2-4-1">item one</el-menu-item>
+                    <el-menu-item index="2-4-2">item two</el-menu-item>
+                    <el-menu-item index="2-4-3">item three</el-menu-item>
+                </el-sub-menu>
+            </el-sub-menu>
+            <el-menu-item index="3" disabled>Info</el-menu-item>
+            <el-menu-item index="4">Orders</el-menu-item>
+        </el-menu>
+
+        <el-tabs tab-position="left" style="height: 100%">
+            <el-tab-pane label="User">
+                <div id="container" class="container">
+                    <div id="main" class="chart"></div>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane label="Config">Config</el-tab-pane>
+            <el-tab-pane label="Role">Role</el-tab-pane>
+            <el-tab-pane label="Task">Task</el-tab-pane>
+        </el-tabs>
+    </div>
+    <script type="text/javascript">
+
+        var ROOT_PATH = '../output/seladb/StarTrack-js_square.json';
+
+        var chartDom = document.getElementById('main');
+        var myChart = echarts.init(chartDom);
+        var option;
+
+        myChart.showLoading();
+        $.get(ROOT_PATH, function (diskData) {
+            myChart.hideLoading();
+            function getLevelOption() {
+                return [
+                    {
+                        itemStyle: {
+                            borderColor: '#777',
+                            borderWidth: 0,
+                            gapWidth: 1
+                        },
+                        upperLabel: {
+                            show: false
+                        }
+                    },
+                    {
+                        itemStyle: {
+                            borderColor: '#555',
+                            borderWidth: 5,
+                            gapWidth: 1
+                        },
+                        emphasis: {
+                            itemStyle: {
+                                borderColor: '#ddd'
+                            }
+                        }
+                    },
+                    {
+                        colorSaturation: [0.35, 0.5],
+                        itemStyle: {
+                            borderWidth: 5,
+                            gapWidth: 1,
+                            borderColorSaturation: 0.6
+                        }
+                    }
+                ];
+            }
+            myChart.setOption(
+                (option = {
+                    title: {
+                        text: 'Disk Usage',
+                        left: 'center'
+                    },
+                    tooltip: {
+                        formatter: function (info) {
+                            var value = info.value;
+                            var treePathInfo = info.treePathInfo;
+                            var treePath = [];
+                            for (var i = 1; i < treePathInfo.length; i++) {
+                                treePath.push(treePathInfo[i].name);
+                            }
+                            return [
+                                '<div class="tooltip-title">' +
+                                echarts.format.encodeHTML(treePath.join('/')) +
+                                '</div>',
+                                'Disk Usage: ' + echarts.format.addCommas(value) + ' KB'
+                            ].join('');
+                        }
+                    },
+                    series: [
+                        {
+                            name: 'Disk Usage',
+                            type: 'treemap',
+                            visibleMin: 300,
+                            label: {
+                                show: true,
+                                formatter: '{b}'
+                            },
+                            upperLabel: {
+                                show: true,
+                                height: 30
+                            },
+                            itemStyle: {
+                                borderColor: '#fff'
+                            },
+                            levels: getLevelOption(),
+                            data: diskData
+                        }
+                    ]
+                })
+            );
+        });
+
+        option && myChart.setOption(option);
+
+    </script>
+</body>
+
+</html>

@@ -50,7 +50,7 @@ v = {
                     maxDepth = Math.max(depth, maxDepth);
                     seriesData.push({
                         id: basePath,
-                        value: source.$size,
+                        value: source.$lines,
                         color: source.$color,
                         url: source.$url,
                         sha: source.$sha,

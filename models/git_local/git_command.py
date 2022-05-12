@@ -15,6 +15,7 @@ class GitCommand():
         self.user_dir = os.path.join('repo_cache', self.owner)
         self.repo_dir = os.path.join(self.user_dir, self.repo_name)
         self.git_data = GitData(self.repo_dir)
+        self.git_data.repo_name = owner + '/' + repo_name
 
     def clone(self):
         git_url = "https://github.com/{}/{}.git".format(self.owner, self.repo_name)
