@@ -45,102 +45,98 @@
         </el-tabs>
     </div>
     <script type="text/javascript">
-
-        var ROOT_PATH = '../output/Uahh/Fyzhq_square.json';
+        var ROOT_PATH = 'test.json'
 
         var chartDom = document.getElementById('main');
         var myChart = echarts.init(chartDom);
         var option;
 
-        myChart.showLoading();
-        $.get(ROOT_PATH, function (diskData) {
-            myChart.hideLoading();
-            function getLevelOption() {
-                return [
-                    {
-                        itemStyle: {
-                            borderColor: '#777',
-                            borderWidth: 0,
-                            gapWidth: 1,
-                        },
-                        upperLabel: {
-                            show: false
-                        }
-                    },
-                    {
-                        itemStyle: {
-                            borderColor: '#555',
-                            borderWidth: 5,
-                            gapWidth: 1
-                        },
-                        emphasis: {
-                            itemStyle: {
-                                borderColor: '#ddd'
-                            }
-                        }
-                    },
-                    {
-                        colorSaturation: [0.35, 0.5],
-                        itemStyle: {
-                            borderWidth: 5,
-                            gapWidth: 1,
-                            borderColorSaturation: 0.6
+        $.get(
+            ROOT_PATH,
+            function (_rawData) {
+                run(_rawData);
+            }
+        );
+        function run(_rawData) {
+            const countries = [
+                'Fyzhq',
+                'ToastFish'
+            ];
+            const datasetWithFilters = [];
+            const seriesList = [];
+            echarts.util.each(countries, function (country) {
+                var datasetId = 'dataset_' + country;
+                datasetWithFilters.push({
+                    id: datasetId,
+                    fromDatasetId: 'dataset_raw',
+                    transform: {
+                        type: 'filter',
+                        config: {
+                            and: [
+                                { dimension: 'Year', gte: 1950 },
+                                { dimension: 'Repo', '=': country }
+                            ]
                         }
                     }
-                ];
-            }
-            myChart.setOption(
-                (option = {
-                    title: {
-                        text: 'Disk Usage',
-                        left: 'center'
-                    },
-                    tooltip: {
-                        formatter: function (info) {
-                            var value = info.value;
-                            var treePathInfo = info.treePathInfo;
-                            var treePath = [];
-                            for (var i = 1; i < treePathInfo.length; i++) {
-                                treePath.push(treePathInfo[i].name);
-                            }
-                            return [
-                                '<div class="tooltip-title">' +
-                                echarts.format.encodeHTML(treePath.join('/')) +
-                                '</div>',
-                                'Disk Usage: ' + echarts.format.addCommas(value) + ' KB'
-                            ].join('');
+                });
+                seriesList.push({
+                    type: 'line',
+                    datasetId: datasetId,
+                    showSymbol: false,
+                    name: country,
+                    endLabel: {
+                        show: true,
+                        formatter: function (params) {
+                            return params.value[1] + ': ' + params.value[0];
                         }
                     },
-                    series: [
-                        {
-                            name: 'Disk Usage',
-                            type: 'treemap',
-                            visibleMin: 300,
-                            label: {
-                                show: true,
-                                formatter: '{b}'
-                            },
-                            upperLabel: {
-                                show: true,
-                                height: 30
-                            },
-                            itemStyle: {
-                                // color: function (param) {
-                                //     // console.log(param.data.color)
-                                //     return param.data.color;
-                                // },
-                                borderWidth: 5
-                            },
-                            levels: getLevelOption(),
-                            data: diskData
-                        }
-                    ]
-                })
-            );
-        });
+                    labelLayout: {
+                        moveOverlap: 'shiftY'
+                    },
+                    emphasis: {
+                        focus: 'series'
+                    },
+                    encode: {
+                        x: 'Year',
+                        y: 'Star',
+                        label: ['Repo', 'Star'],
+                        itemName: 'Year',
+                        tooltip: ['Star']
+                    }
+                });
+            });
+            option = {
+                animationDuration: 10000,
+                dataset: [
+                    {
+                        id: 'dataset_raw',
+                        source: _rawData
+                    },
+                    ...datasetWithFilters
+                ],
+                title: {
+                    text: 'Star of Germany and France since 1950'
+                },
+                tooltip: {
+                    order: 'valueDesc',
+                    trigger: 'axis'
+                },
+                xAxis: {
+                    type: 'category',
+                    nameLocation: 'middle'
+                },
+                yAxis: {
+                    name: 'Star'
+                },
+                grid: {
+                    right: 140
+                },
+                series: seriesList
+            };
+            myChart.setOption(option);
+        }
 
         option && myChart.setOption(option);
-
     </script>
 </body>
 

@@ -6,7 +6,8 @@ v = {
         };
     },
     mounted: function () {
-        this.echartsInit();
+        this.circleEchartsInit();
+        this.squareEchartsInit();
     },
     methods: {
         handleSelect(key, keyPath) {
@@ -19,9 +20,9 @@ v = {
             console.log(key, keyPath);
         },
         // Echarts
-        echartsInit() {
-            var ROOT_PATH = '../output/seladb/StarTrack-js.json';
-            var chartDom = document.getElementById('main');
+        circleEchartsInit() {
+            var ROOT_PATH = '../output/seladb/StarTrack-js_circle.json';
+            var chartDom = document.getElementById('circle');
             var myChart = echarts.init(chartDom);
             var option;
 
@@ -233,6 +234,100 @@ v = {
                     }
                 });
             }
+            option && myChart.setOption(option);
+            window.onresize = function () {
+                myChart.resize();
+            };
+        },
+        squareEchartsInit() {
+            var ROOT_PATH = '../output/seladb/StarTrack-js_square.json';
+            var chartDom = document.getElementById('square');
+            var myChart = echarts.init(chartDom);
+            var option;
+
+            myChart.showLoading();
+            $.get(ROOT_PATH, function (diskData) {
+                myChart.hideLoading();
+                function getLevelOption() {
+                    return [
+                        {
+                            itemStyle: {
+                                borderColor: '#777',
+                                borderWidth: 0,
+                                gapWidth: 1,
+                            },
+                            upperLabel: {
+                                show: false
+                            }
+                        },
+                        {
+                            itemStyle: {
+                                borderColor: '#555',
+                                borderWidth: 5,
+                                gapWidth: 1
+                            },
+                            emphasis: {
+                                itemStyle: {
+                                    borderColor: '#ddd'
+                                }
+                            }
+                        },
+                        {
+                            colorSaturation: [0.35, 0.5],
+                            itemStyle: {
+                                borderWidth: 5,
+                                gapWidth: 1,
+                                borderColorSaturation: 0.6
+                            }
+                        }
+                    ];
+                }
+                myChart.setOption(
+                    (option = {
+                        title: {
+                            text: 'Disk Usage',
+                            left: 'center'
+                        },
+                        tooltip: {
+                            formatter: function (info) {
+                                var value = info.value;
+                                var treePathInfo = info.treePathInfo;
+                                var treePath = [];
+                                for (var i = 1; i < treePathInfo.length; i++) {
+                                    treePath.push(treePathInfo[i].name);
+                                }
+                                return [
+                                    '<div class="tooltip-title">' +
+                                    echarts.format.encodeHTML(treePath.join('/')) +
+                                    '</div>',
+                                    'Disk Usage: ' + echarts.format.addCommas(value) + ' KB'
+                                ].join('');
+                            }
+                        },
+                        series: [
+                            {
+                                name: 'Disk Usage',
+                                type: 'treemap',
+                                visibleMin: 300,
+                                label: {
+                                    show: true,
+                                    formatter: '{b}'
+                                },
+                                upperLabel: {
+                                    show: true,
+                                    height: 30
+                                },
+                                itemStyle: {
+                                    borderWidth: 5
+                                },
+                                levels: getLevelOption(),
+                                data: diskData
+                            }
+                        ]
+                    })
+                );
+            });
+
             option && myChart.setOption(option);
             window.onresize = function () {
                 myChart.resize();
