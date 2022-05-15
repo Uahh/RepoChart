@@ -96,31 +96,36 @@ class ConvertDict():
         }
         self.total_size = 0
         self.sqare_dict = [self.convert_sqare_dict(self.circle_dict, sqare_dict)]
+        self.sqare_dict[0]['value'] = self.total_size
 
     def convert_sqare_dict(self, circle_dict, sqare_dict):
         dict_template = {
             'value': 0,
-            "name": '',
-            "path": '',
+            'name': '',
+            'path': '',
+            'itemStyle': {
+                'color': '#E5E7EB'
+            },
             'children': []
         }
         for key in circle_dict.keys():
             if key == '$size':
                 continue
-            d = copy.deepcopy(dict_template)
-            d['value'] = circle_dict[key]['$size']
+            dt = copy.deepcopy(dict_template)
+            dt['value'] = circle_dict[key]['$size']
+            if '$color' in circle_dict[key].keys():
+                dt['itemStyle']['color'] = circle_dict[key]['$color']
             if '$commits' not in circle_dict[key]:
-                d['name'] = key
-                d['path'] = sqare_dict['path'] + '/' + key
-                d['children'] = []
-                sqare_dict['children'].append(d)
-                self.convert_sqare_dict(circle_dict[key], d)
+                dt['name'] = key
+                dt['path'] = sqare_dict['path'] + '/' + key
+                dt['children'] = []
+                sqare_dict['children'].append(dt)
+                self.convert_sqare_dict(circle_dict[key], dt)
             else:
-                d['name'] = key
-                d['path'] = sqare_dict['path'] + '/' + key
-                sqare_dict['children'].append(d)
-                self.total_size += d['value']
-        sqare_dict['value'] = self.total_size
+                dt['name'] = key
+                dt['path'] = sqare_dict['path'] + '/' + key
+                sqare_dict['children'].append(dt)
+                self.total_size += dt['value']
         return sqare_dict
 
     def output_dict(self, file_path, file_name):

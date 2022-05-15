@@ -46,7 +46,7 @@
     </div>
     <script type="text/javascript">
 
-        var ROOT_PATH = '../output/seladb/StarTrack-js_square.json';
+        var ROOT_PATH = '../output/Uahh/Fyzhq_square.json';
 
         var chartDom = document.getElementById('main');
         var myChart = echarts.init(chartDom);
@@ -61,7 +61,7 @@
                         itemStyle: {
                             borderColor: '#777',
                             borderWidth: 0,
-                            gapWidth: 1
+                            gapWidth: 1,
                         },
                         upperLabel: {
                             show: false
@@ -125,7 +125,11 @@
                                 height: 30
                             },
                             itemStyle: {
-                                borderColor: '#fff'
+                                // color: function (param) {
+                                //     // console.log(param.data.color)
+                                //     return param.data.color;
+                                // },
+                                borderWidth: 5
                             },
                             levels: getLevelOption(),
                             data: diskData

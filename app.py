@@ -26,7 +26,7 @@ def error():
 # app.run(host='0.0.0.0', debug=False, port=173)  # inami
 convert_dict = ConvertDict()
 
-repo = GitCommand("seladb", "StarTrack-js")
+repo = GitCommand("Uahh", "Fyzhq")
 # repo.clone()
 repo.git_data.get_git_path()
 repo.numstat()
