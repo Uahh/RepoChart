@@ -1,6 +1,6 @@
-import json
 import os
 import copy
+import json
 from collections import defaultdict
 from pprint import pprint
 
@@ -14,6 +14,8 @@ class GitData():
         self.lines_list = []
         self.size_list = []
         self.url_list = []
+        self.line_chart_list = []
+        self.star_data = {}
 
     def get_git_path(self, git_dir=None):
         if not git_dir:
@@ -104,7 +106,7 @@ class ConvertDict():
             'name': '',
             'path': '',
             'itemStyle': {
-                'color': '#E5E7EB'
+                'color': '#333333'
             },
             'children': []
         }
@@ -128,7 +130,7 @@ class ConvertDict():
                 self.total_size += dt['value']
         return sqare_dict
 
-    def output_dict(self, file_path, file_name):
+    def output(self, file_path, file_name):
         if not os.path.exists(file_path):
             os.mkdir(file_path)
         output_path = os.path.join(file_path, file_name)
@@ -138,6 +140,10 @@ class ConvertDict():
         output_path = os.path.join(file_path, file_name)
         with open(output_path + '_square.json', 'w') as json_file:
             json_file.write(json.dumps(self.sqare_dict))
+
+        output_path = os.path.join(file_path, file_name)
+        with open(output_path + '_line.json', 'w') as json_file:
+            json_file.write(json.dumps(self.git_data.line_chart_list))
 
     def load_language_colors(self):
         with open("config/language_colors.json") as json_file:
