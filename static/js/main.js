@@ -8,6 +8,7 @@ v = {
     mounted: function () {
         this.circleEchartsInit();
         this.squareEchartsInit();
+        this.lineEchartsInit();
     },
     methods: {
         handleSelect(key, keyPath) {
@@ -21,7 +22,7 @@ v = {
         },
         // Echarts
         circleEchartsInit() {
-            var ROOT_PATH = '../output/seladb/StarTrack-js_circle.json';
+            var ROOT_PATH = '../output/itorr/imouto_circle.json';
             var chartDom = document.getElementById('circle');
             var myChart = echarts.init(chartDom);
             var option;
@@ -51,7 +52,7 @@ v = {
                     maxDepth = Math.max(depth, maxDepth);
                     seriesData.push({
                         id: basePath,
-                        value: source.$lines,
+                        value: source.$commits,
                         color: source.$color,
                         url: source.$url,
                         sha: source.$sha,
@@ -65,7 +66,7 @@ v = {
                         }
                     }
                 }
-                convert(rawData, 'Fyzhq', 0);
+                convert(rawData, 'Slscq', 0);
                 return {
                     seriesData: seriesData,
                     maxDepth: maxDepth
@@ -240,7 +241,7 @@ v = {
             };
         },
         squareEchartsInit() {
-            var ROOT_PATH = '../output/seladb/StarTrack-js_square.json';
+            var ROOT_PATH = '../output/itorr/imouto_square.json';
             var chartDom = document.getElementById('square');
             var myChart = echarts.init(chartDom);
             var option;
@@ -252,12 +253,24 @@ v = {
                     return [
                         {
                             itemStyle: {
-                                borderColor: '#777',
+                                borderColor: '#333',
                                 borderWidth: 0,
                                 gapWidth: 1,
                             },
                             upperLabel: {
                                 show: false
+                            }
+                        },
+                        {
+                            itemStyle: {
+                                borderColor: '#444',
+                                borderWidth: 5,
+                                gapWidth: 1
+                            },
+                            emphasis: {
+                                itemStyle: {
+                                    borderColor: '#ddd'
+                                }
                             }
                         },
                         {
@@ -273,7 +286,91 @@ v = {
                             }
                         },
                         {
-                            colorSaturation: [0.35, 0.5],
+                            itemStyle: {
+                                borderColor: '#666',
+                                borderWidth: 5,
+                                gapWidth: 1
+                            },
+                            emphasis: {
+                                itemStyle: {
+                                    borderColor: '#ddd'
+                                }
+                            }
+                        },
+                        {
+                            itemStyle: {
+                                borderColor: '#777',
+                                borderWidth: 5,
+                                gapWidth: 1
+                            },
+                            emphasis: {
+                                itemStyle: {
+                                    borderColor: '#ddd'
+                                }
+                            }
+                        },
+                        {
+                            itemStyle: {
+                                borderColor: '#888',
+                                borderWidth: 5,
+                                gapWidth: 1
+                            },
+                            emphasis: {
+                                itemStyle: {
+                                    borderColor: '#ddd'
+                                }
+                            }
+                        },
+                        {
+                            itemStyle: {
+                                borderColor: '#999',
+                                borderWidth: 5,
+                                gapWidth: 1
+                            },
+                            emphasis: {
+                                itemStyle: {
+                                    borderColor: '#ddd'
+                                }
+                            }
+                        },
+                        {
+                            itemStyle: {
+                                borderColor: '#AAA',
+                                borderWidth: 5,
+                                gapWidth: 1
+                            },
+                            emphasis: {
+                                itemStyle: {
+                                    borderColor: '#ddd'
+                                }
+                            }
+                        },
+                        {
+                            itemStyle: {
+                                borderColor: '#BBB',
+                                borderWidth: 5,
+                                gapWidth: 1
+                            },
+                            emphasis: {
+                                itemStyle: {
+                                    borderColor: '#ddd'
+                                }
+                            }
+                        },
+                        {
+                            itemStyle: {
+                                borderColor: '#CCC',
+                                borderWidth: 5,
+                                gapWidth: 1
+                            },
+                            emphasis: {
+                                itemStyle: {
+                                    borderColor: '#ddd'
+                                }
+                            }
+                        },
+                        {
+                            colorSaturation: [0.35, 1],
                             itemStyle: {
                                 borderWidth: 5,
                                 gapWidth: 1,
@@ -328,6 +425,101 @@ v = {
                 );
             });
 
+            option && myChart.setOption(option);
+            window.onresize = function () {
+                myChart.resize();
+            };
+        },
+        lineEchartsInit() {
+            var ROOT_PATH = '../output/itorr/imouto_line.json'
+            var chartDom = document.getElementById('line');
+            var myChart = echarts.init(chartDom);
+            var option;
+    
+            $.get(
+                ROOT_PATH,
+                function (_rawData) {
+                    run(_rawData);
+                }
+            );
+            function run(_rawData) {
+                const countries = [
+                    'itorr/imouto',
+                ];
+                const datasetWithFilters = [];
+                const seriesList = [];
+                echarts.util.each(countries, function (country) {
+                    var datasetId = 'dataset_' + country;
+                    datasetWithFilters.push({
+                        id: datasetId,
+                        fromDatasetId: 'dataset_raw',
+                        transform: {
+                            type: 'filter',
+                            config: {
+                                and: [
+                                    { dimension: 'Day', gte: 1950 },
+                                    { dimension: 'Repo', '=': country }
+                                ]
+                            }
+                        }
+                    });
+                    seriesList.push({
+                        type: 'line',
+                        datasetId: datasetId,
+                        showSymbol: false,
+                        name: country,
+                        endLabel: {
+                            show: true,
+                            formatter: function (params) {
+                                return params.value[1] + ': ' + params.value[0];
+                            }
+                        },
+                        labelLayout: {
+                            moveOverlap: 'shiftY'
+                        },
+                        emphasis: {
+                            focus: 'series'
+                        },
+                        encode: {
+                            x: 'Day',
+                            y: 'Star',
+                            label: ['Repo', 'Star'],
+                            itemName: 'Day',
+                            tooltip: ['Star']
+                        }
+                    });
+                });
+                option = {
+                    animationDuration: 10000,
+                    dataset: [
+                        {
+                            id: 'dataset_raw',
+                            source: _rawData
+                        },
+                        ...datasetWithFilters
+                    ],
+                    title: {
+                        text: 'Star of Germany and France since 1950'
+                    },
+                    tooltip: {
+                        order: 'valueDesc',
+                        trigger: 'axis'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        nameLocation: 'middle'
+                    },
+                    yAxis: {
+                        name: 'Star'
+                    },
+                    grid: {
+                        right: 140
+                    },
+                    series: seriesList
+                };
+                myChart.setOption(option);
+            }
+    
             option && myChart.setOption(option);
             window.onresize = function () {
                 myChart.resize();
