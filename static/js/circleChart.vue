@@ -197,12 +197,14 @@ module.exports = {
                 myChart.setOption(option);
                 myChart.on('click', { seriesIndex: 0 }, function (params) {
                     drillDown(params.data.id);
+                });
+
+                myChart.on('dblclick', { seriesIndex: 0 }, function (params) {
                     if (!params.event.topTarget.textConfig) {
-                        console.log(seriesData[params.value.index])
                         window.open(seriesData[params.value.index].url)
                     }
-
                 });
+
                 function drillDown(targetNodeId) {
                     if (targetNodeId == undefined && displayRoot != undefined) {
                         let id = displayRoot.data.id.substring(0, displayRoot.data.id.length - 1)
