@@ -18,7 +18,6 @@ class GitCommand():
         self.repo_dir = os.path.join(self.user_dir, self.repo_name)
         self.git_data = GitData(self.repo_dir)
         self.git_data.repo_name = owner + '/' + repo_name
-        self.git_api = GithubStarApi(self.git_data)
 
     def clone(self):
         git_url = "https://github.com/{}/{}.git".format(self.owner, self.repo_name)

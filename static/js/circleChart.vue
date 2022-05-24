@@ -6,6 +6,8 @@
 module.exports = {
     data() {
         return {
+            title: "",
+            path: ""
         };
     },
     mounted: function () {
@@ -13,7 +15,7 @@ module.exports = {
     },
     methods: {
         circleEchartsInit() {
-            var ROOT_PATH = '../../output/itorr/imouto_circle.json';
+            var ROOT_PATH = '../../output/vuejs/vue_circle.json';
             var chartDom = document.getElementById('circle');
             var myChart = echarts.init(chartDom);
             var option;
@@ -167,6 +169,9 @@ module.exports = {
                     };
                 }
                 option = {
+                    title: {
+                        text: 'Disk Usage',
+                    },
                     dataset: {
                         source: seriesData
                     },
@@ -238,5 +243,6 @@ module.exports = {
 .circle-chart {
     height: 800px;
     width: 100%;
+    text-align: center;
 }
 </style>

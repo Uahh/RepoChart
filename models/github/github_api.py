@@ -2,6 +2,9 @@ from models.github import private_config
 from models.git_local.git_data import GitData, ConvertDict
 import sys
 import json
+import time
+import math
+import datetime
 import requests
 from pprint import pprint
 
@@ -18,26 +21,35 @@ class GithubStarApi():
                 "Day"
             ]
         )
-        self.first_link = "https://api.github.com/repos/{}/stargazers?per_page=100".format(git_data.repo_name)
-        self.link_list = []
+        self.link = "https://api.github.com/repos/{}/stargazers?per_page=100".format(
+            git_data.repo_name)
         self.headers = {
             'Accept': 'application/vnd.github.v3.star+json',
             "Authorization": "token " + private_config.token
         }
+        self.total_stars = 0
         self.cur_stars = 0
+        self.get_total_stars()
         self.get_link_list()
         self.convert_line_chart()
 
+    def get_total_stars(self):
+        link = "https://api.github.com/repos/{}".format(
+            self.git_data.repo_name)
+        self.total_stars = self.request_api(link)['watchers']
+
     def get_link_list(self):
-        first_result = requests.get(self.first_link, headers=self.headers)
+        if self.total_stars > 100:
+            link_num = self.total_stars / 100
 
-        link_sqlit = first_result.links['last']['url'].split('&page=')
-        link_num = int(link_sqlit[-1])
-        
-        self.add_stars(json.loads(first_result.text))
+            # Github Api limited 400 pages.
+            if link_num > 400:
+                link_num = 400
+        else:
+            link_num = 1
 
-        for i in range(2, link_num + 1):
-            link = link_sqlit[0] + '&page=' + str(i)
+        for i in range(1, link_num + 1):
+            link = self.link + '&page=' + str(i)
             data = self.request_api(link)
             self.add_stars(data)
 
@@ -61,14 +73,28 @@ class GithubStarApi():
             temp.append(self.git_data.repo_name)
             temp.append(key)
             self.git_data.line_chart_list.append(temp)
+        if self.total_stars > 40000:
+            self.cal_time(temp[2])
 
-# def get_repo_tree(owner, repo):
-#     link = "https://api.github.com/repos/{}/{}/contents".format(owner, repo)
-#     r = RequestGithubApi(link, headers)
-#     r.get_repo_data()
-#     repo_tree = ConvertDict(r.api_data)
-#     # pprint(repo_tree.dict)
-#     with open("../../output/StarTrack-js.json", 'w') as f:
-#         f.write(json.dumps(repo_tree.dict))
+    def cal_time(self, begin):
+        begin = str(begin)
+        date1 = "{}/{}/{}".format(begin[0:4], begin[4:6], begin[6:8])
+        date2 = datetime.datetime.now().strftime('%Y/%m/%d')
+        date1 = time.strptime(date1, "%Y/%m/%d")
+        date2 = time.strptime(date2, "%Y/%m/%d")
+        date1 = datetime.datetime(date1[0], date1[1], date1[2])
+        date2 = datetime.datetime(date2[0], date2[1], date2[2])
 
-# get_repo_tree("seladb", "StarTrack-js")
+        diff_day = (date2 - date1).days
+        inc_stars = math.floor((self.total_stars - 40000) / diff_day)
+        remainder_stars = (self.total_stars - 40000) % diff_day
+        for i in range(0, diff_day):
+            date1 += datetime.timedelta(days=1)
+            self.cur_stars += inc_stars
+            if i == diff_day - 1:
+                self.cur_stars += remainder_stars
+            temp = []
+            temp.append(self.cur_stars)
+            temp.append(self.git_data.repo_name)
+            temp.append(int(date1.strftime("%Y%m%d")))
+            self.git_data.line_chart_list.append(temp)

@@ -6,6 +6,8 @@
 module.exports = {
     data() {
         return {
+            title: "",
+            path: ""
         };
     },
     mounted: function () {
@@ -13,7 +15,7 @@ module.exports = {
     },
     methods: {
         lineEchartsInit() {
-            var ROOT_PATH = '../../output/itorr/imouto_line.json'
+            var ROOT_PATH = '../../output/vuejs/vue_line.json'
             var chartDom = document.getElementById('line');
             var myChart = echarts.init(chartDom);
             var option;
@@ -28,7 +30,7 @@ module.exports = {
             );
             function run(_rawData) {
                 const countries = [
-                    'itorr/imouto',
+                    'vuejs/vue',
                 ];
                 const datasetWithFilters = [];
                 const seriesList = [];
@@ -83,7 +85,7 @@ module.exports = {
                         ...datasetWithFilters
                     ],
                     title: {
-                        text: 'Star of Germany and France since 1950'
+                        text: 'Star of Germany and France since 1950',
                     },
                     tooltip: {
                         order: 'valueDesc',
@@ -114,5 +116,6 @@ module.exports = {
 .lineChart {
     width: 100%;
     height: 800px;
+    text-align: center;
 }
 </style>

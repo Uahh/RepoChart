@@ -13,8 +13,20 @@ body {
   margin-right: 1rem;
 }
 
-.chart {
-  height: 800px;
-  width: 100%;
-  /* position: relative; */
+.tab{
+  /* height: 100%;  */
+  min-height: 800px;
 }
+
+.cir {
+  width: 100px;
+  
+  height: 100px;
+  
+  border: 1px solid red;
+  
+  border-radius: 50%;
+  
+  background-color: red;
+  
+  }

@@ -26,16 +26,16 @@ def error():
     return '404 not found'
 
 
-app.run(host='0.0.0.0', debug=False, port=173)  # inami
-# convert_dict = ConvertDict()
-
-# repo = GitCommand("itorr", "imouto")
+# app.run(host='0.0.0.0', debug=False, port=173)  # inami
+convert_dict = ConvertDict()
+repo = GitCommand("vuejs", "vue")
+GithubStarApi(repo.git_data)
 # repo.clone()
-# # repo.git_data.get_git_path()
-# repo.numstat()
+repo.git_data.get_git_path()
+repo.numstat()
 
-# convert_dict.git_data = repo.git_data
-# convert_dict.get_path_dict()
-# json_path = os.path.join('output', repo.owner)
-# json_name = repo.repo_name
-# convert_dict.output(json_path, json_name)
+convert_dict.git_data = repo.git_data
+convert_dict.get_path_dict()
+json_path = os.path.join('output', repo.owner)
+json_name = repo.repo_name
+convert_dict.output(json_path, json_name)

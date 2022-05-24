@@ -6,6 +6,8 @@
 module.exports = {
     data() {
         return {
+            title: "",
+            path: ""
         };
     },
     mounted: function () {
@@ -13,7 +15,7 @@ module.exports = {
     },
     methods: {
         squareEchartsInit() {
-            var ROOT_PATH = '../../output/itorr/imouto_square.json';
+            var ROOT_PATH = '../../output/vuejs/vue_square.json';
             var chartDom = document.getElementById('square');
             var myChart = echarts.init(chartDom);
             var option;
@@ -151,11 +153,50 @@ module.exports = {
                         }
                     ];
                 }
+                // myChart.setOption(option = {
+                //     series: [
+                //         {
+                //             title: {
+                //                 text: 'Disk Usage',
+                //             },
+                //             tooltip: {
+                //                 formatter: function (info) {
+                //                     var value = info.value;
+                //                     var treePathInfo = info.treePathInfo;
+                //                     var treePath = [];
+                //                     for (var i = 1; i < treePathInfo.length; i++) {
+                //                         treePath.push(treePathInfo[i].name);
+                //                     }
+                //                     console.log(echarts.format.addCommas(value))
+                //                     return [
+                //                         '<div class="tooltip-title">' +
+                //                         echarts.format.encodeHTML(treePath.join('/')) +
+                //                         '</div>',
+                //                         'Disk Usage: ' + echarts.format.addCommas(value) + ' KB'
+                //                     ].join('');
+                //                 }
+                //             },
+                //             type: 'sunburst',
+                //             id: 'echarts-package-size',
+                //             radius: ['20%', '90%'],
+                //             animationDurationUpdate: 1000,
+                //             nodeClick: undefined,
+                //             data: diskData,
+                //             universalTransition: true,
+                //             itemStyle: {
+                //                 borderWidth: 1,
+                //                 borderColor: 'rgba(255,255,255,.5)'
+                //             },
+                //             label: {
+                //                 show: false
+                //             }
+                //         }
+                //     ]
+                // })
                 myChart.setOption(
                     (option = {
                         title: {
                             text: 'Disk Usage',
-                            left: 'center'
                         },
                         tooltip: {
                             formatter: function (info) {
@@ -178,6 +219,7 @@ module.exports = {
                                 name: 'Disk Usage',
                                 type: 'treemap',
                                 visibleMin: 300,
+                                // leafDepth: 5,
                                 label: {
                                     show: true,
                                     formatter: '{b}'
@@ -207,5 +249,6 @@ module.exports = {
 .squareChart {
     height: 800px;
     width: 100%;
+    text-align: center;
 }
 </style>
