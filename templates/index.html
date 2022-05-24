@@ -10,6 +10,7 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.js"></script>
     <script src="https://unpkg.com/vue3-sfc-loader"></script>
+    <script src="https://unpkg.com/@element-plus/icons-vue"></script>
     <link rel="stylesheet" href="../static/css/uahh.css">
     <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css" />
 </head>
@@ -18,16 +19,42 @@
     <div id="app">
         <el-row>
             <el-col :span="24">
-                <el-menu :default-active="activeIndex" mode="horizontal" background-color="#545c64" text-color="#fff"
+                <el-menu :default-active="activeIndex" mode="horizontal" background-color="#21262D" text-color="#fff"
                     active-text-color="#ffd04b" @select="handleSelect">
-                    <el-menu-item index="1" style='margin-left: 20%'>Processing Center</el-menu-item>
-                    <el-menu-item index="2" style='margin-left: 50%'>Orders</el-menu-item>
+                    <el-menu-item index="1" style='margin-left: 20%'>
+                        <b>Processing Center</b>
+                    </el-menu-item>
+                    <el-menu-item index="2" style='margin-left: 45%'>
+                        <b>Github</b>
+                    </el-menu-item>
                 </el-menu>
             </el-col>
         </el-row>
         <el-row>
-            <el-col :span="24">
-                <el-tabs v-model="activeName" tab-position="left" style="height: 100%;" type="border-card" stretch="true" @tab-click="handleClick">
+            <el-col :span="6">
+                <div style="color:blue">&#9632;</div>
+            </el-col>
+            <el-col :span="12">
+                <el-row style="text-align: center; padding: 25px;">
+                    <el-col :span="18">
+                        <el-input v-model="input1" size="large" placeholder="Uahh/RepoChart">
+                        </el-input>
+                    </el-col>
+                    <el-col :span="6" style="text-align: right;">
+                        <el-button type="primary" style="width: 90%; height: 100%;">
+                            <span>Show repo chart</span>
+                        </el-button>
+                    </el-col>
+                </el-row>
+            </el-col>
+            <el-col :span="6" style="margin-top: 50px;">
+            </el-col>
+        </el-row>
+        <el-row>
+            <el-col :span="4">
+            </el-col>
+            <el-col :span="16" style="margin-top: 50px;">
+                <el-tabs v-model="activeName" class="tab" tab-position="left" stretch="true" @tab-click="handleClick">
                     <el-tab-pane label="Circle" name="circle" lazy='true'>
                         <circle-chart></circle-chart>
                     </el-tab-pane>
@@ -38,6 +65,8 @@
                         <line-chart></line-chart>
                     </el-tab-pane>
                 </el-tabs>
+            </el-col>
+            <el-col :span="4">
             </el-col>
         </el-row>
     </div>
