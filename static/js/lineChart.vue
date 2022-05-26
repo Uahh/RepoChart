@@ -1,5 +1,17 @@
 <template>
-    <div id="line" class="lineChart"></div>
+    <el-row>
+        <el-col :span="24">
+            <div class="chart-region">
+                <div id="line" class="chart"></div>
+                <el-row>
+                    <el-col :span="12">
+                    </el-col>
+                    <el-col :span="12">
+                    </el-col>
+                </el-row>
+            </div>
+        </el-col>
+    </el-row>
 </template>
  
 <script>
@@ -15,7 +27,7 @@ module.exports = {
     },
     methods: {
         lineEchartsInit() {
-            var ROOT_PATH = '../../output/vuejs/vue_line.json'
+            var ROOT_PATH = '../../output/Uahh/Slscq_line.json'
             var chartDom = document.getElementById('line');
             var myChart = echarts.init(chartDom);
             var option;
@@ -31,6 +43,7 @@ module.exports = {
             function run(_rawData) {
                 const countries = [
                     'vuejs/vue',
+                    'Uahh/Slscq',
                 ];
                 const datasetWithFilters = [];
                 const seriesList = [];
@@ -91,6 +104,17 @@ module.exports = {
                         order: 'valueDesc',
                         trigger: 'axis'
                     },
+                    toolbox: {
+                        show: true,
+                        bottom: '1%',
+                        left: '1%',
+                        itemSize: 20,
+                        feature: {
+                            saveAsImage: {
+                                show: true
+                            }
+                        }
+                    },
                     xAxis: {
                         type: 'category',
                         nameLocation: 'middle'
@@ -113,9 +137,4 @@ module.exports = {
 </script>
  
 <style>
-.lineChart {
-    width: 100%;
-    height: 800px;
-    text-align: center;
-}
 </style>

@@ -1,5 +1,28 @@
 <template>
-    <div id="circle" class="circle-chart"></div>
+    <el-row>
+        <el-col :span="24">
+            <div class="chart-region">
+                <div id="circle" class="chart"></div>
+                <el-row>
+                    <el-col :span="12">
+                    </el-col>
+                    <el-col :span="12">
+                        <div class="radio">
+                            <a style="padding: 10px">Order by:</a>
+                            <el-radio v-model="radio" label="$commits" border size="medium"
+                                @change="circleEchartsInit(radio)">
+                                commits
+                            </el-radio>
+                            <el-radio v-model="radio" label="$lines" border size="medium"
+                                @change="circleEchartsInit(radio)">
+                                lines
+                            </el-radio>
+                        </div>
+                    </el-col>
+                </el-row>
+            </div>
+        </el-col>
+    </el-row>
 </template>
  
 <script>
@@ -7,14 +30,15 @@ module.exports = {
     data() {
         return {
             title: "",
-            path: ""
+            path: "",
+            radio: "$commits"
         };
     },
     mounted: function () {
-        this.circleEchartsInit();
+        this.circleEchartsInit(this.radio);
     },
     methods: {
-        circleEchartsInit() {
+        circleEchartsInit(radio) {
             var ROOT_PATH = '../../output/vuejs/vue_circle.json';
             var chartDom = document.getElementById('circle');
             var myChart = echarts.init(chartDom);
@@ -47,10 +71,9 @@ module.exports = {
                     maxDepth = Math.max(depth, maxDepth);
                     seriesData.push({
                         id: basePath,
-                        value: source.$commits,
-                        color: source.$color,
-                        url: source.$url,
-                        sha: source.$sha,
+                        value: source[radio],
+                        color: source['$color'],
+                        url: source['$url'],
                         depth: depth,
                         index: seriesData.length
                     });
@@ -151,15 +174,15 @@ module.exports = {
                         },
                         style: {
                             fill: api.visual('color'),
-                            stroke: '#000000',
+                            stroke: '#444444',
                             lineWidth: 1,
                         },
                         emphasis: {
                             style: {
                                 fontFamily: 'Arial',
                                 fontSize: 12,
-                                // stroke: '#000000',
-                                // lineWidth: 3,
+                                stroke: '#000000',
+                                lineWidth: 1,
                                 shadowBlur: 20,
                                 shadowOffsetX: 3,
                                 shadowOffsetY: 5,
@@ -176,6 +199,17 @@ module.exports = {
                         source: seriesData
                     },
                     tooltip: {},
+                    toolbox: {
+                        show: true,
+                        bottom: '1%',
+                        left: '1%',
+                        itemSize: 20,
+                        feature: {
+                            saveAsImage: {
+                                show: true
+                            }
+                        }
+                    },
                     hoverLayerThreshold: Infinity,
                     series: {
                         type: 'custom',
@@ -242,9 +276,8 @@ module.exports = {
 </script>
  
 <style>
-.circle-chart {
-    height: 800px;
-    width: 100%;
-    text-align: center;
+.radio {
+    text-align: right;
+    /* width: 250px; */
 }
 </style>

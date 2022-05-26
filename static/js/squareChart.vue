@@ -1,5 +1,26 @@
 <template>
-    <div id="square" class="squareChart"></div>
+    <el-row>
+        <el-col :span="24">
+            <div class="chart-region">
+                <div id="square" class="chart"></div>
+                <el-row>
+                    <el-col :span="12">
+                    </el-col>
+                    <el-col :span="12">
+                        <div class="radio">
+                            <a style="padding: 10px">Order by:</a>
+                            <el-radio v-model="radio" label="$commits" border size="medium">
+                                commits
+                            </el-radio>
+                            <el-radio v-model="radio" label="$lines" border size="medium">
+                                lines
+                            </el-radio>
+                        </div>
+                    </el-col>
+                </el-row>
+            </div>
+        </el-col>
+    </el-row>
 </template>
  
 <script>
@@ -246,9 +267,4 @@ module.exports = {
 </script>
  
 <style>
-.squareChart {
-    height: 800px;
-    width: 100%;
-    text-align: center;
-}
 </style>
