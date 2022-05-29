@@ -22,7 +22,7 @@
                 <el-menu :default-active="activeIndex" mode="horizontal" background-color="#21262D" text-color="#fff"
                     active-text-color="#ffd04b" @select="handleSelect">
                     <el-menu-item index="1" style='margin-left: 20%'>
-                        <b>Processing Center</b>
+                        <b>Repo chart</b>
                     </el-menu-item>
                     <el-menu-item index="2" style='margin-left: 45%'>
                         <b>Github</b>
@@ -53,7 +53,7 @@
         <el-row>
             <el-col :span="4">
             </el-col>
-            <el-col :span="16" style="margin-top: 50px;">
+            <el-col :span="15" style="margin-top: 50px;">
                 <el-tabs v-model="activeName" class="tab" tab-position="left" stretch="true" @tab-click="handleClick">
                     <el-tab-pane label="Circle" name="circle" lazy='true'>
                         <circle-chart></circle-chart>
@@ -61,12 +61,15 @@
                     <el-tab-pane label="Square" name="square" lazy='true'>
                         <square-chart></square-chart>
                     </el-tab-pane>
+                    <el-tab-pane label="Commit Size" name="commitSizeLine" lazy='true'>
+                        <commit-size-line-chart></commit-size-line-chart>
+                    </el-tab-pane>
                     <el-tab-pane label="Line" name="line" lazy='true'>
                         <line-chart></line-chart>
                     </el-tab-pane>
                 </el-tabs>
             </el-col>
-            <el-col :span="4">
+            <el-col :span="5">
             </el-col>
         </el-row>
     </div>

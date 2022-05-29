@@ -16,7 +16,6 @@ const options = {
         vue: Vue
     },
     async getFile(url) {
-
         const res = await fetch(url);
         if (!res.ok)
             throw Object.assign(new Error(res.statusText + ' ' + url), { res });
@@ -33,7 +32,8 @@ const options = {
     components: {
         'circle-chart': Vue.defineAsyncComponent(() => loadModule('../static/js/circleChart.vue', options)),
         'square-chart': Vue.defineAsyncComponent(() => loadModule('../static/js/squareChart.vue', options)),
-        'line-chart': Vue.defineAsyncComponent(() => loadModule('../static/js/lineChart.vue', options))
+        'line-chart': Vue.defineAsyncComponent(() => loadModule('../static/js/lineChart.vue', options)),
+        'commit-size-line-chart': Vue.defineAsyncComponent(() => loadModule('../static/js/commitSizeLineChart.vue', options))
     },
 }
 

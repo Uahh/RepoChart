@@ -27,7 +27,7 @@ module.exports = {
     },
     methods: {
         lineEchartsInit() {
-            var ROOT_PATH = '../../output/Uahh/Slscq_line.json'
+            var ROOT_PATH = '../../output/vuejs/vue_line.json'
             var chartDom = document.getElementById('line');
             var myChart = echarts.init(chartDom);
             var option;
@@ -98,7 +98,7 @@ module.exports = {
                         ...datasetWithFilters
                     ],
                     title: {
-                        text: 'Star of Germany and France since 1950',
+                        text: 'vuejs/vue',
                     },
                     tooltip: {
                         order: 'valueDesc',

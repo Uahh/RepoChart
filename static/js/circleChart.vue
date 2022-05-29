@@ -193,7 +193,7 @@ module.exports = {
                 }
                 option = {
                     title: {
-                        text: 'Disk Usage',
+                        text: 'vuejs/vue',
                     },
                     dataset: {
                         source: seriesData

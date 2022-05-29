@@ -40,7 +40,7 @@ class GithubStarApi():
 
     def get_link_list(self):
         if self.total_stars > 100:
-            link_num = self.total_stars / 100
+            link_num = self.total_stars // 100
 
             # Github Api limited 400 pages.
             if link_num > 400:

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import json
+import time
 from pprint import pprint
 import requests
 from flask import Flask, request
@@ -27,15 +28,22 @@ def error():
 
 
 # app.run(host='0.0.0.0', debug=False, port=173)  # inami
+
+start = time.time()
+
 convert_dict = ConvertDict()
 repo = GitCommand("vuejs", "vue")
-GithubStarApi(repo.git_data)
+# GithubStarApi(repo.git_data)
 # repo.clone()
 repo.git_data.get_git_path()
-repo.numstat()
+# repo.numstat()
+repo.ls_tree()
 
 convert_dict.git_data = repo.git_data
-convert_dict.get_path_dict()
+# convert_dict.get_path_dict()
 json_path = os.path.join('output', repo.owner)
 json_name = repo.repo_name
 convert_dict.output(json_path, json_name)
+
+end = time.time() - start
+print (str(end))

@@ -1,9 +1,10 @@
-import imp
 import os
 import sys
 import git
+import copy
 import shutil
-
+from threading import Thread
+from multiprocessing import cpu_count
 
 sys.path.append(sys.path[0] + '/..')
 from models.common.run_command import run_command
@@ -19,6 +20,7 @@ class GitCommand():
         self.git_data = GitData(self.repo_dir)
         self.git_data.repo_name = owner + '/' + repo_name
 
+        
     def clone(self):
         git_url = "https://github.com/{}/{}.git".format(self.owner, self.repo_name)
 
@@ -67,6 +69,43 @@ class GitCommand():
             self.git_data.commits_list.append(commit_conut)
             self.git_data.lines_list.append(lines_conut)
 
+
+    def ls_tree(self):
+        # git rev-list HEAD -- data\language.json
+        self.commit_list = git.Git(self.repo_dir).rev_list('--all').split('\n')
+    #     core_count = cpu_count() * 2
+    #     thread_num = len(self.commit_list) // core_count
+    #     index = 0
+    #     thread_list = []
+    #     for i in range(0, core_count):
+    #         temp_thread = Thread(target=self.thread_ls_tree, args=(index, index + thread_num))
+    #         index += thread_num
+    #         thread_list.append(temp_thread)
+
+    #     for i in range(0, core_count):
+    #         thread_list[i].start()
+
+    #     for i in range(0, core_count):
+    #         thread_list[i].join()
+
+    # def thread_ls_tree(self, begin, end):
+        for i in range(0, len(self.commit_list)):
+            commit_log = git.Git(self.repo_dir).ls_tree('-r', '-l', self.commit_list[i]).split('\n')
+            for log in commit_log:
+                inc = log.split('\t')[0].split(' ')[-1]
+                if not inc.isdigit():
+                    continue
+                current_size = int(inc)
+                file_name = log.split('\t')[-1]
+                file_suffix = '.' + file_name.split('.')[-1]
+
+                if file_suffix in self.git_data.file_suffix.keys():
+                    self.git_data.file_suffix[file_suffix] = current_size
+
+            for line in self.git_data.total_line_dict:
+                    inc = self.git_data.file_suffix[line['name']]
+                    line['data'].append(inc)
+
     # Error handler for shutil.rmtree().
     def onerror(self, func, path, exc_info):
         import stat
@@ -74,4 +113,4 @@ class GitCommand():
             os.chmod(path, stat.S_IWUSR)
             func(path)
         else:
-            raise("shutil.rmtree failed, maybe the file is in opened")
+            raise("shutil.rmtree() failed, maybe the file is in opened")

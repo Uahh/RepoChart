@@ -4,6 +4,7 @@ import json
 from collections import defaultdict
 from pprint import pprint
 
+
 class GitData():
     def __init__(self, git_dir=None) -> None:
         self.git_dir = ''
@@ -16,6 +17,20 @@ class GitData():
         self.url_list = []
         self.line_chart_list = []
         self.star_data = {}
+        self.circle_dict = {}
+        self.square_dict = {}
+        self.total_line_dict = []
+        self.file_suffix = {}
+        self.total_line_template = {
+            'name': '',
+            'type': 'line',
+            'stack': 'Total',
+            'areaStyle': {},
+            'emphasis': {
+                'focus': 'series'
+            },
+            'data': []
+        }
 
     def get_git_path(self, git_dir=None):
         if not git_dir:
@@ -42,6 +57,19 @@ class GitData():
                 url = 'https://github.com/{}/{}/tree/master/{}'.format(
                     url_path[1], url_path[2], file_name)
                 self.url_list.append(url)
+
+                if '.' not in file_path:
+                    continue
+                suffix = file_path.split('/')[-1].split('.')[-1]
+                if '1-i686' in suffix:
+                    a = 1
+                suffix = '.' + suffix
+                if suffix not in self.file_suffix:
+                    temp_line = copy.deepcopy(self.total_line_template)
+                    temp_line['name'] = suffix
+                    self.total_line_dict.append(temp_line)
+                    self.file_suffix[suffix] = 0
+
             elif os.path.isdir(file_path):
                 self.get_git_path(file_path)
 
@@ -79,8 +107,8 @@ class ConvertDict():
                 marcher['$commits'] = self.git_data.commits_list[i]
                 marcher['$lines'] = self.git_data.lines_list[i]
                 marcher['$url'] = self.git_data.url_list[i]
-                marcher['$color'] = self.get_color(parts[-2].split('.')[-1])
-
+                suffix = parts[-2].split('.')[-1]
+                marcher['$color'] = self.get_color(suffix)
                 index = len(parts) - 3
                 while index > 0:
                     temp_marcher = new_path_dict
@@ -97,7 +125,8 @@ class ConvertDict():
             'children': []
         }
         self.total_size = 0
-        self.sqare_dict = [self.convert_sqare_dict(self.circle_dict, sqare_dict)]
+        self.sqare_dict = [self.convert_sqare_dict(
+            self.circle_dict, sqare_dict)]
         self.sqare_dict[0]['value'] = self.total_size
 
     def convert_sqare_dict(self, circle_dict, sqare_dict):
@@ -133,17 +162,22 @@ class ConvertDict():
     def output(self, file_path, file_name):
         if not os.path.exists(file_path):
             os.mkdir(file_path)
-        output_path = os.path.join(file_path, file_name)
-        with open(output_path + '_circle.json', 'w') as json_file:
-            json_file.write(json.dumps(self.circle_dict))
-        
-        output_path = os.path.join(file_path, file_name)
-        with open(output_path + '_square.json', 'w') as json_file:
-            json_file.write(json.dumps(self.sqare_dict))
+        # output_path = os.path.join(file_path, file_name)
+        # with open(output_path + '_circle.json', 'w') as json_file:
+        #     json_file.write(json.dumps(self.circle_dict))
+
+        # output_path = os.path.join(file_path, file_name)
+        # with open(output_path + '_square.json', 'w') as json_file:
+        #     json_file.write(json.dumps(self.sqare_dict))
+
+        # output_path = os.path.join(file_path, file_name)
+        # with open(output_path + '_line.json', 'w') as json_file:
+        #     json_file.write(json.dumps(self.git_data.line_chart_list))
 
         output_path = os.path.join(file_path, file_name)
-        with open(output_path + '_line.json', 'w') as json_file:
-            json_file.write(json.dumps(self.git_data.line_chart_list))
+        with open(output_path + '_suffix_line.json', 'w') as json_file:
+            json_file.write(json.dumps(self.git_data.total_line_dict))
+
 
     def load_language_colors(self):
         with open("config/language_colors.json") as json_file:

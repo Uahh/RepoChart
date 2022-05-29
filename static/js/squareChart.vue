@@ -8,12 +8,14 @@
                     </el-col>
                     <el-col :span="12">
                         <div class="radio">
-                            <a style="padding: 10px">Order by:</a>
-                            <el-radio v-model="radio" label="$commits" border size="medium">
-                                commits
+                            <a style="padding: 10px">Style:</a>
+                            <el-radio v-model="radio" label="square" border size="medium"
+                                @change="squareEchartsInit(radio)">
+                                Square
                             </el-radio>
-                            <el-radio v-model="radio" label="$lines" border size="medium">
-                                lines
+                            <el-radio v-model="radio" label="sunset" border size="medium"
+                                @change="squareEchartsInit(radio)">
+                                Sunset
                             </el-radio>
                         </div>
                     </el-col>
@@ -28,19 +30,19 @@ module.exports = {
     data() {
         return {
             title: "",
-            path: ""
+            path: "",
+            radio: "square",
         };
     },
     mounted: function () {
-        this.squareEchartsInit();
+        this.squareEchartsInit(this.radio);
     },
     methods: {
-        squareEchartsInit() {
+        squareEchartsInit(radio) {
             var ROOT_PATH = '../../output/vuejs/vue_square.json';
             var chartDom = document.getElementById('square');
             var myChart = echarts.init(chartDom);
-            var option;
-
+            console.log(radio)
             myChart.showLoading();
             $.get(ROOT_PATH, function (diskData) {
                 myChart.hideLoading();
@@ -174,93 +176,276 @@ module.exports = {
                         }
                     ];
                 }
-                // myChart.setOption(option = {
-                //     series: [
-                //         {
-                //             title: {
-                //                 text: 'Disk Usage',
-                //             },
-                //             tooltip: {
-                //                 formatter: function (info) {
-                //                     var value = info.value;
-                //                     var treePathInfo = info.treePathInfo;
-                //                     var treePath = [];
-                //                     for (var i = 1; i < treePathInfo.length; i++) {
-                //                         treePath.push(treePathInfo[i].name);
-                //                     }
-                //                     console.log(echarts.format.addCommas(value))
-                //                     return [
-                //                         '<div class="tooltip-title">' +
-                //                         echarts.format.encodeHTML(treePath.join('/')) +
-                //                         '</div>',
-                //                         'Disk Usage: ' + echarts.format.addCommas(value) + ' KB'
-                //                     ].join('');
-                //                 }
-                //             },
-                //             type: 'sunburst',
-                //             id: 'echarts-package-size',
-                //             radius: ['20%', '90%'],
-                //             animationDurationUpdate: 1000,
-                //             nodeClick: undefined,
-                //             data: diskData,
-                //             universalTransition: true,
-                //             itemStyle: {
-                //                 borderWidth: 1,
-                //                 borderColor: 'rgba(255,255,255,.5)'
-                //             },
-                //             label: {
-                //                 show: false
-                //             }
-                //         }
-                //     ]
-                // })
-                myChart.setOption(
-                    (option = {
-                        title: {
-                            text: 'Disk Usage',
-                        },
-                        tooltip: {
-                            formatter: function (info) {
-                                var value = info.value;
-                                var treePathInfo = info.treePathInfo;
-                                var treePath = [];
-                                for (var i = 1; i < treePathInfo.length; i++) {
-                                    treePath.push(treePathInfo[i].name);
-                                }
-                                return [
-                                    '<div class="tooltip-title">' +
-                                    echarts.format.encodeHTML(treePath.join('/')) +
-                                    '</div>',
-                                    'Disk Usage: ' + echarts.format.addCommas(value) + ' KB'
-                                ].join('');
+                function getSunsetLevelOption() {
+                    return [
+                        {},
+                        {
+                            itemStyle: {
+                                borderWidth: 2
+                            },
+                            label: {
+                                minAngle: 360,
+                                rotate: 'tangential',
                             }
                         },
-                        series: [
-                            {
-                                name: 'Disk Usage',
-                                type: 'treemap',
-                                visibleMin: 300,
-                                // leafDepth: 5,
-                                label: {
-                                    show: true,
-                                    formatter: '{b}'
-                                },
-                                upperLabel: {
-                                    show: true,
-                                    height: 30
-                                },
-                                itemStyle: {
-                                    borderWidth: 5
-                                },
-                                levels: getLevelOption(),
-                                data: diskData
+                        {
+                            label: {
+                                minAngle: 360,
+                                position: 'outside',
+                                padding: 3,
+                                silent: false
+                            },
+                            itemStyle: {
+                                borderWidth: 3
                             }
-                        ]
-                    })
-                );
-            });
-
-            option && myChart.setOption(option);
+                        },
+                        {
+                            label: {
+                                minAngle: 360,
+                                position: 'outside',
+                                padding: 3,
+                                silent: false
+                            },
+                            itemStyle: {
+                                borderWidth: 3
+                            }
+                        },
+                        {
+                            label: {
+                                minAngle: 360,
+                                position: 'outside',
+                                padding: 3,
+                                silent: false
+                            },
+                            itemStyle: {
+                                borderWidth: 3
+                            }
+                        },
+                        {
+                            label: {
+                                minAngle: 360,
+                                position: 'outside',
+                                padding: 3,
+                                silent: false
+                            },
+                            itemStyle: {
+                                borderWidth: 3
+                            }
+                        },
+                        {
+                            label: {
+                                minAngle: 360,
+                                position: 'outside',
+                                padding: 3,
+                                silent: false
+                            },
+                            itemStyle: {
+                                borderWidth: 3
+                            }
+                        },
+                        {
+                            label: {
+                                minAngle: 360,
+                                position: 'outside',
+                                padding: 3,
+                                silent: false
+                            },
+                            itemStyle: {
+                                borderWidth: 3
+                            }
+                        },
+                        {
+                            label: {
+                                minAngle: 360,
+                                position: 'outside',
+                                padding: 3,
+                                silent: false
+                            },
+                            itemStyle: {
+                                borderWidth: 3
+                            }
+                        },
+                        {
+                            label: {
+                                minAngle: 360,
+                                position: 'outside',
+                                padding: 3,
+                                silent: false
+                            },
+                            itemStyle: {
+                                borderWidth: 3
+                            }
+                        },
+                        {
+                            label: {
+                                minAngle: 360,
+                                position: 'outside',
+                                padding: 3,
+                                silent: false
+                            },
+                            itemStyle: {
+                                borderWidth: 3
+                            }
+                        },
+                        {
+                            label: {
+                                minAngle: 360,
+                                position: 'outside',
+                                padding: 3,
+                                silent: false
+                            },
+                            itemStyle: {
+                                borderWidth: 3
+                            }
+                        },
+                        {
+                            label: {
+                                minAngle: 360,
+                                position: 'outside',
+                                padding: 3,
+                                silent: false
+                            },
+                            itemStyle: {
+                                borderWidth: 3
+                            }
+                        },
+                        {
+                            label: {
+                                minAngle: 360,
+                                position: 'outside',
+                                padding: 3,
+                                silent: false
+                            },
+                            itemStyle: {
+                                borderWidth: 3
+                            }
+                        },
+                        {
+                            label: {
+                                minAngle: 360,
+                                position: 'outside',
+                                padding: 3,
+                                silent: false
+                            },
+                            itemStyle: {
+                                borderWidth: 3
+                            }
+                        },
+                        {
+                            label: {
+                                minAngle: 360,
+                                position: 'outside',
+                                padding: 3,
+                                silent: false
+                            },
+                            itemStyle: {
+                                borderWidth: 3
+                            }
+                        },
+                    ]
+                }
+                var sunsetOption = {
+                    title: {
+                        text: 'vuejs/vue',
+                    },
+                    toolbox: {
+                        show: true,
+                        bottom: '1%',
+                        left: '1%',
+                        itemSize: 20,
+                        feature: {
+                            saveAsImage: {
+                                show: true
+                            },
+                            restore: {
+                                show: true
+                            }
+                        }
+                    },
+                    series: [
+                        {
+                            type: 'sunburst',
+                            id: 'echarts-package-size',
+                            radius: ['0%', '95%'],
+                            animationDurationUpdate: 1000,
+                            // nodeClick: undefined,
+                            data: diskData,
+                            universalTransition: true,
+                            itemStyle: {
+                                borderWidth: 1,
+                                borderColor: 'rgba(255,255,255,.5)'
+                            },
+                            levels: getSunsetLevelOption(),
+                        }
+                    ]
+                }
+                var squareOption = {
+                    title: {
+                        text: 'vuejs/vue',
+                    },
+                    tooltip: {
+                        formatter: function (info) {
+                            var value = info.value;
+                            var treePathInfo = info.treePathInfo;
+                            var treePath = [];
+                            for (var i = 1; i < treePathInfo.length; i++) {
+                                treePath.push(treePathInfo[i].name);
+                            }
+                            return [
+                                '<div class="tooltip-title">' +
+                                echarts.format.encodeHTML(treePath.join('/')) +
+                                '</div>',
+                                'vuejs/vue: ' + echarts.format.addCommas(value) + ' KB'
+                            ].join('');
+                        }
+                    },
+                    toolbox: {
+                        show: true,
+                        bottom: '1%',
+                        left: '1%',
+                        itemSize: 20,
+                        feature: {
+                            saveAsImage: {
+                                show: true
+                            },
+                            restore: {
+                                show: true
+                            }
+                        }
+                    },
+                    series: [
+                        {
+                            name: 'vuejs/vue',
+                            type: 'treemap',
+                            visibleMin: 300,
+                            // leafDepth: 5,
+                            label: {
+                                show: true,
+                                formatter: '{b}'
+                            },
+                            upperLabel: {
+                                show: true,
+                                height: 30
+                            },
+                            itemStyle: {
+                                borderWidth: 5
+                            },
+                            levels: getLevelOption(),
+                            data: diskData
+                        }
+                    ]
+                }
+                var curOption;
+                if (radio == "square") {
+                    curOption = squareOption
+                    console.log(1)
+                }
+                else {
+                    curOption = sunsetOption
+                    console.log(2)
+                }
+                myChart.setOption(curOption, true);
+            })
         },
     }
 }
