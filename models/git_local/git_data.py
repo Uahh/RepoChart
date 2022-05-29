@@ -21,6 +21,7 @@ class GitData():
         self.square_dict = {}
         self.total_line_dict = []
         self.file_suffix = {}
+        self.load_language_colors()
         self.total_line_template = {
             'name': '',
             'type': 'line',
@@ -28,6 +29,9 @@ class GitData():
             'areaStyle': {},
             'emphasis': {
                 'focus': 'series'
+            },
+            'itemStyle': {
+                'color': '#333333'
             },
             'data': []
         }
@@ -61,18 +65,25 @@ class GitData():
                 if '.' not in file_path:
                     continue
                 suffix = file_path.split('/')[-1].split('.')[-1]
-                if '1-i686' in suffix:
-                    a = 1
                 suffix = '.' + suffix
                 if suffix not in self.file_suffix:
                     temp_line = copy.deepcopy(self.total_line_template)
                     temp_line['name'] = suffix
+                    temp_line['itemStyle']['color'] = self.get_color(suffix[1:])
                     self.total_line_dict.append(temp_line)
                     self.file_suffix[suffix] = 0
 
             elif os.path.isdir(file_path):
                 self.get_git_path(file_path)
 
+    def get_color(self, file):
+        if file in self.language_colors:
+            return self.language_colors[file]
+        return '#E5E7EB'
+
+    def load_language_colors(self):
+        with open("config/language_colors.json") as json_file:
+            self.language_colors = json.load(json_file)
 
 class ConvertDict():
     def __init__(self, git_data=None) -> None:

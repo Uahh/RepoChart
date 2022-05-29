@@ -52,18 +52,15 @@ module.exports = {
                         feature: {
                             saveAsImage: {
                                 show: true
+                            },
+                            restore: {
+                                show: true
                             }
                         }
                     },
                     legend: {
                         data: diskData,
                         top: '3%'
-                    },
-                    grid: {
-                        left: '3%',
-                        right: '4%',
-                        bottom: '3%',
-                        containLabel: true
                     },
                     xAxis: [
                         {
@@ -73,6 +70,16 @@ module.exports = {
                     yAxis: [
                         {
                             type: 'value'
+                        }
+                    ],
+                    dataZoom: [
+                        {
+                            type: 'inside'
+                        },
+                        {
+                            type: 'slider',
+                            xAxisIndex: [0],
+                            filterMode: 'filter'
                         }
                     ],
                     series: diskData
