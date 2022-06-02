@@ -27,7 +27,7 @@ module.exports = {
     },
     methods: {
         lineEchartsInit() {
-            var ROOT_PATH = '../../output/vuejs/vue_line.json'
+            var ROOT_PATH = '../../output/Uahh/Fyzhq_line.json'
             var chartDom = document.getElementById('line');
             var myChart = echarts.init(chartDom);
             var option;
@@ -42,7 +42,7 @@ module.exports = {
             );
             function run(_rawData) {
                 const countries = [
-                    'vuejs/vue',
+                    'Uahh/Fyzhq',
                     'Uahh/Slscq',
                 ];
                 const datasetWithFilters = [];
@@ -98,11 +98,18 @@ module.exports = {
                         ...datasetWithFilters
                     ],
                     title: {
-                        text: 'vuejs/vue',
+                        text: 'Uahh/Fyzhq',
                     },
                     tooltip: {
                         order: 'valueDesc',
-                        trigger: 'axis'
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'cross',
+                            label: {
+                                backgroundColor: '#6A7985',
+                                formatter: "date: {value}"
+                            },
+                        },
                     },
                     toolbox: {
                         show: true,
@@ -116,8 +123,8 @@ module.exports = {
                         }
                     },
                     xAxis: {
-                        type: 'category',
-                        nameLocation: 'middle'
+                        name: 'Date',
+                        type: 'category'
                     },
                     yAxis: {
                         name: 'Star'

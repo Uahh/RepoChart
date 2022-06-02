@@ -39,7 +39,7 @@ module.exports = {
     },
     methods: {
         circleEchartsInit(radio) {
-            var ROOT_PATH = '../../output/vuejs/vue_circle.json';
+            var ROOT_PATH = '../../output/Uahh/Fyzhq_circle.json';
             var chartDom = document.getElementById('circle');
             var myChart = echarts.init(chartDom);
             var option;
@@ -193,7 +193,7 @@ module.exports = {
                 }
                 option = {
                     title: {
-                        text: 'vuejs/vue',
+                        text: 'Uahh/Fyzhq',
                     },
                     dataset: {
                         source: seriesData

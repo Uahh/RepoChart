@@ -27,22 +27,23 @@ module.exports = {
     },
     methods: {
         lineEchartsInit() {
-            var ROOT_PATH = '../../output/vuejs/vue_suffix_line.json';
+            var ROOT_PATH = '../../output/Uahh/Fyzhq_commit_line.json';
             var chartDom = document.getElementById('commitSizeLine');
             var myChart = echarts.init(chartDom);
             $.get(ROOT_PATH, function (diskData) {
                 var option = {
                     title: {
-                        text: 'vuejs/vue'
+                        text: 'Uahh/Fyzhq'
                     },
                     tooltip: {
                         trigger: 'axis',
                         axisPointer: {
                             type: 'cross',
                             label: {
-                                backgroundColor: '#6a7985'
-                            }
-                        }
+                                backgroundColor: '#6A7985',
+                                formatter: "commits order: {value}"
+                            },
+                        },
                     },
                     toolbox: {
                         show: true,
@@ -64,11 +65,13 @@ module.exports = {
                     },
                     xAxis: [
                         {
+                            name: 'commit',
                             type: 'category'
                         }
                     ],
                     yAxis: [
                         {
+                            name: 'byte',
                             type: 'value'
                         }
                     ],

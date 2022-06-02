@@ -39,7 +39,7 @@ module.exports = {
     },
     methods: {
         squareEchartsInit(radio) {
-            var ROOT_PATH = '../../output/vuejs/vue_square.json';
+            var ROOT_PATH = '../../output/Uahh/Fyzhq_square.json';
             var chartDom = document.getElementById('square');
             var myChart = echarts.init(chartDom);
             console.log(radio)
@@ -346,7 +346,7 @@ module.exports = {
                 }
                 var sunsetOption = {
                     title: {
-                        text: 'vuejs/vue',
+                        text: 'Uahh/Fyzhq',
                     },
                     toolbox: {
                         show: true,
@@ -381,7 +381,7 @@ module.exports = {
                 }
                 var squareOption = {
                     title: {
-                        text: 'vuejs/vue',
+                        text: 'Uahh/Fyzhq',
                     },
                     tooltip: {
                         formatter: function (info) {
@@ -395,7 +395,7 @@ module.exports = {
                                 '<div class="tooltip-title">' +
                                 echarts.format.encodeHTML(treePath.join('/')) +
                                 '</div>',
-                                'vuejs/vue: ' + echarts.format.addCommas(value) + ' KB'
+                                echarts.format.addCommas(value) + ' KB'
                             ].join('');
                         }
                     },
@@ -415,7 +415,7 @@ module.exports = {
                     },
                     series: [
                         {
-                            name: 'vuejs/vue',
+                            name: 'Uahh/Fyzhq',
                             type: 'treemap',
                             visibleMin: 300,
                             // leafDepth: 5,
