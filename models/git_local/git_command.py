@@ -20,7 +20,6 @@ class GitCommand():
         self.git_data = GitData(self.repo_dir)
         self.git_data.repo_name = owner + '/' + repo_name
 
-        
     def clone(self):
         git_url = "https://github.com/{}/{}.git".format(self.owner, self.repo_name)
 
@@ -28,9 +27,11 @@ class GitCommand():
             os.mkdir(self.user_dir)
 
         if os.path.exists(self.repo_dir):
-            print('Already existing Directory, will delete...')
-            shutil.rmtree(self.repo_dir, onerror=self.onerror)
-            print('delete succeed!')
+            print('Already existing Directory! Nice!')
+            return
+            # print('Already existing Directory, will delete...')
+            # shutil.rmtree(self.repo_dir, onerror=self.onerror)
+            # print('delete succeed!')
 
         fail_count = 3
         while(fail_count):
@@ -46,7 +47,7 @@ class GitCommand():
         print('clone successed!')
         self.git_data.get_git_path()
     
-    def numstat(self):
+    def get_file_commits_info(self):
         for i in range(0 ,len(self.git_data.path_list)):
             file_name = ''
             for dir in self.git_data.path_list[i].split('/')[3:]:
@@ -55,7 +56,7 @@ class GitCommand():
             self.git_data.path_list[i] = '/' + file_name + '/'
             # cmd = "cd {} && git log --numstat {}".format(self.repo_dir, file_name)
             # commit_log = run_command(cmd)
-            commit_log = git.Git(self.repo_dir).log('--numstat', file_name)
+            commit_log = git.Git(self.repo_dir).log('--numstat', '--shortstat', file_name)
             commit_conut = 0
             lines_conut = 0
             for line in commit_log.splitlines():
@@ -69,10 +70,9 @@ class GitCommand():
             self.git_data.commits_list.append(commit_conut)
             self.git_data.lines_list.append(lines_conut)
 
-
-    def ls_tree(self):
+    def get_file_size_from_every_commit(self):
         # git rev-list HEAD -- data\language.json
-        self.commit_list = git.Git(self.repo_dir).rev_list('--all').split('\n')
+        self.commit_list = git.Git(self.repo_dir).rev_list('HEAD').split('\n')
     #     core_count = cpu_count() * 2
     #     thread_num = len(self.commit_list) // core_count
     #     index = 0
@@ -102,9 +102,17 @@ class GitCommand():
                 if file_suffix in self.git_data.file_suffix.keys():
                     self.git_data.file_suffix[file_suffix] = current_size
 
-            for line in self.git_data.total_line_dict:
+            for line in self.git_data.commit_line_list:
                     inc = self.git_data.file_suffix[line['name']]
                     line['data'].append(inc)
+        for line in self.git_data.commit_line_list:
+            line['data'].reverse()
+
+    def get_all_chart_data(self):
+        self.clone()
+        self.git_data.get_git_path()
+        self.get_file_commits_info()
+        self.get_file_size_from_every_commit()
 
     # Error handler for shutil.rmtree().
     def onerror(self, func, path, exc_info):

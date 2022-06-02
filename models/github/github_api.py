@@ -1,5 +1,4 @@
 from models.github import private_config
-from models.git_local.git_data import GitData, ConvertDict
 import sys
 import json
 import time
@@ -14,7 +13,7 @@ sys.path.append(sys.path[0] + '/..')
 class GithubStarApi():
     def __init__(self, git_data) -> None:
         self.git_data = git_data
-        self.git_data.line_chart_list.append(
+        self.git_data.star_chart_list.append(
             [
                 "Star",
                 "Repo",
@@ -72,7 +71,7 @@ class GithubStarApi():
             temp.append(self.git_data.star_data[key])
             temp.append(self.git_data.repo_name)
             temp.append(key)
-            self.git_data.line_chart_list.append(temp)
+            self.git_data.star_chart_list.append(temp)
         if self.total_stars > 40000:
             self.cal_time(temp[2])
 
@@ -97,4 +96,4 @@ class GithubStarApi():
             temp.append(self.cur_stars)
             temp.append(self.git_data.repo_name)
             temp.append(int(date1.strftime("%Y%m%d")))
-            self.git_data.line_chart_list.append(temp)
+            self.git_data.star_chart_list.append(temp)

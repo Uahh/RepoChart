@@ -7,9 +7,7 @@ import requests
 from flask import Flask, request
 from flask import render_template
 
-from models.git_local.git_command import GitCommand
-from models.git_local.git_data import ConvertDict
-from models.github.github_api import GithubStarApi
+from models.repo_chart import RepoChart
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
 print('Waiting......')
@@ -31,19 +29,8 @@ def error():
 
 start = time.time()
 
-convert_dict = ConvertDict()
-repo = GitCommand("vuejs", "vue")
-# GithubStarApi(repo.git_data)
-# repo.clone()
-repo.git_data.get_git_path()
-# repo.numstat()
-repo.ls_tree()
-
-convert_dict.git_data = repo.git_data
-# convert_dict.get_path_dict()
-json_path = os.path.join('output', repo.owner)
-json_name = repo.repo_name
-convert_dict.output(json_path, json_name)
+repo = RepoChart('Uahh', 'Fyzhq')
+repo.output()
 
 end = time.time() - start
 print (str(end))

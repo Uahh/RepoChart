@@ -1,6 +1,6 @@
 __pycache__
 *.pyc
-models/private_config.py
 output/
 repo_cache/
 .vscode
+models/github/private_config.py
