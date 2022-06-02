@@ -27,13 +27,13 @@ module.exports = {
     },
     methods: {
         lineEchartsInit() {
-            var ROOT_PATH = '../../output/Uahh/Fyzhq_commit_line.json';
+            var ROOT_PATH = '../../output/EstrellaXD/Auto_Bangumi_commit_line.json';
             var chartDom = document.getElementById('commitSizeLine');
             var myChart = echarts.init(chartDom);
             $.get(ROOT_PATH, function (diskData) {
                 var option = {
                     title: {
-                        text: 'Uahh/Fyzhq'
+                        text: 'EstrellaXD/Auto_Bangumi'
                     },
                     tooltip: {
                         trigger: 'axis',

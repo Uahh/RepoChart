@@ -27,7 +27,7 @@ module.exports = {
     },
     methods: {
         lineEchartsInit() {
-            var ROOT_PATH = '../../output/Uahh/Fyzhq_line.json'
+            var ROOT_PATH = '../../output/EstrellaXD/Auto_Bangumi_star_line.json'
             var chartDom = document.getElementById('line');
             var myChart = echarts.init(chartDom);
             var option;
@@ -42,7 +42,7 @@ module.exports = {
             );
             function run(_rawData) {
                 const countries = [
-                    'Uahh/Fyzhq',
+                    'EstrellaXD/Auto_Bangumi',
                     'Uahh/Slscq',
                 ];
                 const datasetWithFilters = [];
@@ -98,7 +98,7 @@ module.exports = {
                         ...datasetWithFilters
                     ],
                     title: {
-                        text: 'Uahh/Fyzhq',
+                        text: 'EstrellaXD/Auto_Bangumi',
                     },
                     tooltip: {
                         order: 'valueDesc',

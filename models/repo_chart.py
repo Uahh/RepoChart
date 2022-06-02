@@ -18,6 +18,9 @@ class RepoChart():
         self.get_repo_path_dict()
         self.star_chart_list = self.repo.git_data.star_chart_list
         self.commit_line_list = self.repo.git_data.commit_line_list
+        self.commit_line_list.sort(key=self.sort_by)
+        self.first_commit_size = self.repo.git_data.first_commit_size
+        self.first_commit_size.sort(key=self.sort_by)
         self.json_path = os.path.join('output', self.repo.owner)
         self.json_name = self.repo.repo_name
 
@@ -105,6 +108,9 @@ class RepoChart():
             return self.repo.git_data.language_colors[file]
         return '#E5E7EB'
 
+    def sort_by(self, data):
+        return len(data['name'])
+
     def output(self):
         if not os.path.exists(self.json_path):
             os.mkdir(self.json_path)
@@ -123,7 +129,7 @@ class RepoChart():
 
         if self.star_chart_list:
             output_path = os.path.join(self.json_path, self.json_name)
-            with open(output_path + '_line.json', 'w') as json_file:
+            with open(output_path + '_star_line.json', 'w') as json_file:
                 json_file.write(json.dumps(self.star_chart_list))
             print('Star chart output succeed!')
 
@@ -132,3 +138,9 @@ class RepoChart():
             with open(output_path + '_commit_line.json', 'w') as json_file:
                 json_file.write(json.dumps(self.commit_line_list))
             print('Commit line chart output succeed!')
+
+        if self.first_commit_size:
+            output_path = os.path.join(self.json_path, self.json_name)
+            with open(output_path + '_commit_pie.json', 'w') as json_file:
+                json_file.write(json.dumps(self.first_commit_size))
+            print('First commit size pie chart output succeed!')

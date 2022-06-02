@@ -39,7 +39,7 @@ module.exports = {
     },
     methods: {
         squareEchartsInit(radio) {
-            var ROOT_PATH = '../../output/Uahh/Fyzhq_square.json';
+            var ROOT_PATH = '../../output/EstrellaXD/Auto_Bangumi_square.json';
             var chartDom = document.getElementById('square');
             var myChart = echarts.init(chartDom);
             console.log(radio)
@@ -346,7 +346,7 @@ module.exports = {
                 }
                 var sunsetOption = {
                     title: {
-                        text: 'Uahh/Fyzhq',
+                        text: 'EstrellaXD/Auto_Bangumi',
                     },
                     toolbox: {
                         show: true,
@@ -381,7 +381,7 @@ module.exports = {
                 }
                 var squareOption = {
                     title: {
-                        text: 'Uahh/Fyzhq',
+                        text: 'EstrellaXD/Auto_Bangumi',
                     },
                     tooltip: {
                         formatter: function (info) {
@@ -415,7 +415,7 @@ module.exports = {
                     },
                     series: [
                         {
-                            name: 'Uahh/Fyzhq',
+                            name: 'EstrellaXD/Auto_Bangumi',
                             type: 'treemap',
                             visibleMin: 300,
                             // leafDepth: 5,
@@ -438,11 +438,9 @@ module.exports = {
                 var curOption;
                 if (radio == "square") {
                     curOption = squareOption
-                    console.log(1)
                 }
                 else {
                     curOption = sunsetOption
-                    console.log(2)
                 }
                 myChart.setOption(curOption, true);
             })

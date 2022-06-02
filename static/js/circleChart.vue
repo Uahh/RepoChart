@@ -39,7 +39,7 @@ module.exports = {
     },
     methods: {
         circleEchartsInit(radio) {
-            var ROOT_PATH = '../../output/Uahh/Fyzhq_circle.json';
+            var ROOT_PATH = '../../output/EstrellaXD/Auto_Bangumi_circle.json';
             var chartDom = document.getElementById('circle');
             var myChart = echarts.init(chartDom);
             var option;
@@ -193,7 +193,7 @@ module.exports = {
                 }
                 option = {
                     title: {
-                        text: 'Uahh/Fyzhq',
+                        text: 'EstrellaXD/Auto_Bangumi',
                     },
                     dataset: {
                         source: seriesData

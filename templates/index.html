@@ -32,7 +32,6 @@
         </el-row>
         <el-row>
             <el-col :span="6">
-                <div style="color:blue">&#9632;</div>
             </el-col>
             <el-col :span="12">
                 <el-row style="text-align: center; padding: 25px;">
@@ -61,8 +60,11 @@
                     <el-tab-pane label="Square" name="square" lazy='true'>
                         <square-chart></square-chart>
                     </el-tab-pane>
-                    <el-tab-pane label="Commit Size" name="commitSizeLine" lazy='true'>
+                    <el-tab-pane label="Commit Size Line" name="commitSizeLine" lazy='true'>
                         <commit-size-line-chart></commit-size-line-chart>
+                    </el-tab-pane>
+                    <el-tab-pane label="Commit Size Pie" name="commitSizePie" lazy='true'>
+                        <commit-size-pie-chart></commit-size-pie-chart>
                     </el-tab-pane>
                     <el-tab-pane label="Line" name="line" lazy='true'>
                         <line-chart></line-chart>

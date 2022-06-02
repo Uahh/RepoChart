@@ -105,6 +105,14 @@ class GitCommand():
             for line in self.git_data.commit_line_list:
                     inc = self.git_data.file_suffix[line['name']]
                     line['data'].append(inc)
+
+            if i == 0:
+                for line in self.git_data.commit_line_list:
+                    temp = copy.deepcopy(self.git_data.first_commit_template)
+                    temp['value'] = line['data'][0]
+                    temp['name'] = line['name']
+                    temp['itemStyle']['color'] = self.git_data.get_color(line['name'][1:])
+                    self.git_data.first_commit_size.append(temp)
         for line in self.git_data.commit_line_list:
             line['data'].reverse()
 

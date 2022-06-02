@@ -29,7 +29,7 @@ def error():
 
 start = time.time()
 
-repo = RepoChart('Uahh', 'Fyzhq')
+repo = RepoChart('EstrellaXD', 'Auto_Bangumi')
 repo.output()
 
 end = time.time() - start

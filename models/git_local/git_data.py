@@ -20,6 +20,7 @@ class GitData():
         self.circle_dict = {}
         self.square_dict = {}
         self.commit_line_list = []
+        self.first_commit_size = []
         self.file_suffix = {}
         self.load_language_colors()
         self.total_line_template = {
@@ -34,6 +35,13 @@ class GitData():
                 'color': '#333333'
             },
             'data': []
+        }
+        self.first_commit_template = {
+            'value': 0,
+            'name': '',
+            'itemStyle':{
+                'color': ''
+            }
         }
 
     def get_git_path(self, git_dir=None):
@@ -72,7 +80,7 @@ class GitData():
                     temp_line['itemStyle']['color'] = self.get_color(suffix[1:])
                     self.commit_line_list.append(temp_line)
                     self.file_suffix[suffix] = 0
-
+                    
             elif os.path.isdir(file_path):
                 self.get_git_path(file_path)
 
