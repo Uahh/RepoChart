@@ -113,8 +113,8 @@ class GitCommand():
                     temp['name'] = line['name']
                     temp['itemStyle']['color'] = self.git_data.get_color(line['name'][1:])
                     self.git_data.first_commit_size.append(temp)
-        for line in self.git_data.commit_line_list:
-            line['data'].reverse()
+        # for line in self.git_data.commit_line_list:
+        #     line['data'].reverse()
 
     def get_all_chart_data(self):
         self.clone()

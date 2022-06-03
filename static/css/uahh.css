@@ -1,20 +1,31 @@
 html {
   background: #DCDFE6;
   font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
-  line-height:1.5
+  /* line-height:1.5 */
 }
 
 body {
   margin: 0 auto;
 }
 
+.p{
+	padding:.5em 0;
+}
+
 .container {
+  margin: 0;
   margin-left: 1rem;
   margin-right: 1rem;
 }
 
 .tab{
   min-height: 800px;
+}
+
+.searcher{
+  text-align: right;
+  padding-top: 50px;
+  padding-bottom: 50px;
 }
 
 .chart {
@@ -29,6 +40,6 @@ body {
   background-color: rgb(255, 255, 255);
 }
 
-.chart-region {
-  margin-bottom: 50px;
+.content-box{
+	padding:10px 10px 300px;
 }

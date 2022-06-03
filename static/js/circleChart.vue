@@ -29,17 +29,20 @@
 module.exports = {
     data() {
         return {
-            title: "",
+            // title: "",
             path: "",
             radio: "$commits"
         };
+    },
+    props:{
+        repo: {}
     },
     mounted: function () {
         this.circleEchartsInit(this.radio);
     },
     methods: {
         circleEchartsInit(radio) {
-            var ROOT_PATH = '../../output/EstrellaXD/Auto_Bangumi_circle.json';
+            var ROOT_PATH = '../../output/Uahh/ToastFish_circle.json';
             var chartDom = document.getElementById('circle');
             var myChart = echarts.init(chartDom);
             var option;
@@ -193,7 +196,7 @@ module.exports = {
                 }
                 option = {
                     title: {
-                        text: 'EstrellaXD/Auto_Bangumi',
+                        text: 'Uahh/ToastFish',
                     },
                     dataset: {
                         source: seriesData

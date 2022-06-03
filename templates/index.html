@@ -7,24 +7,24 @@
     <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
     <script src="https://unpkg.com/vue@3.2.33/dist/vue.global.prod.js"></script>
     <script src="https://unpkg.com/element-plus/dist/index.full.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.js"></script>
     <script src="https://unpkg.com/vue3-sfc-loader"></script>
     <script src="https://unpkg.com/@element-plus/icons-vue"></script>
-    <link rel="stylesheet" href="../static/css/uahh.css">
     <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css" />
+    <link rel="stylesheet" href="../static/css/uahh.css">
 </head>
 
 <body>
     <div id="app">
         <el-row>
             <el-col :span="24">
-                <el-menu :default-active="activeIndex" mode="horizontal" background-color="#21262D" text-color="#fff"
-                    active-text-color="#ffd04b" @select="handleSelect">
-                    <el-menu-item index="1" style='margin-left: 20%'>
+                <el-menu :default-active="activeIndex" mode="horizontal" background-color="#21262D" text-color="#FFF"
+                    active-text-color="#FFD04B" @select="handleSelect">
+                    <el-menu-item index="1" style='margin-left: 22%'>
                         <b>Repo chart</b>
                     </el-menu-item>
-                    <el-menu-item index="2" style='margin-left: 45%'>
+                    <el-menu-item index="2" style='margin-left: 48%'>
                         <b>Github</b>
                     </el-menu-item>
                 </el-menu>
@@ -33,8 +33,8 @@
         <el-row>
             <el-col :span="6">
             </el-col>
-            <el-col :span="12">
-                <el-row style="text-align: center; padding: 25px;">
+            <el-col :span="13">
+                <el-row class="searcher">
                     <el-col :span="18">
                         <el-input v-model="input1" size="large" placeholder="Uahh/RepoChart">
                         </el-input>
@@ -46,28 +46,49 @@
                     </el-col>
                 </el-row>
             </el-col>
-            <el-col :span="6" style="margin-top: 50px;">
+            <el-col :span="5">
             </el-col>
         </el-row>
         <el-row>
             <el-col :span="4">
             </el-col>
-            <el-col :span="15" style="margin-top: 50px;">
+            <el-col :span="15">
                 <el-tabs v-model="activeName" class="tab" tab-position="left" stretch="true" @tab-click="handleClick">
                     <el-tab-pane label="Circle" name="circle" lazy='true'>
-                        <circle-chart></circle-chart>
+                        <circle-chart repo="ABC"></circle-chart>
+                        <div class="content-box">
+                            <h2>Pack repository in circle chart</h2>
+                            <p>The chart reflect the importance of file in the repository.</p>
+                            <p>Each circle represents the total number of commits or total modified lines of the file in the repository.</p>
+                        </div>
                     </el-tab-pane>
                     <el-tab-pane label="Square" name="square" lazy='true'>
                         <square-chart></square-chart>
-                    </el-tab-pane>
-                    <el-tab-pane label="Commit Size Line" name="commitSizeLine" lazy='true'>
-                        <commit-size-line-chart></commit-size-line-chart>
+                        <div class="content-box">
+                            <h2>Disk size chart and Sunset chart</h2>
+                            <p>The chart reflect the size of file in the repository.</p>
+                        </div>
                     </el-tab-pane>
                     <el-tab-pane label="Commit Size Pie" name="commitSizePie" lazy='true'>
                         <commit-size-pie-chart></commit-size-pie-chart>
+                        <div class="content-box">
+                            <h2>File type size pie chart</h2>
+                            <p>The chart reflect the file type size of every commit in the repository.</p>
+                        </div>
+                    </el-tab-pane>
+                    <el-tab-pane label="Commit Size Line" name="commitSizeLine" lazy='true'>
+                        <commit-size-line-chart></commit-size-line-chart>
+                        <div class="content-box">
+                            <h2>Commit line chart</h2>
+                            <p>The chart reflect the file type size of latest commit in the repository.</p>
+                        </div>
                     </el-tab-pane>
                     <el-tab-pane label="Line" name="line" lazy='true'>
                         <line-chart></line-chart>
+                        <div class="content-box">
+                            <h2>Star history chart</h2>
+                            <p>View the repository star history.</p>
+                        </div>
                     </el-tab-pane>
                 </el-tabs>
             </el-col>

@@ -27,7 +27,7 @@ module.exports = {
     },
     methods: {
         lineEchartsInit() {
-            var ROOT_PATH = '../../output/EstrellaXD/Auto_Bangumi_star_line.json'
+            var ROOT_PATH = '../../output/Uahh/ToastFish_star_line.json'
             var chartDom = document.getElementById('line');
             var myChart = echarts.init(chartDom);
             var option;
@@ -35,14 +35,14 @@ module.exports = {
             myChart.showLoading();
             $.get(
                 ROOT_PATH,
-                function (_rawData) {
+                (_rawData) => {
                     myChart.hideLoading();
                     run(_rawData);
                 }
             );
             function run(_rawData) {
                 const countries = [
-                    'EstrellaXD/Auto_Bangumi',
+                    'Uahh/ToastFish',
                     'Uahh/Slscq',
                 ];
                 const datasetWithFilters = [];
@@ -98,7 +98,7 @@ module.exports = {
                         ...datasetWithFilters
                     ],
                     title: {
-                        text: 'EstrellaXD/Auto_Bangumi',
+                        text: 'Uahh/ToastFish',
                     },
                     tooltip: {
                         order: 'valueDesc',

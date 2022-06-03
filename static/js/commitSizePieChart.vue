@@ -37,13 +37,13 @@ module.exports = {
     },
     methods: {
         pieEchartsInit(radio) {
-            var ROOT_PATH = '../../output/EstrellaXD/Auto_Bangumi_commit_pie.json';
+            var ROOT_PATH = '../../output/Uahh/ToastFish_commit_pie.json';
             var chartDom = document.getElementById('commitSizePie');
             var myChart = echarts.init(chartDom);
-            $.get(ROOT_PATH, function (data) {
+            $.get(ROOT_PATH, (data) => {
                 var option1 = {
                     title: {
-                        text: 'EstrellaXD/Auto_Bangumi',
+                        text: 'Uahh/ToastFish',
                     },
                     tooltip: {
                         trigger: 'item'
@@ -65,7 +65,7 @@ module.exports = {
                     },
                     series: [
                         {
-                            name: 'EstrellaXD/Auto_Bangumi',
+                            name: 'Uahh/ToastFish',
                             type: 'pie',
                             radius: ['40%', '70%'],
                             avoidLabelOverlap: false,
@@ -98,7 +98,7 @@ module.exports = {
                 };
                 var option2 = {
                     title: {
-                        text: 'EstrellaXD/Auto_Bangumi',
+                        text: 'Uahh/ToastFish',
                         // subtext: 'Fake Data',
                     },
                     tooltip: {
@@ -122,7 +122,7 @@ module.exports = {
                     },
                     series: [
                         {
-                            name: 'EstrellaXD/Auto_Bangumi',
+                            name: 'Uahh/ToastFish',
                             type: 'pie',
                             radius: '50%',
                             itemStyle: {

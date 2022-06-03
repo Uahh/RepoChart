@@ -39,12 +39,11 @@ module.exports = {
     },
     methods: {
         squareEchartsInit(radio) {
-            var ROOT_PATH = '../../output/EstrellaXD/Auto_Bangumi_square.json';
+            var ROOT_PATH = '../../output/Uahh/ToastFish_square.json';
             var chartDom = document.getElementById('square');
             var myChart = echarts.init(chartDom);
-            console.log(radio)
             myChart.showLoading();
-            $.get(ROOT_PATH, function (diskData) {
+            $.get(ROOT_PATH, (data) => {
                 myChart.hideLoading();
                 function getLevelOption() {
                     return [
@@ -346,7 +345,7 @@ module.exports = {
                 }
                 var sunsetOption = {
                     title: {
-                        text: 'EstrellaXD/Auto_Bangumi',
+                        text: 'Uahh/ToastFish',
                     },
                     toolbox: {
                         show: true,
@@ -365,11 +364,10 @@ module.exports = {
                     series: [
                         {
                             type: 'sunburst',
-                            id: 'echarts-package-size',
                             radius: ['0%', '95%'],
                             animationDurationUpdate: 1000,
                             // nodeClick: undefined,
-                            data: diskData,
+                            data: data,
                             universalTransition: true,
                             itemStyle: {
                                 borderWidth: 1,
@@ -381,7 +379,7 @@ module.exports = {
                 }
                 var squareOption = {
                     title: {
-                        text: 'EstrellaXD/Auto_Bangumi',
+                        text: 'Uahh/ToastFish',
                     },
                     tooltip: {
                         formatter: function (info) {
@@ -415,7 +413,7 @@ module.exports = {
                     },
                     series: [
                         {
-                            name: 'EstrellaXD/Auto_Bangumi',
+                            name: 'Uahh/ToastFish',
                             type: 'treemap',
                             visibleMin: 300,
                             // leafDepth: 5,
@@ -431,7 +429,7 @@ module.exports = {
                                 borderWidth: 5
                             },
                             levels: getLevelOption(),
-                            data: diskData
+                            data: data
                         }
                     ]
                 }

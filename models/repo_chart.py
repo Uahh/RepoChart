@@ -106,7 +106,7 @@ class RepoChart():
     def get_color(self, file):
         if file in self.repo.git_data.language_colors:
             return self.repo.git_data.language_colors[file]
-        return '#E5E7EB'
+        return '#999999'
 
     def sort_by(self, data):
         return len(data['name'])

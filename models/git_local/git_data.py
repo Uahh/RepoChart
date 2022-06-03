@@ -87,7 +87,7 @@ class GitData():
     def get_color(self, file):
         if file in self.language_colors:
             return self.language_colors[file]
-        return '#E5E7EB'
+        return '#999999'
 
     def load_language_colors(self):
         with open("data/language_colors.json") as json_file:

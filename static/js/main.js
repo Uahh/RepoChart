@@ -7,9 +7,13 @@ const options = {
     methods: {
         handleClick(){
         },
-        handleSelect(key, keyPath) {
-            console.log(1);
-            console.log(keyPath);
+        handleSelect(key) {
+            if(key == 1){
+                location.href="http://127.0.0.1:5500/templates/index.html";
+            }
+            else if(key == 2){
+                location.href="https://github.com/Uahh"
+            }
         },
     },
     moduleCache: {
@@ -24,7 +28,6 @@ const options = {
         }
     },
     addStyle(textContent) {
-
         const style = Object.assign(document.createElement('style'), { textContent });
         const ref = document.head.getElementsByTagName('style')[0] || null;
         document.head.insertBefore(style, ref);
