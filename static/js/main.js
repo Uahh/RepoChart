@@ -1,19 +1,25 @@
 const options = {
     data() {
         return {
-            activeName: 'circle'
+            activeName: 'circle',
+            inputRepo: ''
         };
     },
     methods: {
-        handleClick(){
-        },
         handleSelect(key) {
             if(key == 1){
-                location.href="http://127.0.0.1:5500/templates/index.html";
+                location.href = "http://192.168.31.11:173";
             }
             else if(key == 2){
-                location.href="https://github.com/Uahh"
+                location.href = "https://github.com/Uahh/RepoChart"
             }
+        },
+        onSearch() {
+            $.get("http://192.168.31.11:173/start?repo=" + this.inputRepo);
+            location.href = "http://192.168.31.11:173?repo=" + this.inputRepo;
+        },
+        handleClick() {
+            // pass
         },
     },
     moduleCache: {
@@ -43,8 +49,6 @@ const options = {
 }
 
 const { loadModule } = window['vue3-sfc-loader'];
-
 const V = Vue.createApp(options);
-
 V.use(ElementPlus);
 V.mount("#app");

@@ -10,22 +10,26 @@ from models.github.github_api import GithubStarApi
 
 class RepoChart():
     def __init__(self, owner, repo_name):
-        self.repo = GitCommand(owner, repo_name)
-        self.repo.get_all_chart_data()
-        GithubStarApi(self.repo.git_data)
-        self.circle_dict = {}
-        self.sqare_dict = {}
-        self.get_repo_path_dict()
-        self.star_chart_list = self.repo.git_data.star_chart_list
-        self.commit_line_list = self.repo.git_data.commit_line_list
-        self.commit_line_list.sort(key=self.sort_by)
-        self.first_commit_size = self.repo.git_data.first_commit_size
-        self.first_commit_size.sort(key=self.sort_by)
-        self.json_path = os.path.join('output', self.repo.owner)
-        self.json_name = self.repo.repo_name
-
+        self.chart_status = False
+        self.json_path = os.path.join('output', owner)
+        self.json_name = repo_name
+        self.output_path = os.path.join(self.json_path, self.json_name)
+        self.check_output()
+        if not self.chart_status:
+            self.repo = GitCommand(owner, repo_name)
+            self.repo.get_all_chart_data()
+            GithubStarApi(self.repo.git_data)
+            self.circle_dict = {}
+            self.sqare_dict = {}
+            self.get_repo_path_dict()
+            self.star_chart_list = self.repo.git_data.star_chart_list
+            self.commit_line_list = self.repo.git_data.commit_line_list
+            self.commit_line_list.sort(key=self.sort_by)
+            self.first_commit_size = self.repo.git_data.first_commit_size
+            self.first_commit_size.sort(key=self.sort_by)
 
     # Creates a default dictionary where each value is an other default dictionary.
+
     def nested_dict(self) -> defaultdict:
         return defaultdict(self.nested_dict)
 
@@ -114,33 +118,78 @@ class RepoChart():
     def output(self):
         if not os.path.exists(self.json_path):
             os.mkdir(self.json_path)
-        
+
         if self.circle_dict:
-            output_path = os.path.join(self.json_path, self.json_name)
-            with open(output_path + '_circle.json', 'w') as json_file:
+            with open(self.output_path + '_circle.json', 'w') as json_file:
                 json_file.write(json.dumps(self.circle_dict))
             print('Circle chart output succeed!')
 
         if self.sqare_dict:
-            output_path = os.path.join(self.json_path, self.json_name)
-            with open(output_path + '_square.json', 'w') as json_file:
+            with open(self.output_path + '_square.json', 'w') as json_file:
                 json_file.write(json.dumps(self.sqare_dict))
             print('Square chart output succeed!')
 
-        if self.star_chart_list:
-            output_path = os.path.join(self.json_path, self.json_name)
-            with open(output_path + '_star_line.json', 'w') as json_file:
-                json_file.write(json.dumps(self.star_chart_list))
-            print('Star chart output succeed!')
+        if self.first_commit_size:
+            with open(self.output_path + '_commit_pie.json', 'w') as json_file:
+                json_file.write(json.dumps(self.first_commit_size))
+            print('First commit size pie chart output succeed!')
 
         if self.commit_line_list:
-            output_path = os.path.join(self.json_path, self.json_name)
-            with open(output_path + '_commit_line.json', 'w') as json_file:
+            with open(self.output_path + '_commit_line.json', 'w') as json_file:
                 json_file.write(json.dumps(self.commit_line_list))
             print('Commit line chart output succeed!')
 
-        if self.first_commit_size:
-            output_path = os.path.join(self.json_path, self.json_name)
-            with open(output_path + '_commit_pie.json', 'w') as json_file:
-                json_file.write(json.dumps(self.first_commit_size))
-            print('First commit size pie chart output succeed!')
+        if self.star_chart_list:
+            with open(self.output_path + '_star_line.json', 'w') as json_file:
+                json_file.write(json.dumps(self.star_chart_list))
+            print('Star chart output succeed!')
+
+        self.chart_status = True
+
+    def check_output(self, static=False):
+        if static == False:
+            if os.path.exists(self.output_path + '_star_line.json'):
+                self.chart_status = True
+                print('Already existing output file, finished.')
+        else:
+            repo = static.split('/')
+            output_path = os.path.join('output', repo[0], repo[1])
+            if os.path.exists(output_path + '_star_line.json'):
+                return True
+            return False
+
+    def open_all_charts(self, chart_type, static=False):
+        if static == False:
+            if chart_type == 'circle':
+                with open(self.output_path + '_circle.json', encoding='utf-8') as json_file:
+                    return json.load(json_file)
+            if chart_type == 'square':
+                with open(self.output_path + '_square.json', encoding='utf-8') as json_file:
+                    return json.load(json_file)
+            if chart_type == 'commit_pie':
+                with open(self.output_path + '_commit_pie.json', encoding='utf-8') as json_file:
+                    return json.load(json_file)
+            if chart_type == 'commit_line':
+                with open(self.output_path + '_commit_line.json', encoding='utf-8') as json_file:
+                    return json.load(json_file)
+            if chart_type == 'star_line':
+                with open(self.output_path + '_star_line.json', encoding='utf-8') as json_file:
+                    return json.load(json_file)
+        else:
+            repo = static.split('/')
+            output_path = os.path.join('output', repo[0], repo[1])
+            if chart_type == 'circle':
+                with open(output_path + '_circle.json', encoding='utf-8') as json_file:
+                    return json.load(json_file)
+            if chart_type == 'square':
+                with open(output_path + '_square.json', encoding='utf-8') as json_file:
+                    return {'data': json.load(json_file)}
+            if chart_type == 'commit_pie':
+                with open(output_path + '_commit_pie.json', encoding='utf-8') as json_file:
+                    return {'data': json.load(json_file)}
+            if chart_type == 'commit_line':
+                with open(output_path + '_commit_line.json', encoding='utf-8') as json_file:
+                    return {'data': json.load(json_file)}
+            if chart_type == 'star_line':
+                with open(output_path + '_star_line.json', encoding='utf-8') as json_file:
+                    return {'data': json.load(json_file)}

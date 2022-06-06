@@ -2,7 +2,7 @@ import os
 import sys
 import git
 import copy
-import shutil
+import requests
 from threading import Thread
 from multiprocessing import cpu_count
 
@@ -23,6 +23,11 @@ class GitCommand():
     def clone(self):
         git_url = "https://github.com/{}/{}.git".format(self.owner, self.repo_name)
 
+        # try:
+        #     requests.get(git_url)
+        # except:
+        #     print("repository does not exist.")
+
         if not os.path.exists(self.user_dir):
             os.mkdir(self.user_dir)
 
@@ -33,17 +38,18 @@ class GitCommand():
             # shutil.rmtree(self.repo_dir, onerror=self.onerror)
             # print('delete succeed!')
 
-        fail_count = 3
+        fail_count = 10
         while(fail_count):
             try:
+                print("trying clone...")
                 git.Git(self.user_dir).clone(git_url)
+                break
             except:
                 fail_count -= 1
                 print("Failed to clone, try again...")
-            break
 
         if not fail_count:
-            raise('Failed to clone 3 times, g')
+            raise('Failed to clone 10 times, g')
         print('clone successed!')
         self.git_data.get_git_path()
     
@@ -73,6 +79,7 @@ class GitCommand():
     def get_file_size_from_every_commit(self):
         # git rev-list HEAD -- data\language.json
         self.commit_list = git.Git(self.repo_dir).rev_list('HEAD').split('\n')
+        self.commit_list.reverse()
     #     core_count = cpu_count() * 2
     #     thread_num = len(self.commit_list) // core_count
     #     index = 0
@@ -106,15 +113,14 @@ class GitCommand():
                     inc = self.git_data.file_suffix[line['name']]
                     line['data'].append(inc)
 
-            if i == 0:
+            if i == len(self.commit_list) - 1:
                 for line in self.git_data.commit_line_list:
                     temp = copy.deepcopy(self.git_data.first_commit_template)
-                    temp['value'] = line['data'][0]
+                    temp['value'] = line['data'][-1]
                     temp['name'] = line['name']
                     temp['itemStyle']['color'] = self.git_data.get_color(line['name'][1:])
                     self.git_data.first_commit_size.append(temp)
-        # for line in self.git_data.commit_line_list:
-        #     line['data'].reverse()
+
 
     def get_all_chart_data(self):
         self.clone()

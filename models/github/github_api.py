@@ -54,6 +54,9 @@ class GithubStarApi():
 
     def add_stars(self, data):
         for day in data:
+            if day == data[0]:
+                zero = int(day['starred_at'].split('T')[0].replace('-', '')) - 1
+                self.git_data.star_data[zero] = 0
             day = int(day['starred_at'].split('T')[0].replace('-', ''))
             self.cur_stars += 1
             self.git_data.star_data[day] = self.cur_stars

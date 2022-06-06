@@ -18,77 +18,121 @@
 module.exports = {
     data() {
         return {
-            title: "",
-            path: ""
+            dataStatus: false,
+            data: null,
         };
+    },
+    props: {
+        repo: null
     },
     mounted: function () {
         this.lineEchartsInit();
     },
     methods: {
         lineEchartsInit() {
-            var ROOT_PATH = '../../output/Uahh/ToastFish_commit_line.json';
-            var chartDom = document.getElementById('commitSizeLine');
-            var myChart = echarts.init(chartDom);
-            $.get(ROOT_PATH, (diskData) => {
-                var option = {
-                    title: {
-                        text: 'Uahh/ToastFish'
-                    },
-                    tooltip: {
-                        trigger: 'axis',
-                        axisPointer: {
-                            type: 'cross',
-                            label: {
-                                backgroundColor: '#6A7985',
-                                formatter: "commits order: {value}"
-                            },
-                        },
-                    },
-                    toolbox: {
-                        show: true,
-                        bottom: '1%',
-                        left: '1%',
-                        itemSize: 20,
-                        feature: {
-                            saveAsImage: {
-                                show: true
-                            },
-                            restore: {
-                                show: true
-                            }
-                        }
-                    },
-                    legend: {
-                        data: diskData,
-                        top: '3%'
-                    },
-                    xAxis: [
-                        {
-                            name: 'commit',
-                            type: 'category'
-                        }
-                    ],
-                    yAxis: [
-                        {
-                            name: 'byte',
-                            type: 'value'
-                        }
-                    ],
-                    dataZoom: [
-                        {
-                            type: 'inside'
-                        },
-                        {
-                            type: 'slider',
-                            xAxisIndex: [0],
-                            filterMode: 'filter'
-                        }
-                    ],
-                    series: diskData
-                };
-                myChart.setOption(option);
+            this.init()
+            this.myChart.showLoading();
+            if (this.dataStatus == false) {
+                this.times = setInterval(this.getData(), 3000);
+            }
+        },
+        init() {
+            this.myChart = echarts.init(document.getElementById('commitSizeLine'))
+        },
+        run() {
+            this.myChart.setOption(this.option());
+        },
+        getData() {
+            let status;
+            $.ajax({
+                type: "post",
+                url: 'http://192.168.31.11:173/check',
+                data: {
+                    repo: this.repo
+                },
+                async: false,
+                success: function (result) {
+                    status = result.status;
+                }
             })
+            if (status == 'True') {
+                this.dataStatus = true
+                clearInterval(this.times);
+                $.ajax({
+                    type: "post",
+                    url: 'http://192.168.31.11:173/chartdata',
+                    data: {
+                        type: 'commit_line',
+                        repo: this.repo
+                    },
+                    async: false,
+                    dataType: 'json',
+                    success: (result) => {
+                        this.data = result.data;
+                        this.run();
+                        this.myChart.hideLoading();
+                    }
+                })
+            }
+            return this.getData;
+        },
+        option() {
+            return {
+                title: {
+                    text: this.repo
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        label: {
+                            backgroundColor: '#6A7985',
+                            formatter: "commits order: {value}"
+                        },
+                    },
+                },
+                toolbox: {
+                    show: true,
+                    bottom: '1%',
+                    left: '1%',
+                    itemSize: 20,
+                    feature: {
+                        saveAsImage: {
+                            show: true
+                        },
+                        restore: {
+                            show: true
+                        }
+                    }
+                },
+                legend: {
+                    data: this.data,
+                    top: '3%'
+                },
+                xAxis: [
+                    {
+                        name: 'commit',
+                        type: 'category'
+                    }
+                ],
+                yAxis: [
+                    {
+                        name: 'byte',
+                        type: 'value'
+                    }
+                ],
+                dataZoom: [
+                    {
+                        type: 'inside'
+                    },
+                    {
+                        type: 'slider',
+                        xAxisIndex: [0],
+                        filterMode: 'filter'
+                    }
+                ],
+                series: this.data
+            };
         }
     }
 }
