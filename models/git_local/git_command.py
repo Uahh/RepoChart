@@ -8,30 +8,29 @@ from multiprocessing import cpu_count
 
 sys.path.append(sys.path[0] + '/..')
 from models.common.run_command import run_command
-from models.github.github_api import GithubStarApi
 from models.git_local.git_data import GitData
 
 class GitCommand():
-    def __init__(self, owner, repo_name) -> None:
-        self.owner = owner
-        self.repo_name = repo_name
-        self.user_dir = os.path.join('repo_cache', self.owner)
-        self.repo_dir = os.path.join(self.user_dir, self.repo_name)
-        self.git_data = GitData(self.repo_dir)
-        self.git_data.repo_name = owner + '/' + repo_name
+    def __init__(self, git_data) -> None:
+        # self.owner = owner
+        # self.repo_name = repo_name
+        # self.user_dir = os.path.join('repo_cache', self.owner)
+        # self.repo_dir = os.path.join(self.user_dir, self.repo_name)
+        self.git_data = git_data
+        self.repo_name = self.git_data.owner + '/' + self.git_data.repo_name
 
     def clone(self):
-        git_url = "https://github.com/{}/{}.git".format(self.owner, self.repo_name)
+        git_url = "https://github.com/{}/{}.git".format(self.git_data.owner, self.git_data.repo_name)
 
         # try:
         #     requests.get(git_url)
         # except:
         #     print("repository does not exist.")
 
-        if not os.path.exists(self.user_dir):
-            os.mkdir(self.user_dir)
+        if not os.path.exists(self.git_data.user_dir):
+            os.mkdir(self.git_data.user_dir)
 
-        if os.path.exists(self.repo_dir):
+        if os.path.exists(self.git_data.repo_dir):
             print('Already existing Directory! Nice!')
             return
             # print('Already existing Directory, will delete...')
@@ -42,7 +41,7 @@ class GitCommand():
         while(fail_count):
             try:
                 print("trying clone...")
-                git.Git(self.user_dir).clone(git_url)
+                git.Git(self.git_data.user_dir).clone(git_url)
                 break
             except:
                 fail_count -= 1
@@ -62,7 +61,7 @@ class GitCommand():
             self.git_data.path_list[i] = '/' + file_name + '/'
             # cmd = "cd {} && git log --numstat {}".format(self.repo_dir, file_name)
             # commit_log = run_command(cmd)
-            commit_log = git.Git(self.repo_dir).log('--numstat', '--shortstat', file_name)
+            commit_log = git.Git(self.git_data.repo_dir).log('--numstat', '--shortstat', file_name)
             commit_conut = 0
             lines_conut = 0
             for line in commit_log.splitlines():
@@ -78,7 +77,7 @@ class GitCommand():
 
     def get_file_size_from_every_commit(self):
         # git rev-list HEAD -- data\language.json
-        self.commit_list = git.Git(self.repo_dir).rev_list('HEAD').split('\n')
+        self.commit_list = git.Git(self.git_data.repo_dir).rev_list('HEAD').split('\n')
         self.commit_list.reverse()
     #     core_count = cpu_count() * 2
     #     thread_num = len(self.commit_list) // core_count
@@ -97,7 +96,7 @@ class GitCommand():
 
     # def thread_ls_tree(self, begin, end):
         for i in range(0, len(self.commit_list)):
-            commit_log = git.Git(self.repo_dir).ls_tree('-r', '-l', self.commit_list[i]).split('\n')
+            commit_log = git.Git(self.git_data.repo_dir).ls_tree('-r', '-l', self.commit_list[i]).split('\n')
             for log in commit_log:
                 inc = log.split('\t')[0].split(' ')[-1]
                 if not inc.isdigit():

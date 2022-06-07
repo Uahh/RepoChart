@@ -9,16 +9,20 @@ from models.github.github_api import GithubStarApi
 
 
 class RepoChart():
-    def __init__(self, owner, repo_name):
+    def __init__(self, owner, repo_name, server=False):
         self.chart_status = False
         self.json_path = os.path.join('output', owner)
         self.json_name = repo_name
         self.output_path = os.path.join(self.json_path, self.json_name)
+        self.large_flag = False
         self.check_output()
         if not self.chart_status:
-            self.repo = GitCommand(owner, repo_name)
+            self.git_data = GitData(owner, repo_name)
+            self.api = GithubStarApi(self.git_data, server)
+            if self.large_flag:
+                return
+            self.repo = GitCommand(self.git_data)
             self.repo.get_all_chart_data()
-            GithubStarApi(self.repo.git_data)
             self.circle_dict = {}
             self.sqare_dict = {}
             self.get_repo_path_dict()

@@ -6,10 +6,12 @@ from pprint import pprint
 
 
 class GitData():
-    def __init__(self, git_dir=None) -> None:
-        self.git_dir = ''
-        if git_dir:
-            self.git_dir = git_dir
+    def __init__(self, owner, repo_name) -> None:
+        self.owner = owner
+        self.repo_name = repo_name
+        self.repo_full_name = owner + '/' + repo_name
+        self.user_dir = os.path.join('repo_cache', self.owner)
+        self.repo_dir = os.path.join(self.user_dir, self.repo_name)
         self.path_list = []
         self.commits_list = []
         self.lines_list = []
@@ -44,14 +46,14 @@ class GitData():
             }
         }
 
-    def get_git_path(self, git_dir=None):
-        if not git_dir:
-            git_dir = self.git_dir
-        file_list = os.listdir(git_dir)
+    def get_git_path(self, repo_dir=None):
+        if not repo_dir:
+            repo_dir = self.repo_dir
+        file_list = os.listdir(repo_dir)
         for file in file_list:
             if file == '.git':
                 continue
-            file_path = os.path.join(git_dir, file)
+            file_path = os.path.join(repo_dir, file)
             if os.path.isfile(file_path):
                 # append path
                 file_path = file_path.replace('\\', '/')

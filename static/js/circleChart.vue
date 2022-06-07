@@ -38,10 +38,27 @@ module.exports = {
         repo: null
     },
     mounted: function () {
-        $.get("http://192.168.31.11:173/start?repo=" + this.repo);
+        // $.ajax({
+        //     type: "get",
+        //     url: "http://192.168.31.11:173/start?repo=" + this.repo,
+        //     async: false,
+        //     success: function (result) {
+        //         console.log(result)
+        //         this.dialogVisible = true;
+        //         console.log(this.dialogVisible)
+        //     }
+        // })
+        // console.log(this.dialogVisible)
         this.circleEchartsInit();
     },
     methods: {
+        handleClose(done) {
+            this.$confirm('确认关闭？')
+                .then(_ => {
+                    done();
+                })
+                .catch(_ => { });
+        },
         circleEchartsInit() {
             this.init()
             this.myChart.showLoading();
@@ -95,7 +112,7 @@ module.exports = {
         },
         run() {
             const dataWrap = this.prepareData();
-            this.initChart(dataWrap.seriesData);
+            this.initChart();
         },
         prepareData() {
             const seriesData = [];
@@ -125,118 +142,29 @@ module.exports = {
                 }
             }
             convert(this.data, this.repo.split('/')[1], 0);
-            return {
-                seriesData: seriesData,
-                maxDepth: maxDepth
-            };
+            this.seriesData = seriesData
         },
-        initChart(seriesData) {
-            var displayRoot = stratify();
-            function stratify() {
-                return d3
-                    .stratify()
-                    .parentId(function (d) {
-                        return d.id.substring(0, d.id.lastIndexOf('/'));
-                    })(seriesData)
-                    .sum(function (d) {
-                        return d.value || 0;
-                    })
-                    .sort(function (a, b) {
-                        return b.value - a.value;
-                    });
-            }
-            function overallLayout(params, api) {
-                var context = params.context;
-                d3
-                    .pack()
-                    .size([api.getWidth() - 2, api.getHeight() - 2])
-                    .padding(3)(displayRoot);
-                context.nodes = {};
-                displayRoot.descendants().forEach(function (node, index) {
-                    context.nodes[node.id] = node;
+        stratify() {
+            return d3
+                .stratify()
+                .parentId(function (d) {
+                    return d.id.substring(0, d.id.lastIndexOf('/'));
+                })(this.seriesData)
+                .sum(function (d) {
+                    return d.value || 0;
+                })
+                .sort(function (a, b) {
+                    return b.value - a.value;
                 });
-            }
-            function renderItem(params, api) {
-                var context = params.context;
-                // Only do that layout once in each time `setOption` called.
-                if (!context.layout) {
-                    context.layout = true;
-                    overallLayout(params, api);
-                }
-                var nodePath = api.value('id');
-                var node = context.nodes[nodePath];
-                if (!node) {
-                    // Reder nothing.
-                    return;
-                }
-                var isLeaf = !node.children || !node.children.length;
-                var focus = new Uint32Array(
-                    node.descendants().map(function (node) {
-                        return node.data.index;
-                    })
-                );
-                var nodeName = isLeaf
-                    ? nodePath
-                        .slice(nodePath.lastIndexOf('/') + 1)
-                        .split(/(?=[A-Z][^A-Z])/g)
-                        .join('\n')
-                    : '';
-                var z2 = api.value('depth') * 2;
-                return {
-                    type: 'circle',
-                    focus: focus,
-                    shape: {
-                        cx: node.x,
-                        cy: node.y,
-                        r: node.r
-                    },
-                    transition: ['shape'],
-                    z2: z2,
-                    textContent: {
-                        type: 'text',
-                        style: {
-                            // transition: isLeaf ? 'fontSize' : null,
-                            text: nodeName,
-                            fontFamily: 'Arial',
-                            width: node.r * 1.3,
-                            overflow: 'truncate',
-                            fontSize: node.r / 4
-                        },
-                        emphasis: {
-                            style: {
-                                overflow: null,
-                                fontSize: Math.max(node.r / 4, 12)
-                            }
-                        }
-                    },
-                    textConfig: {
-                        position: 'inside'
-                    },
-                    style: {
-                        fill: api.visual('color'),
-                        stroke: '#444444',
-                        lineWidth: 1,
-                    },
-                    emphasis: {
-                        style: {
-                            fontFamily: 'Arial',
-                            fontSize: 12,
-                            stroke: '#000000',
-                            lineWidth: 1,
-                            shadowBlur: 20,
-                            shadowOffsetX: 3,
-                            shadowOffsetY: 5,
-                            shadowColor: 'rgba(0,0,0,0.3)'
-                        }
-                    }
-                };
-            }
+        },
+        initChart() {
+            this.displayRoot = this.stratify();
             this.option = {
                 title: {
                     text: this.repo_name,
                 },
                 dataset: {
-                    source: seriesData
+                    source: this.seriesData
                 },
                 tooltip: {},
                 toolbox: {
@@ -253,7 +181,7 @@ module.exports = {
                 hoverLayerThreshold: Infinity,
                 series: {
                     type: 'custom',
-                    renderItem: renderItem,
+                    renderItem: this.renderItem,
                     progressive: 0,
                     coordinateSystem: 'none',
                     encode: {
@@ -269,45 +197,128 @@ module.exports = {
                 }
             };
             this.myChart.setOption(this.option);
-            this.myChart.on('click', { seriesIndex: 0 }, function (params) {
-                drillDown(params.data.id);
+            this.myChart.on('click', { seriesIndex: 0 }, (params) => {
+                this.drillDown(params.data.id);
             });
 
-            this.myChart.on('dblclick', { seriesIndex: 0 }, function (params) {
+            this.myChart.on('dblclick', { seriesIndex: 0 }, (params) => {
                 if (!params.event.topTarget.textConfig) {
-                    window.open(seriesData[params.value.index].url)
+                    window.open(this.seriesData[params.value.index].url)
                 }
             });
-
-            function drillDown(targetNodeId) {
-                if (targetNodeId == undefined && displayRoot != undefined) {
-                    let id = displayRoot.data.id.substring(0, displayRoot.data.id.length - 1)
-                    let pos = displayRoot.data.id.lastIndexOf('/')
-                    targetNodeId = displayRoot.data.id.substr(0, pos + 1)
-                    targetNodeId = targetNodeId.substring(0, targetNodeId.length - 1)
-                }
-                if (targetNodeId != null) {
-                    displayRoot = stratify();
-                    displayRoot = displayRoot.descendants().find(function (node) {
-                        return node.data.id === targetNodeId;
-                    });
-                }
-                // A trick to prevent d3-hierarchy from visiting parents in this algorithm.
-                if (displayRoot != undefined) {
-                    displayRoot.parent = null;
-                    this.myChart.setOption({
-                        dataset: {
-                            source: seriesData
-                        }
-                    });
-                }
-            }
             // Reset: click on the blank area.
-            this.myChart.getZr().on('click', function (event) {
+            this.myChart.getZr().on('click', (event) => {
                 if (!event.target) {
-                    drillDown();
+                    this.drillDown();
                 }
             });
+        },
+        renderItem(params, api) {
+            var context = params.context;
+            // Only do that layout once in each time `setOption` called.
+            if (!context.layout) {
+                context.layout = true;
+                // overallLayout(params, api);
+                var context = params.context;
+                d3
+                    .pack()
+                    .size([api.getWidth() - 2, api.getHeight() - 2])
+                    .padding(3)(this.displayRoot);
+                context.nodes = {};
+                this.displayRoot.descendants().forEach(function (node, index) {
+                    context.nodes[node.id] = node;
+                });
+            }
+            var nodePath = api.value('id');
+            var node = context.nodes[nodePath];
+            if (!node) {
+                // Reder nothing.
+                return;
+            }
+            var isLeaf = !node.children || !node.children.length;
+            var focus = new Uint32Array(
+                node.descendants().map(function (node) {
+                    return node.data.index;
+                })
+            );
+            var nodeName = isLeaf
+                ? nodePath
+                    .slice(nodePath.lastIndexOf('/') + 1)
+                    .split(/(?=[A-Z][^A-Z])/g)
+                    .join('\n')
+                : '';
+            var z2 = api.value('depth') * 2;
+            return {
+                type: 'circle',
+                focus: focus,
+                shape: {
+                    cx: node.x,
+                    cy: node.y,
+                    r: node.r
+                },
+                transition: ['shape'],
+                z2: z2,
+                textContent: {
+                    type: 'text',
+                    style: {
+                        // transition: isLeaf ? 'fontSize' : null,
+                        text: nodeName,
+                        fontFamily: 'Arial',
+                        width: node.r * 1.3,
+                        overflow: 'truncate',
+                        fontSize: node.r / 4
+                    },
+                    emphasis: {
+                        style: {
+                            overflow: null,
+                            fontSize: Math.max(node.r / 4, 12)
+                        }
+                    }
+                },
+                textConfig: {
+                    position: 'inside'
+                },
+                style: {
+                    fill: api.visual('color'),
+                    stroke: '#444444',
+                    lineWidth: 1,
+                },
+                emphasis: {
+                    style: {
+                        fontFamily: 'Arial',
+                        fontSize: 12,
+                        stroke: '#000000',
+                        lineWidth: 1,
+                        shadowBlur: 20,
+                        shadowOffsetX: 3,
+                        shadowOffsetY: 5,
+                        shadowColor: 'rgba(0,0,0,0.3)'
+                    }
+                }
+            };
+        },
+        drillDown(targetNodeId) {
+            if (targetNodeId == undefined && this.displayRoot != undefined) {
+                let id = this.displayRoot.data.id.substring(0, this.displayRoot.data.id.length - 1)
+                let pos = this.displayRoot.data.id.lastIndexOf('/')
+                targetNodeId = this.displayRoot.data.id.substr(0, pos + 1)
+                targetNodeId = targetNodeId.substring(0, targetNodeId.length - 1)
+            }
+            if (targetNodeId != null) {
+                this.displayRoot = this.stratify();
+                this.displayRoot = this.displayRoot.descendants().find(function (node) {
+                    return node.data.id === targetNodeId;
+                });
+            }
+            // A trick to prevent d3-hierarchy from visiting parents in this algorithm.
+            if (this.displayRoot != undefined) {
+                this.displayRoot.parent = null;
+                this.myChart.setOption({
+                    dataset: {
+                        source: this.seriesData
+                    }
+                });
+            }
         },
         rerun() {
             this.run()

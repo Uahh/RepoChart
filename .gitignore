@@ -4,7 +4,5 @@ output/
 repo_cache/
 .vscode
 models/github/private_config.py
-models/github/private_config.py
 templates/test.html
 templates/test.json
-models/github/private_config.py

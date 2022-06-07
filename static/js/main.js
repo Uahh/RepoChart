@@ -2,21 +2,38 @@ const options = {
     data() {
         return {
             activeName: 'circle',
-            inputRepo: ''
+            inputRepo: '',
+            dialogVisible: false
         };
+    },
+    mounted: function () {
+        let repo = window.location.search.split('=')[1];
+        $.ajax({
+            type: "get",
+            url: "http://192.168.31.11:173/start?repo=" + repo,
+            async: false,
+            success: (result) => {
+                if (result == 'Large') {
+                    this.dialogVisible = true;
+                }
+            }
+        })
     },
     methods: {
         handleSelect(key) {
-            if(key == 1){
+            if (key == 1) {
                 location.href = "http://192.168.31.11:173";
             }
-            else if(key == 2){
+            else if (key == 2) {
                 location.href = "https://github.com/Uahh/RepoChart"
             }
         },
         onSearch() {
-            $.get("http://192.168.31.11:173/start?repo=" + this.inputRepo);
             location.href = "http://192.168.31.11:173?repo=" + this.inputRepo;
+        },
+        onGithub() {
+            this.dialogVisible = false
+            window.open("https://github.com/Uahh/RepoChart")
         },
         handleClick() {
             // pass
@@ -44,7 +61,6 @@ const options = {
         'line-chart': Vue.defineAsyncComponent(() => loadModule('../static/js/starLineChart.vue', options)),
         'commit-size-line-chart': Vue.defineAsyncComponent(() => loadModule('../static/js/commitSizeLineChart.vue', options)),
         'commit-size-pie-chart': Vue.defineAsyncComponent(() => loadModule('../static/js/commitSizePieChart.vue', options)),
-        
     },
 }
 

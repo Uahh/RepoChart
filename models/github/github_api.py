@@ -1,18 +1,33 @@
-from models.github import private_config
-import sys
+import re
 import json
 import time
 import math
 import datetime
 import requests
 from pprint import pprint
-
-sys.path.append(sys.path[0] + '/..')
+from models.github import private_config
 
 
 class GithubStarApi():
-    def __init__(self, git_data) -> None:
+    def __init__(self, git_data, server=False) -> None:
         self.git_data = git_data
+        self.headers = {
+            'Accept': 'application/vnd.github.v3.star+json',
+            "Authorization": "token " + private_config.token
+        }
+        self.star_link = "https://api.github.com/repos/{}/stargazers?per_page=100".format(
+            self.git_data.repo_full_name)
+        self.commit_link = "https://api.github.com/repos/{}/commits?per_page=1".format(
+            self.git_data.repo_full_name)
+
+        self.large_flag = False
+        self.get_commit_count()
+        if self.commit_count > 1000 and server == True:
+            self.large_flag = True
+            return
+
+        self.total_stars = 0
+        self.cur_stars = 0
         self.git_data.star_chart_list.append(
             [
                 "Star",
@@ -20,27 +35,18 @@ class GithubStarApi():
                 "Day"
             ]
         )
-        self.link = "https://api.github.com/repos/{}/stargazers?per_page=100".format(
-            git_data.repo_name)
-        self.headers = {
-            'Accept': 'application/vnd.github.v3.star+json',
-            "Authorization": "token " + private_config.token
-        }
-        self.total_stars = 0
-        self.cur_stars = 0
         self.get_total_stars()
         self.get_link_list()
         self.convert_line_chart()
 
     def get_total_stars(self):
         link = "https://api.github.com/repos/{}".format(
-            self.git_data.repo_name)
+            self.git_data.repo_full_name)
         self.total_stars = self.request_api(link)['watchers']
 
     def get_link_list(self):
         if self.total_stars > 100:
             link_num = self.total_stars // 100
-
             # Github Api limited 400 pages.
             if link_num > 400:
                 link_num = 400
@@ -48,15 +54,16 @@ class GithubStarApi():
             link_num = 1
 
         for i in range(1, link_num + 1):
-            link = self.link + '&page=' + str(i)
+            link = self.star_link + '&page=' + str(i)
             data = self.request_api(link)
+            if data and i == 1:
+                zero = int(data[0]['starred_at'].split(
+                    'T')[0].replace('-', '')) - 1
+                self.git_data.star_data[zero] = 0
             self.add_stars(data)
 
     def add_stars(self, data):
         for day in data:
-            if day == data[0]:
-                zero = int(day['starred_at'].split('T')[0].replace('-', '')) - 1
-                self.git_data.star_data[zero] = 0
             day = int(day['starred_at'].split('T')[0].replace('-', ''))
             self.cur_stars += 1
             self.git_data.star_data[day] = self.cur_stars
@@ -100,3 +107,6 @@ class GithubStarApi():
             temp.append(self.git_data.repo_name)
             temp.append(int(date1.strftime("%Y%m%d")))
             self.git_data.star_chart_list.append(temp)
+
+    def get_commit_count(self):
+        self.commit_count = int(re.search('\d+$', requests.get(self.commit_link).links['last']['url']).group())

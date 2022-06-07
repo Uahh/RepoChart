@@ -59,7 +59,11 @@
                         <div class="content-box">
                             <h2>Pack repository in circle chart</h2>
                             <p>The chart reflect the importance of file in the repository.</p>
-                            <p>Each circle represents the total number of commits or total modified lines of the file in the repository.</p>
+                            <p>Each circle represents the total number of commits or total modified lines of the file in
+                                the repository.</p>
+                            <p>- Click on the file circle to enter the directory where the file is located</p>
+                            <p>- Click on the blank to back to the previous level</p>
+                            <p>- Double click the file name to jump to the Github page.</p>
                         </div>
                     </el-tab-pane>
                     <el-tab-pane label="Square" name="square" lazy='true'>
@@ -95,6 +99,18 @@
             <el-col :span="5">
             </el-col>
         </el-row>
+
+        <el-dialog v-model="dialogVisible" title="Tips" width="30%" :before-close="handleClose">
+            <span>The total number of commits in this repository exceeds 1000,</span>
+            <span>please clone Uahh/RepoChart project and get the repository chart locally</span>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button type="primary" @click="onGithub">Go Github</el-button>
+                    <el-button type="primary" @click="dialogVisible = false">Cancel</el-button>
+                </span>
+            </template>
+        </el-dialog>
+
     </div>
     <script src="../static/js/main.js"></script>
 </body>

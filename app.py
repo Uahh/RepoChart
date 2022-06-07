@@ -33,10 +33,11 @@ def index():
 @app.route('/start', methods=["GET", "POST"])
 def start():
     repo_name = request.args.get('repo').split('/')
-    repo = RepoChart(repo_name[0], repo_name[1])
-    if repo.chart_status == True:
-        return 'OK'
-    repo.output()
+    repo = RepoChart(repo_name[0], repo_name[1], server=True)
+    if repo.large_flag == True:
+        return 'Large'
+    elif repo.chart_status == False:
+        repo.output()
     return 'OK'
 
 @app.route('/check', methods=["POST"])
@@ -72,7 +73,7 @@ app.run(host='0.0.0.0', debug=False, port=173)  # inami
 
 # start = time.time()
 
-# repo = RepoChart('Uahh', 'RepoChart')
+# repo = RepoChart('Uahh', 'RepoChart', True)
 # repo.output()
 
 # end = time.time() - start
