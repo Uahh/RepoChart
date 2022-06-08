@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import re
 import os
 import json
 import time
@@ -30,23 +31,35 @@ def index():
             repo='Uahh/RepoChart'
         )
 
+
 @app.route('/start', methods=["GET", "POST"])
 def start():
-    repo_name = request.args.get('repo').split('/')
+    repo_name = request.args.get('repo')
+    if repo_name == 'undefined':
+        repo_name = 'Uahh/RepoChart'
+    if not re.match(".+/.+", repo_name):
+        return 'Not existence'
+    repo_name = repo_name.split('/')
     repo = RepoChart(repo_name[0], repo_name[1], server=True)
-    if repo.large_flag == True:
+    if repo.existence_flag == False:
+        return 'Not existence'
+    elif repo.large_flag == True:
         return 'Large'
     elif repo.chart_status == False:
         repo.output()
     return 'OK'
 
+
 @app.route('/check', methods=["POST"])
 def check():
     repo_name = request.form.get('repo')
+    if not re.match(".+/.+", repo_name):
+        return 'Not existence'
     status = RepoChart.check_output('', repo_name)
     if status == True:
         return {'status': 'True'}
     return {'status': 'False'}
+
 
 @app.route('/chartdata', methods=["POST"])
 def chart_data():
@@ -63,6 +76,7 @@ def chart_data():
     elif type == 'star_line':
         return RepoChart.open_all_charts('', 'star_line', repo_name)
     return 'error'
+
 
 @app.route('/error')
 def error():

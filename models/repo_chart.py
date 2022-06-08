@@ -15,11 +15,12 @@ class RepoChart():
         self.json_name = repo_name
         self.output_path = os.path.join(self.json_path, self.json_name)
         self.large_flag = False
+        self.existence_flag = True
         self.check_output()
         if not self.chart_status:
             self.git_data = GitData(owner, repo_name)
             self.api = GithubStarApi(self.git_data, server)
-            if self.large_flag:
+            if self.large_flag or not self.existence_flag:
                 return
             self.repo = GitCommand(self.git_data)
             self.repo.get_all_chart_data()

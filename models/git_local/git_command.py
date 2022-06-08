@@ -10,22 +10,14 @@ sys.path.append(sys.path[0] + '/..')
 from models.common.run_command import run_command
 from models.git_local.git_data import GitData
 
+
 class GitCommand():
     def __init__(self, git_data) -> None:
-        # self.owner = owner
-        # self.repo_name = repo_name
-        # self.user_dir = os.path.join('repo_cache', self.owner)
-        # self.repo_dir = os.path.join(self.user_dir, self.repo_name)
         self.git_data = git_data
         self.repo_name = self.git_data.owner + '/' + self.git_data.repo_name
 
     def clone(self):
         git_url = "https://github.com/{}/{}.git".format(self.git_data.owner, self.git_data.repo_name)
-
-        # try:
-        #     requests.get(git_url)
-        # except:
-        #     print("repository does not exist.")
 
         if not os.path.exists(self.git_data.user_dir):
             os.mkdir(self.git_data.user_dir)

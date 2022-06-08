@@ -19,6 +19,11 @@ class GithubStarApi():
             self.git_data.repo_full_name)
         self.commit_link = "https://api.github.com/repos/{}/commits?per_page=1".format(
             self.git_data.repo_full_name)
+        
+        self.existence_flag = True
+        self.check_existence()
+        if self.existence_flag == False:
+            return
 
         self.large_flag = False
         self.get_commit_count()
@@ -35,6 +40,7 @@ class GithubStarApi():
                 "Day"
             ]
         )
+        print('trying get star list...')
         self.get_total_stars()
         self.get_link_list()
         self.convert_line_chart()
@@ -107,6 +113,13 @@ class GithubStarApi():
             temp.append(self.git_data.repo_name)
             temp.append(int(date1.strftime("%Y%m%d")))
             self.git_data.star_chart_list.append(temp)
+
+    def check_existence(self):
+        result = self.request_api(self.commit_link)
+        if type(result) == dict:
+            if 'message' in result.keys():
+                if result['message'] == 'Not Found':
+                    self.existence_flag = False
 
     def get_commit_count(self):
         self.commit_count = int(re.search('\d+$', requests.get(self.commit_link).links['last']['url']).group())

@@ -38,17 +38,6 @@ module.exports = {
         repo: null
     },
     mounted: function () {
-        // $.ajax({
-        //     type: "get",
-        //     url: "http://192.168.31.11:173/start?repo=" + this.repo,
-        //     async: false,
-        //     success: function (result) {
-        //         console.log(result)
-        //         this.dialogVisible = true;
-        //         console.log(this.dialogVisible)
-        //     }
-        // })
-        // console.log(this.dialogVisible)
         this.circleEchartsInit();
     },
     methods: {

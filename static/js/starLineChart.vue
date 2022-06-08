@@ -76,8 +76,9 @@ module.exports = {
             }
         },
         option() {
+            let repoName = this.repo.split('/')[1]
             const countries = [
-                this.repo,
+                repoName,
             ];
             const datasetWithFilters = [];
             const seriesList = [];

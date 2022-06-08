@@ -2,22 +2,28 @@ const options = {
     data() {
         return {
             activeName: 'circle',
+            repoName: window.location.search.split('=')[1],
             inputRepo: '',
-            dialogVisible: false
+            largeDialog: false,
+            existenceDialog: false
         };
     },
     mounted: function () {
-        let repo = window.location.search.split('=')[1];
+        // let repo = window.location.search.split('=')[1];
         $.ajax({
             type: "get",
-            url: "http://192.168.31.11:173/start?repo=" + repo,
-            async: false,
+            url: "http://192.168.31.11:173/start?repo=" + this.repoName,
             success: (result) => {
-                if (result == 'Large') {
-                    this.dialogVisible = true;
+                if (result == 'Not existence'){
+                    this.existenceDialog = true;
                 }
+                else if (result == 'Large') {
+                    this.largeDialog = true;
+                }
+                
             }
         })
+        this.inputRepo = this.repoName
     },
     methods: {
         handleSelect(key) {
@@ -25,14 +31,14 @@ const options = {
                 location.href = "http://192.168.31.11:173";
             }
             else if (key == 2) {
-                location.href = "https://github.com/Uahh/RepoChart"
+                window.open("https://github.com/Uahh/RepoChart")
             }
         },
         onSearch() {
             location.href = "http://192.168.31.11:173?repo=" + this.inputRepo;
         },
         onGithub() {
-            this.dialogVisible = false
+            this.existenceDialog = false;
             window.open("https://github.com/Uahh/RepoChart")
         },
         handleClick() {

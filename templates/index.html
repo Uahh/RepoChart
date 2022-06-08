@@ -7,7 +7,6 @@
     <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
     <script src="https://unpkg.com/vue@3.2.33/dist/vue.global.prod.js"></script>
     <script src="https://unpkg.com/element-plus/dist/index.full.js"></script>
-    <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
     <script src="https://unpkg.com/echarts@5.3.2/dist/echarts.js"></script>
     <script src="https://unpkg.com/vue3-sfc-loader"></script>
     <script src="https://unpkg.com/@element-plus/icons-vue"></script>
@@ -100,17 +99,26 @@
             </el-col>
         </el-row>
 
-        <el-dialog v-model="dialogVisible" title="Tips" width="30%" :before-close="handleClose">
+        <el-dialog v-model="largeDialog" title="Tips" width="30%" :before-close="handleClose">
             <span>The total number of commits in this repository exceeds 1000,</span>
-            <span>please clone Uahh/RepoChart project and get the repository chart locally</span>
+            <span>please clone Uahh/RepoChart project and get the repository chart locally.</span>
             <template #footer>
                 <span class="dialog-footer">
                     <el-button type="primary" @click="onGithub">Go Github</el-button>
-                    <el-button type="primary" @click="dialogVisible = false">Cancel</el-button>
+                    <el-button type="primary" @click="largeDialog = false">Cancel</el-button>
                 </span>
             </template>
         </el-dialog>
 
+        <el-dialog v-model="existenceDialog" title="Tips" width="30%" :before-close="handleClose">
+            <span>Can't found {{ repoName }} repository,</span>
+            <span>Please confirm that the repository is on GitHub.</span>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button type="primary" @click="existenceDialog = false">Confirm</el-button>
+                </span>
+            </template>
+        </el-dialog>
     </div>
     <script src="../static/js/main.js"></script>
 </body>
