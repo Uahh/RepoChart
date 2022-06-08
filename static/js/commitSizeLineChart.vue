@@ -87,7 +87,7 @@ module.exports = {
                         type: 'cross',
                         label: {
                             backgroundColor: '#6A7985',
-                            formatter: "commits order: {value}"
+                            // formatter: "{value}"
                         },
                     },
                 },

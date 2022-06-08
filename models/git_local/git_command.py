@@ -89,16 +89,21 @@ class GitCommand():
     # def thread_ls_tree(self, begin, end):
         for i in range(0, len(self.commit_list)):
             commit_log = git.Git(self.git_data.repo_dir).ls_tree('-r', '-l', self.commit_list[i]).split('\n')
+            temp_file_suffix = copy.deepcopy(self.git_data.file_suffix)
             for log in commit_log:
                 inc = log.split('\t')[0].split(' ')[-1]
                 if not inc.isdigit():
                     continue
-                current_size = int(inc)
                 file_name = log.split('\t')[-1]
                 file_suffix = '.' + file_name.split('.')[-1]
 
-                if file_suffix in self.git_data.file_suffix.keys():
-                    self.git_data.file_suffix[file_suffix] = current_size
+                if file_suffix in temp_file_suffix:
+                    temp_file_suffix[file_suffix] += int(inc)
+                else:
+                    continue
+            for suffix in self.git_data.file_suffix.keys():
+                if temp_file_suffix[suffix] - self.git_data.file_suffix[suffix] != 0:
+                    self.git_data.file_suffix[suffix] = temp_file_suffix[suffix] - self.git_data.file_suffix[suffix]
 
             for line in self.git_data.commit_line_list:
                     inc = self.git_data.file_suffix[line['name']]

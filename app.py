@@ -87,7 +87,7 @@ app.run(host='0.0.0.0', debug=False, port=173)  # inami
 
 # start = time.time()
 
-# repo = RepoChart('Uahh', 'RepoChart', True)
+# repo = RepoChart('Uahh', 'RepoChart')
 # repo.output()
 
 # end = time.time() - start

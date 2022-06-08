@@ -17,7 +17,7 @@ class RepoChart():
         self.large_flag = False
         self.existence_flag = True
         self.check_output()
-        if not self.chart_status:
+        if not self.chart_status or server == False:
             self.git_data = GitData(owner, repo_name)
             self.api = GithubStarApi(self.git_data, server)
             if self.large_flag or not self.existence_flag:

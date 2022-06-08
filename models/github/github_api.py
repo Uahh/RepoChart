@@ -59,7 +59,7 @@ class GithubStarApi():
         else:
             link_num = 1
 
-        for i in range(1, link_num + 1):
+        for i in range(1, link_num + 2):
             link = self.star_link + '&page=' + str(i)
             data = self.request_api(link)
             if data and i == 1:
