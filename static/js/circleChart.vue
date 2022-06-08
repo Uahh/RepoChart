@@ -41,13 +41,6 @@ module.exports = {
         this.circleEchartsInit();
     },
     methods: {
-        handleClose(done) {
-            this.$confirm('确认关闭？')
-                .then(_ => {
-                    done();
-                })
-                .catch(_ => { });
-        },
         circleEchartsInit() {
             this.init()
             this.myChart.showLoading();
@@ -288,7 +281,7 @@ module.exports = {
         },
         drillDown(targetNodeId) {
             if (targetNodeId == undefined && this.displayRoot != undefined) {
-                let id = this.displayRoot.data.id.substring(0, this.displayRoot.data.id.length - 1)
+                // let id = this.displayRoot.data.id.substring(0, this.displayRoot.data.id.length - 1)
                 let pos = this.displayRoot.data.id.lastIndexOf('/')
                 targetNodeId = this.displayRoot.data.id.substr(0, pos + 1)
                 targetNodeId = targetNodeId.substring(0, targetNodeId.length - 1)

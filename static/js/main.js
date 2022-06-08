@@ -14,16 +14,21 @@ const options = {
             type: "get",
             url: "http://192.168.31.11:173/start?repo=" + this.repoName,
             success: (result) => {
-                if (result == 'Not existence'){
+                if (result == 'Not existence') {
                     this.existenceDialog = true;
                 }
                 else if (result == 'Large') {
                     this.largeDialog = true;
                 }
-                
+
             }
         })
-        this.inputRepo = this.repoName
+        if (this.inputRepo) {
+            this.inputRepo = this.repoName
+        }
+        else{
+            this.inputRepo = 'Uahh/RepoChart'
+        }
     },
     methods: {
         handleSelect(key) {

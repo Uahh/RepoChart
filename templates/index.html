@@ -6,12 +6,12 @@
     <meta charset="utf-8">
     <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
     <script src="https://unpkg.com/vue@3.2.33/dist/vue.global.prod.js"></script>
-    <script src="https://unpkg.com/element-plus/dist/index.full.js"></script>
+    <script src="https://unpkg.com/element-plus@2.2.5/dist/index.full.js"></script>
     <script src="https://unpkg.com/echarts@5.3.2/dist/echarts.js"></script>
     <script src="https://unpkg.com/vue3-sfc-loader"></script>
-    <script src="https://unpkg.com/@element-plus/icons-vue"></script>
-    <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css" />
+    <link rel="stylesheet" href="https://unpkg.com/element-plus@2.2.5/dist/index.css" />
     <link rel="stylesheet" href="../static/css/uahh.css">
+    <link rel="icon" href="{[ url_for('static', filename='favicon.ico') ]}" type="image/x-icon">
 </head>
 
 <body>
@@ -39,7 +39,7 @@
                         </el-input>
                     </el-col>
                     <el-col :span="6" style="text-align: right;">
-                        <el-button type="primary" @click="onSearch" style="width: 90%; height: 100%;">
+                        <el-button type="primary" @click="onSearch" style="width: 90%; height: 100%; ">
                             <span>Show repo chart</span>
                         </el-button>
                     </el-col>
@@ -96,6 +96,13 @@
                 </el-tabs>
             </el-col>
             <el-col :span="5">
+            </el-col>
+        </el-row>
+
+        <el-row>
+            <el-col :span="24">
+                <div class="footer">
+                </div>
             </el-col>
         </el-row>
 
