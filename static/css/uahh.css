@@ -44,6 +44,10 @@ body {
 	padding:10px 10px 300px;
 }
 
+.font-bold{
+  font-weight:bold;
+}
+
 .footer {
   background-color: #F5F5F5;
   color: #333;

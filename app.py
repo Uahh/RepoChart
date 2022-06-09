@@ -7,19 +7,13 @@ from pprint import pprint
 import requests
 from flask import Flask, request
 from flask import render_template
-from flask import send_from_directory
 from models.repo_chart import RepoChart
 
-
+host = "192.168.31.11:173"
 app = Flask(__name__, template_folder='templates', static_folder='static')
 app.jinja_env.variable_start_string = '{['
 app.jinja_env.variable_end_string = ']}'
 print('Waiting......')
-
-
-# @app.route('/favicon.ico')  # 设置icon
-# def favicon():
-#     return send_from_directory('./templates', 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 
 @app.route('/', methods=["GET", "POST"])

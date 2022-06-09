@@ -23,7 +23,7 @@ class GitCommand():
             os.mkdir(self.git_data.user_dir)
 
         if os.path.exists(self.git_data.repo_dir):
-            print('Already existing Directory! Nice!')
+            print('Already existing Directory, Nice!')
             return
             # print('Already existing Directory, will delete...')
             # shutil.rmtree(self.repo_dir, onerror=self.onerror)
@@ -45,6 +45,7 @@ class GitCommand():
         self.git_data.get_git_path()
     
     def get_file_commits_info(self):
+        print('Start looking at the number of commits each file')
         for i in range(0 ,len(self.git_data.path_list)):
             file_name = ''
             for dir in self.git_data.path_list[i].split('/')[3:]:
@@ -69,6 +70,7 @@ class GitCommand():
 
     def get_file_size_from_every_commit(self):
         # git rev-list HEAD -- data\language.json
+        print('Start looking at the file size of each commit.')
         self.commit_list = git.Git(self.git_data.repo_dir).rev_list('HEAD').split('\n')
         self.commit_list.reverse()
     #     core_count = cpu_count() * 2

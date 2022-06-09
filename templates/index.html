@@ -10,7 +10,7 @@
     <script src="https://unpkg.com/echarts@5.3.2/dist/echarts.js"></script>
     <script src="https://unpkg.com/vue3-sfc-loader"></script>
     <link rel="stylesheet" href="https://unpkg.com/element-plus@2.2.5/dist/index.css" />
-    <link rel="stylesheet" href="../static/css/uahh.css">
+    <link rel="stylesheet" href="{[ url_for('static', filename='css/uahh.css') ]}">
     <link rel="icon" href="{[ url_for('static', filename='favicon.ico') ]}" type="image/x-icon">
 </head>
 
@@ -60,9 +60,11 @@
                             <p>The chart reflect the importance of file in the repository.</p>
                             <p>Each circle represents the total number of commits or total modified lines of the file in
                                 the repository.</p>
-                            <p>- Click on the file circle to enter the directory where the file is located</p>
-                            <p>- Click on the blank to back to the previous level</p>
-                            <p>- Double click the file name to jump to the Github page.</p>
+                            <div class="font-bold">
+                                <p>- Click on the file circle to enter the directory where the file is located</p>
+                                <p>- Click on the blank to back to the previous level</p>
+                                <p>- Double click the file name to jump to the Github page.</p>
+                            </div>
                         </div>
                     </el-tab-pane>
                     <el-tab-pane label="Square" name="square" lazy='true'>
@@ -127,7 +129,7 @@
             </template>
         </el-dialog>
     </div>
-    <script src="../static/js/main.js"></script>
+    <script src="{[ url_for('static', filename='js/main.js') ]}"></script>
 </body>
 
 </html>

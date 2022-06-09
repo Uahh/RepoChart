@@ -20,6 +20,7 @@ class RepoChart():
         if not self.chart_status or server == False:
             self.git_data = GitData(owner, repo_name)
             self.api = GithubStarApi(self.git_data, server)
+            self.large_flag = self.api.large_flag
             if self.large_flag or not self.existence_flag:
                 return
             self.repo = GitCommand(self.git_data)
@@ -125,41 +126,46 @@ class RepoChart():
             os.mkdir(self.json_path)
 
         if self.circle_dict:
-            with open(self.output_path + '_circle.json', 'w') as json_file:
+            output_name = self.output_path + '_circle.json'
+            with open(output_name, 'w') as json_file:
                 json_file.write(json.dumps(self.circle_dict))
-            print('Circle chart output succeed!')
+            print('{} circle chart output succeed!'.format(self.output_path.replace('\\', '/')))
 
         if self.sqare_dict:
-            with open(self.output_path + '_square.json', 'w') as json_file:
+            output_name = self.output_path + '_square.json'
+            with open(output_name, 'w') as json_file:
                 json_file.write(json.dumps(self.sqare_dict))
-            print('Square chart output succeed!')
+            print('{} square chart output succeed!'.format(self.output_path.replace('\\', '/')))
 
         if self.first_commit_size:
-            with open(self.output_path + '_commit_pie.json', 'w') as json_file:
+            output_name = self.output_path + '_commit_pie.json'
+            with open(output_name, 'w') as json_file:
                 json_file.write(json.dumps(self.first_commit_size))
-            print('First commit size pie chart output succeed!')
+            print('{} commit size pie chart output succeed!'.format(self.output_path.replace('\\', '/')))
 
         if self.commit_line_list:
-            with open(self.output_path + '_commit_line.json', 'w') as json_file:
+            output_name = self.output_path + '_commit_line.json'
+            with open(output_name, 'w') as json_file:
                 json_file.write(json.dumps(self.commit_line_list))
-            print('Commit line chart output succeed!')
+            print('{} commit line chart output succeed!'.format(self.output_path.replace('\\', '/')))
 
         if self.star_chart_list:
-            with open(self.output_path + '_star_line.json', 'w') as json_file:
+            output_name = self.output_path + '_star_line.json'
+            with open(output_name, 'w') as json_file:
                 json_file.write(json.dumps(self.star_chart_list))
-            print('Star chart output succeed!')
+            print('{} star chart output succeed!'.format(self.output_path.replace('\\', '/')))
 
         self.chart_status = True
 
     def check_output(self, static=False):
         if static == False:
-            if os.path.exists(self.output_path + '_star_line.json'):
+            if os.path.exists(self.output_path + '_circle.json'):
                 self.chart_status = True
-                print('Already existing output file, finished.')
+                print('Already existing output file, directly return data.')
         else:
             repo = static.split('/')
             output_path = os.path.join('output', repo[0], repo[1])
-            if os.path.exists(output_path + '_star_line.json'):
+            if os.path.exists(output_path + '_circle.json'):
                 return True
             return False
 

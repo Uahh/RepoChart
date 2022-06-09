@@ -19,10 +19,10 @@ class GithubStarApi():
             self.git_data.repo_full_name)
         self.commit_link = "https://api.github.com/repos/{}/commits?per_page=1".format(
             self.git_data.repo_full_name)
-        
+
         self.existence_flag = True
         self.check_existence()
-        if self.existence_flag == False:
+        if self.existence_flag == False and server == True:
             return
 
         self.large_flag = False
@@ -44,6 +44,7 @@ class GithubStarApi():
         self.get_total_stars()
         self.get_link_list()
         self.convert_line_chart()
+        print('succeed got all stars!')
 
     def get_total_stars(self):
         link = "https://api.github.com/repos/{}".format(
@@ -55,7 +56,7 @@ class GithubStarApi():
             link_num = self.total_stars // 100
             # Github Api limited 400 pages.
             if link_num > 400:
-                link_num = 400
+                link_num = 399
         else:
             link_num = 1
 
@@ -122,4 +123,5 @@ class GithubStarApi():
                     self.existence_flag = False
 
     def get_commit_count(self):
-        self.commit_count = int(re.search('\d+$', requests.get(self.commit_link).links['last']['url']).group())
+        self.commit_count = int(
+            re.search('\d+$', requests.get(self.commit_link).links['last']['url']).group())

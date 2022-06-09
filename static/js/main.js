@@ -1,6 +1,7 @@
 const options = {
     data() {
         return {
+            url: window.location.host,
             activeName: 'circle',
             repoName: window.location.search.split('=')[1],
             inputRepo: '',
@@ -9,10 +10,9 @@ const options = {
         };
     },
     mounted: function () {
-        // let repo = window.location.search.split('=')[1];
         $.ajax({
             type: "get",
-            url: "http://192.168.31.11:173/start?repo=" + this.repoName,
+            url: "http://" + this.url + "/start?repo=" + this.repoName,
             success: (result) => {
                 if (result == 'Not existence') {
                     this.existenceDialog = true;
@@ -33,14 +33,14 @@ const options = {
     methods: {
         handleSelect(key) {
             if (key == 1) {
-                location.href = "http://192.168.31.11:173";
+                location.href = "http://" + this.url;
             }
             else if (key == 2) {
                 window.open("https://github.com/Uahh/RepoChart")
             }
         },
         onSearch() {
-            location.href = "http://192.168.31.11:173?repo=" + this.inputRepo;
+            location.href = "http://" + this.url + "?repo=" + this.inputRepo;
         },
         onGithub() {
             this.existenceDialog = false;
