@@ -43,8 +43,6 @@ module.exports = {
     },
     methods: {
         circleEchartsInit() {
-            console.log(this.server)
-            console.log(this.repo)
             this.init()
             this.myChart.showLoading();
             if (this.dataStatus == false) {

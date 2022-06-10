@@ -4,7 +4,7 @@ from flask import Flask, request
 from flask import render_template
 from models.repo_chart import RepoChart
 
-host = "192.168.31.11:52173"
+host = "uahh.syouzyo.org"
 app = Flask(__name__, template_folder='templates', static_folder='static')
 app.jinja_env.variable_start_string = '{['
 app.jinja_env.variable_end_string = ']}'

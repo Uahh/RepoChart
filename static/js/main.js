@@ -31,7 +31,7 @@ const options = {
 
             }
         })
-        if (this.inputRepo) {
+        if (!this.inputRepo) {
             this.inputRepo = this.repoName
         }
         else {

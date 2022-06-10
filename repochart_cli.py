@@ -12,8 +12,7 @@ options = parser.parse_args()[0]
 
 
 def daily_repo():
-    repo_list = ['vuejs/vue', 'tianocore/edk2', 'Uahh/RepoChart',
-                 'Uahh/ToastFish', 'itorr/nbnhhsh', 'nlohmann/json', 'apache/echarts']
+    repo_list = ['vuejs/vue', 'tianocore/edk2-edkrepo', 'Uahh/ToastFish', 'itorr/nbnhhsh', 'nlohmann/json', 'apache/echarts']
     for repo in repo_list:
         start = time.time()
         print(repo)
