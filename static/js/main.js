@@ -6,13 +6,21 @@ const options = {
             repoName: window.location.search.split('=')[1],
             inputRepo: '',
             largeDialog: false,
-            existenceDialog: false
+            existenceDialog: false,
+            recommendList: [
+                { "value": "vuejs/vue"},
+                { "value": "tianocore/edk2"},
+                { "value": "Uahh/ToastFish"},
+                { "value": "itorr/nbnhhsh"},
+                { "value": "nlohmann/json"},
+                { "value": "apache/echarts"},
+            ]
         };
     },
     mounted: function () {
         $.ajax({
             type: "get",
-            url: "http://" + this.url + "/start?repo=" + this.repoName,
+            url: "http://" + this.url + "/repochart/start?repo=" + this.repoName,
             success: (result) => {
                 if (result == 'Not existence') {
                     this.existenceDialog = true;
@@ -26,7 +34,7 @@ const options = {
         if (this.inputRepo) {
             this.inputRepo = this.repoName
         }
-        else{
+        else {
             this.inputRepo = 'Uahh/RepoChart'
         }
     },
@@ -40,7 +48,7 @@ const options = {
             }
         },
         onSearch() {
-            location.href = "http://" + this.url + "?repo=" + this.inputRepo;
+            location.href = "http://" + this.url + "/repochart?repo=" + this.inputRepo;
         },
         onGithub() {
             this.existenceDialog = false;
@@ -48,6 +56,16 @@ const options = {
         },
         handleClick() {
             // pass
+        },
+        querySearch(queryString, cb) {
+            var recommendList = this.recommendList;
+            var results = queryString ? recommendList.filter(this.createFilter(queryString)) : recommendList;
+            cb(results);
+        },
+        createFilter(queryString) {
+            return (recommend) => {
+                return (recommend.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+            };
         },
     },
     moduleCache: {

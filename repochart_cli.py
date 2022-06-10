@@ -13,7 +13,7 @@ options = parser.parse_args()[0]
 
 def daily_repo():
     repo_list = ['vuejs/vue', 'tianocore/edk2', 'Uahh/RepoChart',
-                 'Uahh/ToastFish', 'itorr/nbnhhsh', 'nlohmann/json', 'apache/echarts', 'Richasy/Bili.Uwp']
+                 'Uahh/ToastFish', 'itorr/nbnhhsh', 'nlohmann/json', 'apache/echarts']
     for repo in repo_list:
         start = time.time()
         print(repo)
@@ -25,16 +25,16 @@ def daily_repo():
 
 
 if __name__ == '__main__':
-    daily_repo()
-    # start = time.time()
+    # daily_repo()
+    start = time.time()
 
-    # if not re.match(".+/.+", options.repo):
-    #     print('Error: this repo is not exist on Github.')
-    #     exit()
+    if not re.match(".+/.+", options.repo):
+        print('Error: this repo is not exist on Github.')
+        exit()
 
-    # repo_name = options.repo.split('/')
-    # repo = RepoChart(repo_name[0], repo_name[1])
-    # repo.output()
+    repo_name = options.repo.split('/')
+    repo = RepoChart(repo_name[0], repo_name[1])
+    repo.output()
 
-    # end = time.time() - start
-    # print(str(end))
+    end = time.time() - start
+    print(str(end))

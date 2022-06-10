@@ -1,38 +1,34 @@
 # -*- coding: utf-8 -*-
 import re
-import os
-import json
-import time
-from pprint import pprint
-import requests
 from flask import Flask, request
 from flask import render_template
 from models.repo_chart import RepoChart
 
-host = "192.168.31.11:173"
+host = "192.168.31.11:52173"
 app = Flask(__name__, template_folder='templates', static_folder='static')
 app.jinja_env.variable_start_string = '{['
 app.jinja_env.variable_end_string = ']}'
 print('Waiting......')
 
 
-@app.route('/', methods=["GET", "POST"])
-@app.route('/index', methods=["GET", "POST"])
+@app.route('/repochart', methods=["GET", "POST"])
 def index():
     repo_name = request.args.get('repo')
     if repo_name:
         return render_template(
             'index.html',
-            repo=repo_name
+            repo=repo_name,
+            server=host
         )
     else:
         return render_template(
             'index.html',
-            repo='Uahh/RepoChart'
+            repo='Uahh/RepoChart',
+            server=host
         )
 
 
-@app.route('/start', methods=["GET", "POST"])
+@app.route('/repochart/start', methods=["GET", "POST"])
 def start():
     repo_name = request.args.get('repo')
     if repo_name == 'undefined':
@@ -50,7 +46,7 @@ def start():
     return 'OK'
 
 
-@app.route('/check', methods=["POST"])
+@app.route('/repochart/check', methods=["POST"])
 def check():
     repo_name = request.form.get('repo')
     if not re.match(".+/.+", repo_name):
@@ -61,7 +57,7 @@ def check():
     return {'status': 'False'}
 
 
-@app.route('/chartdata', methods=["POST"])
+@app.route('/repochart/chartdata', methods=["POST"])
 def chart_data():
     type = request.form.get('type')
     repo_name = request.form.get('repo')
@@ -78,12 +74,12 @@ def chart_data():
     return 'error'
 
 
-@app.route('/error')
+@app.route('/repochart/error')
 def error():
     return '404 not found'
 
 
-app.run(host='0.0.0.0', debug=False, port=173)  # inami
+app.run(host='0.0.0.0', debug=False, port=52173)  # 52inami
 
 # start = time.time()
 

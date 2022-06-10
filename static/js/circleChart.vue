@@ -35,13 +35,16 @@ module.exports = {
         };
     },
     props: {
-        repo: null
+        repo: null,
+        server: null
     },
     mounted: function () {
         this.circleEchartsInit();
     },
     methods: {
         circleEchartsInit() {
+            console.log(this.server)
+            console.log(this.repo)
             this.init()
             this.myChart.showLoading();
             if (this.dataStatus == false) {
@@ -56,7 +59,7 @@ module.exports = {
             let status;
             $.ajax({
                 type: "post",
-                url: 'http://192.168.31.11:173/check',
+                url: 'http://' + this.server + '/repochart/check',
                 data: {
                     repo: this.repo
                 },
@@ -70,7 +73,7 @@ module.exports = {
                 clearInterval(this.times);
                 $.ajax({
                     type: "post",
-                    url: 'http://192.168.31.11:173/chartdata',
+                    url: 'http://' + this.server + '/repochart/chartdata',
                     data: {
                         type: 'circle',
                         repo: this.repo
