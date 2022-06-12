@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://unpkg.com/element-plus@2.2.5/dist/index.css" />
     <link rel="stylesheet" href="{[ url_for('static', filename='css/uahh.css') ]}">
     <link rel="icon" href="{[ url_for('static', filename='favicon.ico') ]}" type="image/x-icon">
+    <meta name="viewport" content="width=device-width,user-scalable=0">
 </head>
 
 <body>
@@ -19,7 +20,7 @@
         <el-row>
             <el-col :span="24">
                 <el-menu :default-active="activeIndex" mode="horizontal" background-color="#21262D" text-color="#FFF"
-                    active-text-color="#FFD04B" @select="handleSelect">
+                    active-text-color="#FFD04B" @select="handleSelect" style="min-width: 1000px;">
                     <el-menu-item index="1" style='margin-left: 22%'>
                         <b>Repo chart</b>
                     </el-menu-item>

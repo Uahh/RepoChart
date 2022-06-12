@@ -9,7 +9,7 @@ const options = {
             existenceDialog: false,
             recommendList: [
                 { "value": "vuejs/vue"},
-                { "value": "tianocore/edk2"},
+                { "value": "tianocore/edk2-edkrepo"},
                 { "value": "Uahh/ToastFish"},
                 { "value": "itorr/nbnhhsh"},
                 { "value": "nlohmann/json"},

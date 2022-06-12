@@ -20,12 +20,14 @@ body {
 
 .tab{
   min-height: 800px;
+  min-width: 800px;
 }
 
 .searcher{
   text-align: right;
   padding-top: 50px;
   padding-bottom: 50px;
+  min-width: 800px;
 }
 
 .chart {
