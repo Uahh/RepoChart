@@ -16,13 +16,17 @@ class RepoChart():
         self.output_path = os.path.join(self.json_path, self.json_name)
         self.large_flag = False
         self.existence_flag = True
+        self.star_flag = False
         self.check_output()
         if not self.chart_status or server == False:
             self.git_data = GitData(owner, repo_name)
+
             self.api = GithubStarApi(self.git_data, server)
+            self.star_flag = self.api.star_flag
             self.large_flag = self.api.large_flag
             if self.large_flag or not self.existence_flag:
                 return
+            
             self.repo = GitCommand(self.git_data)
             self.repo.get_all_chart_data()
             self.circle_dict = {}
@@ -122,6 +126,8 @@ class RepoChart():
         return len(data['name'])
 
     def output(self):
+        if not os.path.exists('output'):
+            os.mkdir('output')
         if not os.path.exists(self.json_path):
             os.mkdir(self.json_path)
 
@@ -129,31 +135,31 @@ class RepoChart():
             output_name = self.output_path + '_circle.json'
             with open(output_name, 'w') as json_file:
                 json_file.write(json.dumps(self.circle_dict))
-            print('{} circle chart output succeed!'.format(self.output_path.replace('\\', '/')))
+            print('{} circle chart output succeed!'.format(output_name.replace('\\', '/')))
 
         if self.sqare_dict:
             output_name = self.output_path + '_square.json'
             with open(output_name, 'w') as json_file:
                 json_file.write(json.dumps(self.sqare_dict))
-            print('{} square chart output succeed!'.format(self.output_path.replace('\\', '/')))
+            print('{} square chart output succeed!'.format(output_name.replace('\\', '/')))
 
         if self.first_commit_size:
             output_name = self.output_path + '_commit_pie.json'
             with open(output_name, 'w') as json_file:
                 json_file.write(json.dumps(self.first_commit_size))
-            print('{} commit size pie chart output succeed!'.format(self.output_path.replace('\\', '/')))
+            print('{} commit size pie chart output succeed!'.format(output_name.replace('\\', '/')))
 
         if self.commit_line_list:
             output_name = self.output_path + '_commit_line.json'
             with open(output_name, 'w') as json_file:
                 json_file.write(json.dumps(self.commit_line_list))
-            print('{} commit line chart output succeed!'.format(self.output_path.replace('\\', '/')))
+            print('{} commit line chart output succeed!'.format(output_name.replace('\\', '/')))
 
         if self.star_chart_list:
             output_name = self.output_path + '_star_line.json'
             with open(output_name, 'w') as json_file:
                 json_file.write(json.dumps(self.star_chart_list))
-            print('{} star chart output succeed!'.format(self.output_path.replace('\\', '/')))
+            print('{} star chart output succeed!'.format(output_name.replace('\\', '/')))
 
         self.chart_status = True
 
