@@ -37,12 +37,16 @@ def start():
         return 'Not existence'
     repo_name = repo_name.split('/')
     repo = RepoChart(repo_name[0], repo_name[1], server=True)
+    
+    if repo.chart_status == False:
+        repo.output()
+    
     if repo.existence_flag == False:
         return 'Not existence'
     elif repo.large_flag == True:
         return 'Large'
-    elif repo.chart_status == False:
-        repo.output()
+    elif repo.star_flag == True:
+        return 'Star'
     return 'OK'
 
 

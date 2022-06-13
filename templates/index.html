@@ -80,6 +80,7 @@
                         <div class="content-box">
                             <h2>File type size pie chart</h2>
                             <p>The chart reflect the file type size of every commit in the repository.</p>
+                            <p>You can click the color box above to hide files you don't want to see</p>
                         </div>
                     </el-tab-pane>
                     <el-tab-pane label="Commit Size Line" name="commitSizeLine" lazy='true'>
@@ -87,6 +88,7 @@
                         <div class="content-box">
                             <h2>Commit line chart</h2>
                             <p>The chart reflect the file type size of latest commit in the repository.</p>
+                            <p>You can click the color box above to hide files you don't want to see</p>
                         </div>
                     </el-tab-pane>
                     <el-tab-pane label="Star History" name="line" lazy='true'>
@@ -94,6 +96,7 @@
                         <div class="content-box">
                             <h2>Star history chart</h2>
                             <p>View the repository star history.</p>
+                            <p>Only the first 40k stars of the project can be displayed</p>
                         </div>
                     </el-tab-pane>
                 </el-tabs>
@@ -109,9 +112,9 @@
             </el-col>
         </el-row>
 
-        <el-dialog v-model="largeDialog" title="Tips" width="30%" :before-close="handleClose">
-            <span>The total number of commits in this repository exceeds 1000,</span>
-            <span>please clone Uahh/RepoChart project and get the repository chart locally.</span>
+        <el-dialog v-model="largeDialog" title="Tips" width="30%">
+            <span>The total number of commits in {{ repoName }} exceeds 1000,</span>
+            <span>please clone Uahh/RepoChart project to get the repository chart locally.</span>
             <template #footer>
                 <span class="dialog-footer">
                     <el-button type="primary" @click="onGithub">Go Github</el-button>
@@ -120,12 +123,22 @@
             </template>
         </el-dialog>
 
-        <el-dialog v-model="existenceDialog" title="Tips" width="30%" :before-close="handleClose">
+        <el-dialog v-model="existenceDialog" title="Tips" width="30%">
             <span>Can't found {{ repoName }} repository,</span>
             <span>Please confirm that the repository is on GitHub.</span>
             <template #footer>
                 <span class="dialog-footer">
                     <el-button type="primary" @click="existenceDialog = false">Confirm</el-button>
+                </span>
+            </template>
+        </el-dialog>
+
+        <el-dialog v-model="starDialog" title="Tips" width="30%">
+            <span>The total number of stars in {{ repoName }} exceeds 4000,</span>
+            <span>Please clone Uahh/RepoChart project to get the repository star chart locally.</span>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button type="primary" @click="starDialog = false">Confirm</el-button>
                 </span>
             </template>
         </el-dialog>

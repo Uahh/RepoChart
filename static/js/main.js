@@ -7,6 +7,7 @@ const options = {
             inputRepo: '',
             largeDialog: false,
             existenceDialog: false,
+            starDialog: false,
             recommendList: [
                 { "value": "vuejs/vue"},
                 { "value": "tianocore/edk2-edkrepo"},
@@ -28,7 +29,9 @@ const options = {
                 else if (result == 'Large') {
                     this.largeDialog = true;
                 }
-
+                else if (result == 'Star'){
+                    this.starDialog = true;
+                }
             }
         })
         if (!this.inputRepo) {

@@ -42,6 +42,12 @@ class GithubStarApi():
         )
         print('trying get star list...')
         self.get_total_stars()
+
+        self.star_flag = False
+        if self.total_stars > 4000 and server == True:
+            self.star_flag = True
+            return
+
         self.get_link_list()
         self.convert_line_chart()
         print('succeed got all stars!')
