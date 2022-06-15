@@ -144,7 +144,7 @@ module.exports = {
             this.displayRoot = this.stratify();
             this.option = {
                 title: {
-                    text: this.repo_name,
+                    text: this.repo,
                 },
                 dataset: {
                     source: this.seriesData
@@ -232,6 +232,9 @@ module.exports = {
                 : '';
             var z2 = api.value('depth') * 2;
             return {
+                title: {
+                    text: this.repo
+                },
                 type: 'circle',
                 focus: focus,
                 shape: {

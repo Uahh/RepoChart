@@ -78,9 +78,6 @@ module.exports = {
                             if (this.data[i][1] < this.min)
                                 this.min = this.data[i][1]
                         }
-                        console.log(this.max)
-                        console.log(this.min)
-                        console.log(this.data)
                         this.run();
                         this.myChart.hideLoading();
                     }

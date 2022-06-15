@@ -52,7 +52,6 @@ class RepoChart():
             self.active_chart_list.sort(key=lambda data: data[0])
 
     # Creates a default dictionary where each value is an other default dictionary.
-
     def nested_dict(self) -> defaultdict:
         return defaultdict(self.nested_dict)
 
@@ -180,6 +179,11 @@ class RepoChart():
                 json_file.write(json.dumps(self.star_chart_list))
             print('{} star chart output succeed!'.format(output_name.replace('\\', '/')))
 
+        if self.lines:
+            output_name = self.output_path + '_code_of_lines.json'
+            with open(output_name, 'w') as json_file:
+                json_file.write(json.dumps(self.lines))
+            print('{} star chart output succeed!'.format(output_name.replace('\\', '/')))
         self.chart_status = True
 
     def check_output(self, static=False):
@@ -214,6 +218,9 @@ class RepoChart():
             if chart_type == 'star_line':
                 with open(self.output_path + '_star_line.json', encoding='utf-8') as json_file:
                     return json.load(json_file)
+            if chart_type == 'code_of_lines':
+                with open(self.output_path + '_code_of_lines.json', encoding='utf-8') as json_file:
+                    return json.load(json_file)
         else:
             repo = static.split('/')
             output_path = os.path.join('output', repo[0], repo[1])
@@ -235,3 +242,6 @@ class RepoChart():
             if chart_type == 'star_line':
                 with open(output_path + '_star_line.json', encoding='utf-8') as json_file:
                     return {'data': json.load(json_file)}
+            if chart_type == 'code_of_lines':
+                with open(output_path + '_code_of_lines.json', encoding='utf-8') as json_file:
+                    return json.load(json_file)

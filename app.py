@@ -4,7 +4,7 @@ from flask import Flask, request
 from flask import render_template
 from models.repo_chart import RepoChart
 
-host = "uahh.syouzyo.org"
+host = "192.168.31.11:52173"
 app = Flask(__name__, template_folder='templates', static_folder='static')
 app.jinja_env.variable_start_string = '{['
 app.jinja_env.variable_end_string = ']}'
@@ -73,8 +73,12 @@ def chart_data():
         return RepoChart.open_all_charts('', 'commit_pie', repo_name)
     elif type == 'commit_line':
         return RepoChart.open_all_charts('', 'commit_line', repo_name)
+    elif type == 'active_line':
+        return RepoChart.open_all_charts('', 'active_line', repo_name)
     elif type == 'star_line':
         return RepoChart.open_all_charts('', 'star_line', repo_name)
+    elif type == 'code_of_lines':
+        return RepoChart.open_all_charts('', 'code_of_lines', repo_name)
     return 'error'
 
 

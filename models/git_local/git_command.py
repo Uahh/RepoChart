@@ -13,8 +13,8 @@ class GitCommand():
         self.git_data = git_data
         self.repo_name = self.git_data.owner + '/' + self.git_data.repo_name
 
-    def clone(self):
-        git_url = "https://github.com/{}/{}.git".format(self.git_data.owner, self.git_data.repo_name)
+        self.git_url = "https://github.com/{}/{}.git".format(
+            self.git_data.owner, self.git_data.repo_name)
 
         if not os.path.exists('repo_cache'):
             os.mkdir('repo_cache')
@@ -23,16 +23,33 @@ class GitCommand():
 
         if os.path.exists(self.git_data.repo_dir):
             print('Already existing Directory, Nice!')
-            return
-            # print('Already existing Directory, will delete...')
-            # shutil.rmtree(self.repo_dir, onerror=self.onerror)
-            # print('delete succeed!')
+            self.pull()
+        else:
+            self.clone()
+        self.git_data.get_git_path()
 
+
+    def pull(self):
+        fail_count = 10
+        while(fail_count):
+            try:
+                print("trying pull...")
+                git.Git(self.git_data.user_dir).pull()
+                break
+            except:
+                fail_count -= 1
+                print("Failed to clone, try again...")
+
+        if not fail_count:
+            raise('Failed to pull 10 times, g')
+        print('pull successed!')
+
+    def clone(self):
         fail_count = 10
         while(fail_count):
             try:
                 print("trying clone...")
-                git.Git(self.git_data.user_dir).clone(git_url)
+                git.Git(self.git_data.user_dir).clone(self.git_url)
                 break
             except:
                 fail_count -= 1
@@ -41,8 +58,7 @@ class GitCommand():
         if not fail_count:
             raise('Failed to clone 10 times, g')
         print('clone successed!')
-        self.git_data.get_git_path()
-    
+
     def get_file_commits_info(self):
         print('Start looking at the number of commits each file...')
         for i in range(0 ,len(self.git_data.path_list)):
@@ -153,7 +169,6 @@ class GitCommand():
         return [strftime(strptime(start, format) + datetime.timedelta(i), format) for i in range(0, days, step)]
 
     def get_all_chart_data(self):
-        self.clone()
         self.git_data.get_git_path()
         self.get_file_commits_info()
         self.get_file_size_from_every_commit()

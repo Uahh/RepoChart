@@ -4,7 +4,7 @@ from models.repo_chart import RepoChart
 current_time = time.strftime('%Y-%m-%dT%H:%M:%S', time.localtime())
 print('start time: ' + current_time)
 
-repo_list = ['vuejs/vue', 'tianocore/edk2-edkrepo', 'Uahh/ToastFish', 'itorr/nbnhhsh', 'nlohmann/json', 'apache/echarts']
+repo_list = ['vuejs/vue', 'tianocore/edk2-edkrepo', 'Uahh/ToastFish', 'itorr/nbnhhsh', 'nlohmann/json', 'apache/echarts', 'pallets/flask']
 for repo in repo_list:
     start = time.time()
     print(repo)

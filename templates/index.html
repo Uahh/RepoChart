@@ -107,6 +107,14 @@
                             <p>Only the first 40k stars of the project can be displayed</p>
                         </div>
                     </el-tab-pane>
+                    <el-tab-pane label="Code of lines" name="codeOfLines" lazy='true'>
+                        <code-of-lines-chart repo="{[ repo ]}" server="{[ server ]}"></code-of-lines-chart>
+                        <div class="content-box">
+                            <h2>Star history chart</h2>
+                            <p>View the repository star history.</p>
+                            <p>Only the first 40k stars of the project can be displayed</p>
+                        </div>
+                    </el-tab-pane>
                 </el-tabs>
             </el-col>
             <el-col :span="5">

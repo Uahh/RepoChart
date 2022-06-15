@@ -17,3 +17,4 @@ class LineCounter():
                     self.lines += len(temp.readlines())
                 except:
                     continue
+        self.lines = {"data": self.lines}
