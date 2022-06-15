@@ -33,10 +33,15 @@ class RepoChart():
             self.sqare_dict = {}
             self.get_repo_path_dict()
             self.star_chart_list = self.repo.git_data.star_chart_list
+
             self.commit_line_list = self.repo.git_data.commit_line_list
-            self.commit_line_list.sort(key=self.sort_by)
+            self.commit_line_list.sort(key=lambda data: len(data['name']))
+
             self.first_commit_size = self.repo.git_data.first_commit_size
-            self.first_commit_size.sort(key=self.sort_by)
+            self.first_commit_size.sort(key=lambda data: len(data['name']))
+
+            self.active_chart_list = self.repo.git_data.active_chart_list
+            self.active_chart_list.sort(key=lambda data: data[0])
 
     # Creates a default dictionary where each value is an other default dictionary.
 
@@ -154,6 +159,12 @@ class RepoChart():
             with open(output_name, 'w') as json_file:
                 json_file.write(json.dumps(self.commit_line_list))
             print('{} commit line chart output succeed!'.format(output_name.replace('\\', '/')))
+
+        if self.active_chart_list:
+            output_name = self.output_path + '_active_line.json'
+            with open(output_name, 'w') as json_file:
+                json_file.write(json.dumps(self.active_chart_list))
+            print('{} active chart output succeed!'.format(output_name.replace('\\', '/')))
 
         if self.star_chart_list:
             output_name = self.output_path + '_star_line.json'

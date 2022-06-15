@@ -24,6 +24,9 @@ class GitData():
         self.commit_line_list = []
         self.first_commit_size = []
         self.file_suffix = {}
+        self.commit_sha_dict = {}
+        self.commit_date_dict = {}
+        self.active_chart_list = []
         self.load_language_colors()
         self.total_line_template = {
             'name': '',

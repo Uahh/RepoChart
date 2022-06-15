@@ -1,4 +1,5 @@
 import os
+from re import L
 import sys
 import git
 import copy
@@ -56,15 +57,26 @@ class GitCommand():
             self.git_data.path_list[i] = '/' + file_name + '/'
             # cmd = "cd {} && git log --numstat {}".format(self.repo_dir, file_name)
             # commit_log = run_command(cmd)
-            commit_log = git.Git(self.git_data.repo_dir).log('--numstat', '--shortstat', file_name)
+            commit_log = git.Git(self.git_data.repo_dir).log('--numstat', '--shortstat', '--date=format:\"%Y-%m-%d\"', file_name)
+            commit_sha = ''
             commit_conut = 0
             lines_conut = 0
             for line in commit_log.splitlines():
                 if line:
                     if line[0:6] == 'commit':
                         commit_conut += 1
+                        commit_sha = line.split(' ')[1].replace('\"', '')
+                        if commit_sha not in self.git_data.commit_sha_dict.keys():
+                            self.git_data.commit_sha_dict[commit_sha] = 0
                     if line[0:5] == 'Author':
                         pass
+                    if line[0:4] == 'Date':
+                        if self.git_data.commit_sha_dict[commit_sha] == 0:
+                            date = line.split('   ')[1].replace('\"', '')
+                            self.git_data.commit_date_dict[date] = 1
+                            self.git_data.commit_sha_dict[commit_sha] = -1
+                        else:
+                            self.git_data.commit_date_dict[date] += 1
                     if line[0].isdigit():
                         lines_conut += int(line.split('\t')[0]) + int(line.split('\t')[1])
             self.git_data.commits_list.append(commit_conut)
@@ -121,12 +133,16 @@ class GitCommand():
                     temp['itemStyle']['color'] = self.git_data.get_color(line['name'][1:])
                     self.git_data.first_commit_size.append(temp)
 
+    def get_active_line(self):
+        for date in self.git_data.commit_date_dict.keys():
+            self.git_data.active_chart_list.append([date,  self.git_data.commit_date_dict[date]])
 
     def get_all_chart_data(self):
         self.clone()
         self.git_data.get_git_path()
         self.get_file_commits_info()
         self.get_file_size_from_every_commit()
+        self.get_active_line()
 
     # Error handler for shutil.rmtree().
     def onerror(self, func, path, exc_info):
