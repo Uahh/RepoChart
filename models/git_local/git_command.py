@@ -2,13 +2,10 @@ import os
 import sys
 import git
 import copy
-import requests
+import time
+import datetime
 from threading import Thread
 from multiprocessing import cpu_count
-
-sys.path.append(sys.path[0] + '/..')
-from models.common.run_command import run_command
-from models.git_local.git_data import GitData
 
 
 class GitCommand():
@@ -66,16 +63,19 @@ class GitCommand():
                         commit_conut += 1
                         commit_sha = line.split(' ')[1].replace('\"', '')
                         if commit_sha not in self.git_data.commit_sha_dict.keys():
-                            self.git_data.commit_sha_dict[commit_sha] = 0
+                            self.git_data.commit_sha_dict[commit_sha] = False
+                        else:
+                            self.git_data.commit_sha_dict[commit_sha] = True
                     if line[0:5] == 'Author':
                         pass
                     if line[0:4] == 'Date':
-                        if self.git_data.commit_sha_dict[commit_sha] == 0:
-                            date = line.split('   ')[1].replace('\"', '')
-                            self.git_data.commit_date_dict[date] = 1
-                            self.git_data.commit_sha_dict[commit_sha] = -1
-                        else:
-                            self.git_data.commit_date_dict[date] += 1
+                        date = line.split('   ')[1].replace('\"', '')
+                        if self.git_data.commit_sha_dict[commit_sha] == False:
+                            if date not in self.git_data.commit_date_dict.keys():
+                                self.git_data.commit_date_dict[date] = 1
+                            else:
+                                self.git_data.commit_date_dict[date] += 1
+                            # self.git_data.commit_sha_dict[commit_sha] = 1
                     if line[0].isdigit():
                         lines_conut += int(line.split('\t')[0]) + int(line.split('\t')[1])
             self.git_data.commits_list.append(commit_conut)
@@ -133,8 +133,24 @@ class GitCommand():
                     self.git_data.first_commit_size.append(temp)
 
     def get_active_line(self):
+        min_date = '2077-12-31'
+        for date in self.git_data.commit_date_dict.keys():
+            if date < min_date:
+                min_date = date
+        today = time.strftime('%Y-%m-%d', time.localtime())
+        date_list = self.date_range(min_date, today)
+        
+        for date in date_list:
+            if date not in self.git_data.commit_date_dict.keys():
+                self.git_data.commit_date_dict[date] = 0
         for date in self.git_data.commit_date_dict.keys():
             self.git_data.active_chart_list.append([date,  self.git_data.commit_date_dict[date]])
+        self.git_data.active_chart_list.sort(key=lambda data: data[0])
+
+    def date_range(self, start, end, step=1, format="%Y-%m-%d"):
+        strptime, strftime = datetime.datetime.strptime, datetime.datetime.strftime
+        days = (strptime(end, format) - strptime(start, format)).days
+        return [strftime(strptime(start, format) + datetime.timedelta(i), format) for i in range(0, days, step)]
 
     def get_all_chart_data(self):
         self.clone()

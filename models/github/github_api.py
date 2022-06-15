@@ -11,6 +11,7 @@ from models.github import private_config
 class GithubStarApi():
     def __init__(self, git_data, server=False) -> None:
         self.git_data = git_data
+        self.server = server
         self.headers = {
             'Accept': 'application/vnd.github.v3.star+json',
             "Authorization": "token " + private_config.token
@@ -22,12 +23,12 @@ class GithubStarApi():
 
         self.existence_flag = True
         self.check_existence()
-        if self.existence_flag == False and server == True:
+        if self.existence_flag == False and self.server == True:
             return
 
         self.large_flag = False
         self.get_commit_count()
-        if self.commit_count > 1000 and server == True:
+        if self.commit_count > 1000 and self.server == True:
             self.large_flag = True
             return
 
@@ -46,7 +47,7 @@ class GithubStarApi():
         self.get_total_stars()
 
         self.star_flag = False
-        if self.total_stars > 4000 and server == True:
+        if self.total_stars > 4000 and self.server == True:
             self.star_flag = True
             return
 

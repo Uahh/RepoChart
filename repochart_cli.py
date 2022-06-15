@@ -12,6 +12,10 @@ if __name__ == '__main__':
     parser.add_option('-v', '--version', action="store", help="Repo Chart v1.0.0")
     options = parser.parse_args()[0]
 
+    if not options.repo:
+        print('Need option, exit.')
+        exit()
+
     current_time = time.strftime('%Y-%m-%dT%H:%M:%S', time.localtime())
     print('start time: ' + current_time)
 

@@ -2,7 +2,7 @@
     <el-row>
         <el-col :span="24">
             <div class="chart-region">
-                <div id="commitSizeLine" class="chart"></div>
+                <div id="activeLine" class="chart"></div>
                 <el-row>
                     <el-col :span="12">
                     </el-col>
@@ -20,6 +20,8 @@ module.exports = {
         return {
             dataStatus: false,
             data: null,
+            max: -1,
+            min: 0xffffff
         };
     },
     props: {
@@ -38,7 +40,7 @@ module.exports = {
             }
         },
         init() {
-            this.myChart = echarts.init(document.getElementById('commitSizeLine'))
+            this.myChart = echarts.init(document.getElementById('activeLine'))
         },
         run() {
             this.myChart.setOption(this.option());
@@ -63,13 +65,22 @@ module.exports = {
                     type: "post",
                     url: 'http://' + this.server + '/repochart/chartdata',
                     data: {
-                        type: 'commit_line',
+                        type: 'active_line',
                         repo: this.repo
                     },
                     async: false,
                     dataType: 'json',
                     success: (result) => {
                         this.data = result.data;
+                        for (let i = 0; i < this.data.length; i++) {
+                            if (this.data[i][1] > this.max)
+                                this.max = this.data[i][1]
+                            if (this.data[i][1] < this.min)
+                                this.min = this.data[i][1]
+                        }
+                        console.log(this.max)
+                        console.log(this.min)
+                        console.log(this.data)
                         this.run();
                         this.myChart.hideLoading();
                     }
@@ -81,16 +92,6 @@ module.exports = {
             return {
                 title: {
                     text: this.repo
-                },
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {
-                        type: 'cross',
-                        label: {
-                            backgroundColor: '#6A7985',
-                            // formatter: "{value}"
-                        },
-                    },
                 },
                 toolbox: {
                     show: true,
@@ -106,20 +107,27 @@ module.exports = {
                         }
                     }
                 },
-                legend: {
-                    data: this.data,
-                    top: '3%'
+                visualMap: [
+                    {
+                        show: false,
+                        type: 'continuous',
+                        seriesIndex: 0,
+                        min: this.min,
+                        max: this.max
+                    }
+                ],
+                tooltip: {
+                    trigger: 'axis'
                 },
                 xAxis: [
                     {
-                        name: 'commit',
-                        type: 'category'
+                        name: 'date',
+                        data: this.dataList()
                     }
                 ],
                 yAxis: [
                     {
-                        name: 'byte',
-                        type: 'value'
+                        name: 'commits',
                     }
                 ],
                 dataZoom: [
@@ -132,11 +140,24 @@ module.exports = {
                         filterMode: 'filter'
                     }
                 ],
-                grid:{
-                    y: '10%'
-                },
-                series: this.data
+                series: [
+                    {
+                        type: 'line',
+                        showSymbol: false,
+                        data: this.valueList()
+                    }
+                ]
             };
+        },
+        dataList() {
+            return this.data.map((item) => {
+                return item[0];
+            });
+        },
+        valueList() {
+            return this.data.map((item) => {
+                return item[1];
+            });
         }
     }
 }

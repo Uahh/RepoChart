@@ -91,6 +91,7 @@ const options = {
         'circle-chart': Vue.defineAsyncComponent(() => loadModule('../static/js/circleChart.vue', options)),
         'square-chart': Vue.defineAsyncComponent(() => loadModule('../static/js/squareChart.vue', options)),
         'line-chart': Vue.defineAsyncComponent(() => loadModule('../static/js/starLineChart.vue', options)),
+        'active-chart': Vue.defineAsyncComponent(() => loadModule('../static/js/activeChart.vue', options)),
         'commit-size-line-chart': Vue.defineAsyncComponent(() => loadModule('../static/js/commitSizeLineChart.vue', options)),
         'commit-size-pie-chart': Vue.defineAsyncComponent(() => loadModule('../static/js/commitSizePieChart.vue', options)),
     },

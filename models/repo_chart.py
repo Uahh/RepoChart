@@ -208,6 +208,9 @@ class RepoChart():
             if chart_type == 'commit_line':
                 with open(self.output_path + '_commit_line.json', encoding='utf-8') as json_file:
                     return json.load(json_file)
+            if chart_type == 'active_line':
+                with open(self.output_path + '_active_line.json', encoding='utf-8') as json_file:
+                    return json.load(json_file)
             if chart_type == 'star_line':
                 with open(self.output_path + '_star_line.json', encoding='utf-8') as json_file:
                     return json.load(json_file)
@@ -225,6 +228,9 @@ class RepoChart():
                     return {'data': json.load(json_file)}
             if chart_type == 'commit_line':
                 with open(output_path + '_commit_line.json', encoding='utf-8') as json_file:
+                    return {'data': json.load(json_file)}
+            if chart_type == 'active_line':
+                with open(output_path + '_active_line.json', encoding='utf-8') as json_file:
                     return {'data': json.load(json_file)}
             if chart_type == 'star_line':
                 with open(output_path + '_star_line.json', encoding='utf-8') as json_file:

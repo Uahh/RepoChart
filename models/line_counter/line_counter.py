@@ -13,4 +13,7 @@ class LineCounter():
         for file in self.git_data.path_list:
             file_path = os.path.join(self.git_data.repo_dir, file[1:-1])
             with open(file_path, 'r', encoding='utf-8') as temp:
-                self.lines += len(temp.readlines())
+                try:
+                    self.lines += len(temp.readlines())
+                except:
+                    continue
