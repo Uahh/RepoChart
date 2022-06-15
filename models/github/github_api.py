@@ -40,7 +40,9 @@ class GithubStarApi():
                 "Day"
             ]
         )
-        print('trying get star list...')
+
+    def get_star_chart(self):
+        print('start get star list...')
         self.get_total_stars()
 
         self.star_flag = False

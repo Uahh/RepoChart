@@ -6,6 +6,7 @@ from collections import defaultdict
 from models.git_local.git_data import GitData
 from models.git_local.git_command import GitCommand
 from models.github.github_api import GithubStarApi
+from models.line_counter.line_counter import LineCounter
 
 
 class RepoChart():
@@ -22,6 +23,7 @@ class RepoChart():
             self.git_data = GitData(owner, repo_name)
 
             self.api = GithubStarApi(self.git_data, server)
+            self.api.get_star_chart()
             self.star_flag = self.api.star_flag
             self.large_flag = self.api.large_flag
             if self.large_flag or not self.existence_flag:
@@ -32,6 +34,12 @@ class RepoChart():
             self.circle_dict = {}
             self.sqare_dict = {}
             self.get_repo_path_dict()
+
+            self.counter = LineCounter(self.git_data)
+            self.counter.count_line()
+
+            self.lines = self.counter.lines
+
             self.star_chart_list = self.repo.git_data.star_chart_list
 
             self.commit_line_list = self.repo.git_data.commit_line_list

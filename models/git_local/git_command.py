@@ -1,5 +1,4 @@
 import os
-from re import L
 import sys
 import git
 import copy
