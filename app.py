@@ -3,8 +3,11 @@ import re
 from flask import Flask, request
 from flask import render_template
 from models.repo_chart import RepoChart
+from models.misc.repo_backup import RepoBackup
 
 host = "192.168.31.11:52173"
+repo_backup = RepoBackup()
+
 app = Flask(__name__, template_folder='templates', static_folder='static')
 app.jinja_env.variable_start_string = '{['
 app.jinja_env.variable_end_string = ']}'
@@ -35,19 +38,24 @@ def start():
         repo_name = 'Uahh/RepoChart'
     if not re.match(".+/.+", repo_name):
         return 'Not existence'
-    repo_name = repo_name.split('/')
-    repo = RepoChart(repo_name[0], repo_name[1], server=True)
-    
-    if repo.chart_status == False:
-        repo.output()
-    
-    if repo.existence_flag == False:
-        return 'Not existence'
-    elif repo.large_flag == True:
-        return 'Large'
-    elif repo.star_flag == True:
-        return 'Star'
-    return 'OK'
+
+    if repo_name not in repo_backup.repo_list:
+        repo_backup.add_repo(repo_name)
+        repo_name = repo_name.split('/')
+        repo = RepoChart(repo_name[0], repo_name[1], server=True)
+        if repo.chart_status == False:
+            repo.output()
+        if repo.existence_flag == False:
+            return 'Not existence'
+        elif repo.large_flag == True:
+            return 'Large'
+        elif repo.star_flag == True:
+            return 'Star'
+        return 'OK'
+    else:
+        if not RepoChart.check_output('', repo_name):
+            return 'Started'
+        return 'OK'
 
 
 @app.route('/repochart/check', methods=["POST"])

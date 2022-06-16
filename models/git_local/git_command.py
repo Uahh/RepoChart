@@ -34,11 +34,12 @@ class GitCommand():
         while(fail_count):
             try:
                 print("trying pull...")
-                git.Git(self.git_data.user_dir).pull()
+                git.Git(self.git_data.repo_dir).pull('-4')
                 break
             except:
                 fail_count -= 1
-                print("Failed to clone, try again...")
+                print(sys.exc_info())
+                print("\nFailed to pull, try again...")
 
         if not fail_count:
             raise('Failed to pull 10 times, g')
@@ -49,11 +50,12 @@ class GitCommand():
         while(fail_count):
             try:
                 print("trying clone...")
-                git.Git(self.git_data.user_dir).clone(self.git_url)
+                git.Git(self.git_data.user_dir).clone(self.git_url, '-4')
                 break
             except:
                 fail_count -= 1
-                print("Failed to clone, try again...")
+                print(sys.exc_info())
+                print("\nFailed to clone, try again...")
 
         if not fail_count:
             raise('Failed to clone 10 times, g')

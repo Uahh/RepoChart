@@ -8,6 +8,7 @@ const options = {
             largeDialog: false,
             existenceDialog: false,
             starDialog: false,
+            startedDialog: false,
             recommendList: [
                 { "value": "vuejs/vue"},
                 { "value": "tianocore/edk2-edkrepo"},
@@ -25,6 +26,9 @@ const options = {
             success: (result) => {
                 if (result == 'Not existence') {
                     this.existenceDialog = true;
+                }
+                else if (result == 'Started') {
+                    this.startedDialog = true;
                 }
                 else if (result == 'Large') {
                     this.largeDialog = true;

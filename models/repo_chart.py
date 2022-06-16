@@ -6,7 +6,7 @@ from collections import defaultdict
 from models.git_local.git_data import GitData
 from models.git_local.git_command import GitCommand
 from models.github.github_api import GithubStarApi
-from models.line_counter.line_counter import LineCounter
+from models.misc.line_counter import LineCounter
 
 
 class RepoChart():
@@ -27,6 +27,7 @@ class RepoChart():
             self.star_flag = self.api.star_flag
             self.large_flag = self.api.large_flag
             if self.large_flag or not self.existence_flag:
+                self.chart_status = True
                 return
             
             self.repo = GitCommand(self.git_data)
