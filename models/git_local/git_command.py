@@ -50,7 +50,7 @@ class GitCommand():
         while(fail_count):
             try:
                 print("trying clone...")
-                git.Git(self.git_data.user_dir).clone(self.git_url, '-4')
+                git.Git(self.git_data.user_dir).clone(self.git_url)
                 break
             except:
                 fail_count -= 1
