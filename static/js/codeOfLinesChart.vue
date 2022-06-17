@@ -48,7 +48,7 @@ module.exports = {
             let status;
             $.ajax({
                 type: "post",
-                url: 'http://' + this.server + '/repochart/check',
+                url: 'https://' + this.server + '/repochart/check',
                 data: {
                     repo: this.repo
                 },
@@ -62,7 +62,7 @@ module.exports = {
                 clearInterval(this.times);
                 $.ajax({
                     type: "post",
-                    url: 'http://' + this.server + '/repochart/chartdata',
+                    url: 'https://' + this.server + '/repochart/chartdata',
                     data: {
                         type: 'code_of_lines',
                         repo: this.repo
