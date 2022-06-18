@@ -1,7 +1,4 @@
 import os
-import json
-import redis
-
 
 class RepoBackup():
     def __init__(self):

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from email.policy import default
 import re
 from optparse import OptionParser
 from flask import Flask, request
