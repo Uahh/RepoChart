@@ -9,14 +9,16 @@ from models.misc.repo_backup import RepoBackup
 
 parser = OptionParser()
 parser.add_option('--http', dest='protocol', action='store_true', default=False,
-                help="clone repo and get repo charts.")
+                help="use HTTP protocol, default is HTTPS")
+parser.add_option('--host', dest='host',  default="192.168.31.11:52173",
+                help="set server ip.")
 options, _ = parser.parse_args()
 if options.protocol:
     options.protocol = 'http'
 else:
     options.protocol = 'https'
 
-host = "192.168.31.11:52173"
+host = options.host
 repo_backup = RepoBackup()
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
