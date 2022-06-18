@@ -158,7 +158,7 @@ module.exports = {
                                 symbol: 'none'
                             },
                             {
-                                value: 3424,
+                                value: 8072,
                                 symbol: 'image://' + this.image,
                                 symbolRepeat: true,
                                 symbolSize: ['50%', '20%'],
@@ -169,7 +169,7 @@ module.exports = {
                                 }
                             },
                             {
-                                value: 22498,
+                                value: 45208,
                                 symbol: 'image://' + this.image,
                                 symbolRepeat: true,
                                 symbolSize: ['50%', '20%'],
@@ -180,7 +180,7 @@ module.exports = {
                                 }
                             },
                             {
-                                value: 34798,
+                                value: 71654,
                                 symbol: 'image://' + this.image,
                                 symbolRepeat: true,
                                 symbolSize: ['50%', '20%'],
@@ -191,7 +191,7 @@ module.exports = {
                                 }
                             },
                             {
-                                value: 82496,
+                                value: 165112,
                                 symbol: 'image://' + this.image,
                                 symbolRepeat: true,
                                 symbolSize: ['50%', '20%'],
