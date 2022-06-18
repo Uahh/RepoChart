@@ -1,4 +1,4 @@
 # RepoChart
 
-check it!
-http://uahh.syouzyo.org/repochart
+click it!  
+https://uahh.site/repochart
