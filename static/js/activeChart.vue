@@ -26,7 +26,8 @@ module.exports = {
     },
     props: {
         repo: null,
-        server: null
+        server: null,
+        protocol: null
     },
     mounted: function () {
         this.lineEchartsInit();
@@ -49,7 +50,7 @@ module.exports = {
             let status;
             $.ajax({
                 type: "post",
-                url: 'https://' + this.server + '/repochart/check',
+                url: this.protocol + '://' + this.server + '/repochart/check',
                 data: {
                     repo: this.repo
                 },
@@ -63,7 +64,7 @@ module.exports = {
                 clearInterval(this.times);
                 $.ajax({
                     type: "post",
-                    url: 'https://' + this.server + '/repochart/chartdata',
+                    url: this.protocol + '://' + this.server + '/repochart/chartdata',
                     data: {
                         type: 'active_line',
                         repo: this.repo

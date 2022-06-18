@@ -1,9 +1,20 @@
 # -*- coding: utf-8 -*-
+from email.policy import default
 import re
+from optparse import OptionParser
 from flask import Flask, request
 from flask import render_template
 from models.repo_chart import RepoChart
 from models.misc.repo_backup import RepoBackup
+
+parser = OptionParser()
+parser.add_option('--http', dest='protocol', action='store_true', default=False,
+                help="clone repo and get repo charts.")
+options, _ = parser.parse_args()
+if options.protocol:
+    options.protocol = 'http'
+else:
+    options.protocol = 'https'
 
 host = "192.168.31.11:52173"
 repo_backup = RepoBackup()
@@ -11,7 +22,7 @@ repo_backup = RepoBackup()
 app = Flask(__name__, template_folder='templates', static_folder='static')
 app.jinja_env.variable_start_string = '{['
 app.jinja_env.variable_end_string = ']}'
-print('Waiting......')
+print('Waiting...')
 
 
 @app.route('/repochart', methods=["GET", "POST"])
@@ -21,13 +32,15 @@ def index():
         return render_template(
             'index.html',
             repo=repo_name,
-            server=host
+            server=host,
+            protocol=options.protocol
         )
     else:
         return render_template(
             'index.html',
             repo='Uahh/RepoChart',
-            server=host
+            server=host,
+            protocol=options.protocol
         )
 
 
@@ -37,32 +50,36 @@ def start():
     if repo_name == 'undefined':
         repo_name = 'Uahh/RepoChart'
     if not re.match(".+/.+", repo_name):
-        return 'Not existence'
+        return 'Without'
 
-    if repo_name not in repo_backup.repo_list:
-        repo_backup.add_repo(repo_name)
+    repo_status = repo_backup.check_repo(repo_name)
+    if repo_status == False:
         repo_name = repo_name.split('/')
         repo = RepoChart(repo_name[0], repo_name[1], server=True)
         if repo.chart_status == False:
             repo.output()
         if repo.existence_flag == False:
-            return 'Not existence'
+            repo_backup.add_repo(repo_name, type='Without')
+            return 'Without'
         elif repo.large_flag == True:
+            repo_backup.add_repo(repo_name, type='Large')
             return 'Large'
         elif repo.star_flag == True:
+            repo_backup.add_repo(repo_name, type='')
             return 'Star'
-        return 'OK'
+        repo_backup.add_repo(repo_name, type='')
+        return 'Error'
     else:
         if not RepoChart.check_output('', repo_name):
             return 'Started'
-        return 'OK'
+        return 'Error'
 
 
 @app.route('/repochart/check', methods=["POST"])
 def check():
     repo_name = request.form.get('repo')
     if not re.match(".+/.+", repo_name):
-        return 'Not existence'
+        return 'Without'
     status = RepoChart.check_output('', repo_name)
     if status == True:
         return {'status': 'True'}
@@ -96,11 +113,3 @@ def error():
 
 
 app.run(host='0.0.0.0', debug=False, port=52173)  # 52inami
-
-# start = time.time()
-
-# repo = RepoChart('Uahh', 'RepoChart')
-# repo.output()
-
-# end = time.time() - start
-# print (str(end))

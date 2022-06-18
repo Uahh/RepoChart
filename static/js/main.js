@@ -9,6 +9,7 @@ const options = {
             existenceDialog: false,
             starDialog: false,
             startedDialog: false,
+            protocol: null,
             recommendList: [
                 { "value": "vuejs/vue"},
                 { "value": "Uahh/ToastFish"},
@@ -21,11 +22,12 @@ const options = {
         };
     },
     mounted: function () {
+        this.protocol = this.getProtocol()
         $.ajax({
             type: "get",
-            url: "https://" + this.url + "/repochart/start?repo=" + this.repoName,
+            url: this.protocol + "://" + this.url + "/repochart/start?repo=" + this.repoName,
             success: (result) => {
-                if (result == 'Not existence') {
+                if (result == 'Without') {
                     this.existenceDialog = true;
                 }
                 else if (result == 'Started') {
@@ -49,14 +51,14 @@ const options = {
     methods: {
         handleSelect(key) {
             if (key == 1) {
-                location.href = "https://" + this.url;
+                location.href = this.protocol + "://" + this.url;
             }
             else if (key == 2) {
                 window.open("https://github.com/Uahh/RepoChart")
             }
         },
         onSearch() {
-            location.href = "https://" + this.url + "/repochart?repo=" + this.inputRepo;
+            location.href = this.protocol + "://" + this.url + "/repochart?repo=" + this.inputRepo;
         },
         onGithub() {
             this.existenceDialog = false;
@@ -75,6 +77,9 @@ const options = {
                 return (recommend.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
             };
         },
+        getProtocol() {
+            return document.getElementById("protocol").getAttribute("type")
+        }
     },
     moduleCache: {
         vue: Vue
