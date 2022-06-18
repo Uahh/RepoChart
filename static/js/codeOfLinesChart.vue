@@ -158,7 +158,7 @@ module.exports = {
                                 symbol: 'none'
                             },
                             {
-                                value: 8072,
+                                value: 7984,
                                 symbol: 'image://' + this.image,
                                 symbolRepeat: true,
                                 symbolSize: ['50%', '20%'],

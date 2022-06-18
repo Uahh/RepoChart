@@ -56,8 +56,8 @@ def start():
 
     repo_status = repo_backup.check_repo(repo_name)
     if repo_status == False:
-        repo_name = repo_name.split('/')
-        repo = RepoChart(repo_name[0], repo_name[1], server=True)
+        repo_name_split = repo_name.split('/')
+        repo = RepoChart(repo_name_split[0], repo_name_split[1], server=True)
         if repo.chart_status == False:
             repo.output()
         if repo.existence_flag == False:
@@ -67,10 +67,10 @@ def start():
             repo_backup.add_repo(repo_name, type='Large')
             return 'Large'
         elif repo.star_flag == True:
-            repo_backup.add_repo(repo_name, type='')
+            repo_backup.add_repo(repo_name, type='Normal')
             return 'Star'
-        repo_backup.add_repo(repo_name, type='')
-        return 'Error'
+        repo_backup.add_repo(repo_name, type='Normal')
+        return 'OK'
     else:
         if not RepoChart.check_output('', repo_name):
             return 'Started'

@@ -18,12 +18,12 @@ class RepoBackup():
         with open('repo_cache/repo_list.txt', encoding="utf-8", mode="a") as txt_file:
             if type == 'Normal':
                 repo_name = repo + '\n'
-            if type == 'Without':
+            elif type == 'Without':
                 repo_name = '_without\n'
-            if type == 'Large':
+            elif type == 'Large':
                 repo_name = '_large\n'
-            txt_file.write(repo + '_large\n')
-        self.repo_list.append(repo_name)
+            txt_file.write(repo_name)
+            self.repo_list.append(repo_name)
     
     def check_repo(self, repo):
         if repo in self.repo_list:
