@@ -4,7 +4,6 @@ import time
 import math
 import datetime
 import requests
-from pprint import pprint
 from models.github import private_config
 
 

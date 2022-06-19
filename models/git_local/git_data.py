@@ -1,8 +1,6 @@
 import os
 import copy
 import json
-from collections import defaultdict
-from pprint import pprint
 
 
 class GitData():
