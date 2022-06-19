@@ -16,18 +16,18 @@ class RepoBackup():
             if type == 'Normal':
                 repo_name = repo + '\n'
             elif type == 'Without':
-                repo_name = '_without\n'
+                repo_name = repo + '_without\n'
             elif type == 'Large':
-                repo_name = '_large\n'
+                repo_name = repo + '_large\n'
             txt_file.write(repo_name)
-            self.repo_list.append(repo_name)
+            self.repo_list.append(repo_name[:-1])
     
     def check_repo(self, repo):
-        if repo in self.repo_list:
-            return True
-        elif repo + '_without' in self.repo_list:
-            return True
+        if repo + '_without' in self.repo_list:
+            return 'Without'
         elif repo + '_large' in self.repo_list:
+            return 'Large'
+        elif repo in self.repo_list:
             return True
         else:
             return False

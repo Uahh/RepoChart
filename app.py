@@ -56,6 +56,7 @@ def start():
     repo_status = repo_backup.check_repo(repo_name)
     if repo_status == False:
         repo_name_split = repo_name.split('/')
+        repo_backup.add_repo(repo_name)
         repo = RepoChart(repo_name_split[0], repo_name_split[1], server=True)
         if repo.chart_status == False:
             repo.output()
@@ -70,10 +71,14 @@ def start():
             return 'Star'
         repo_backup.add_repo(repo_name, type='Normal')
         return 'OK'
+    elif repo_status == 'Without':
+        return 'Without'
+    elif repo_status == 'Large':
+        return 'Large'
     else:
         if not RepoChart.check_output('', repo_name):
             return 'Started'
-        return 'Error'
+        return 'OK'
 
 
 @app.route('/repochart/check', methods=["POST"])
