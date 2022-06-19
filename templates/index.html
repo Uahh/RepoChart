@@ -127,7 +127,7 @@
         </el-row>
 
         <el-dialog v-model="largeDialog" title="Tips" width="30%">
-            <span>The total number of commits in {{ repoName }} exceeds 1000,</span>
+            <span>The total number of commits in {{ repoName }} exceeds 1000, </span>
             <span>please clone Uahh/RepoChart project to get the repository chart locally.</span>
             <template #footer>
                 <span class="dialog-footer">
@@ -138,7 +138,7 @@
         </el-dialog>
 
         <el-dialog v-model="existenceDialog" title="Tips" width="30%">
-            <span>Can't found {{ repoName }} repository,</span>
+            <span>Can't found {{ repoName }} repository, </span>
             <span>Please confirm that the repository is on GitHub.</span>
             <template #footer>
                 <span class="dialog-footer">
@@ -163,6 +163,16 @@
             <template #footer>
                 <span class="dialog-footer">
                     <el-button type="primary" @click="starDialog = false">Confirm</el-button>
+                </span>
+            </template>
+        </el-dialog>
+        <el-dialog v-model="networkDialog" title="Tips" width="30%">
+            <span>Clone {{ repoName }} failed in server, maybe the network is bad, </span>
+            <span>Please reflash the page to try again, or clone Uahh/RepoChart project to get the repository star chart locally.</span>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button type="primary" @click="onGithub">Go Github</el-button>
+                    <el-button type="primary" @click="networkDialog = false">Confirm</el-button>
                 </span>
             </template>
         </el-dialog>

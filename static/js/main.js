@@ -9,6 +9,7 @@ const options = {
             existenceDialog: false,
             starDialog: false,
             startedDialog: false,
+            networkDialog: false,
             protocol: null,
             recommendList: [
                 { "value": "vuejs/vue"},
@@ -36,8 +37,11 @@ const options = {
                 else if (result == 'Large') {
                     this.largeDialog = true;
                 }
-                else if (result == 'Star'){
+                else if (result == 'Star') {
                     this.starDialog = true;
+                }
+                else if (result == 'Network failed') {
+                    this.networkDialog = true;
                 }
             }
         })

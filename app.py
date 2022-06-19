@@ -58,6 +58,9 @@ def start():
         repo_name_split = repo_name.split('/')
         repo_backup.add_repo(repo_name)
         repo = RepoChart(repo_name_split[0], repo_name_split[1], server=True)
+        if repo == 'Network failed':
+            repo_backup.del_repo(repo_name)
+            return 'Network failed'
         if repo.chart_status == False:
             repo.output()
         if repo.existence_flag == False:

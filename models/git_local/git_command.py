@@ -23,9 +23,11 @@ class GitCommand():
 
         if os.path.exists(self.git_data.repo_dir):
             print('Already existing Directory, Nice!')
-            self.pull()
+            status = self.pull()
         else:
-            self.clone()
+            status = self.clone()
+        if not status:
+            return 'Network failed'
         self.git_data.get_git_path()
 
 
@@ -42,8 +44,10 @@ class GitCommand():
                 print("\nFailed to pull, try again...")
 
         if not fail_count:
-            raise('Failed to pull 10 times, g')
+            print('Failed to pull 10 times, g')
+            return False
         print('pull successed!')
+        return True
 
     def clone(self):
         fail_count = 10
@@ -58,8 +62,10 @@ class GitCommand():
                 print("\nFailed to clone, try again...")
 
         if not fail_count:
-            raise('Failed to clone 10 times, g')
+            print('Failed to clone 10 times, g')
+            return False
         print('clone successed!')
+        return True
 
     def get_file_commits_info(self):
         print('Start looking at the number of commits each file...')

@@ -31,6 +31,8 @@ class RepoChart():
                 return
             
             self.repo = GitCommand(self.git_data)
+            if self.repo == 'Network failed':
+                return 'Network failed'
             self.repo.get_all_chart_data()
             self.circle_dict = {}
             self.sqare_dict = {}
