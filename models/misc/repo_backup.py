@@ -23,13 +23,14 @@ class RepoBackup():
             self.repo_list.append(repo_name[:-1])
     
     def del_repo(self, repo):
-        self.repo_list.remove(repo)
-        with open('repo_cache/repo_list.txt', 'r') as txt_file:
-            lines = txt_file.readlines()
-        with open('repo_cache/repo_list.txt', 'w') as txt_file:
-            for line in lines:
-                if repo not in line:
-                    txt_file.write(line) 
+        if repo in self.repo_list:
+            self.repo_list.remove(repo)
+            with open('repo_cache/repo_list.txt', 'r') as txt_file:
+                lines = txt_file.readlines()
+            with open('repo_cache/repo_list.txt', 'w') as txt_file:
+                for line in lines:
+                    if repo not in line:
+                        txt_file.write(line)
 
 
     def check_repo(self, repo):
