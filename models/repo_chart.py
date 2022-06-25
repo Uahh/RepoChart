@@ -23,13 +23,13 @@ class RepoChart():
             self.git_data = GitData(owner, repo_name)
 
             self.api = GithubStarApi(self.git_data, server)
-            self.api.get_star_chart()
             self.star_flag = self.api.star_flag
             self.large_flag = self.api.large_flag
-            if self.large_flag or not self.existence_flag:
+            if self.large_flag or not self.existence_flag or self.star_flag:
                 self.chart_status = True
                 return
             
+            self.api.get_star_chart()
             self.repo = GitCommand(self.git_data)
             if self.repo == 'Network failed':
                 return 'Network failed'

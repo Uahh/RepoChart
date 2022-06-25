@@ -21,14 +21,20 @@ class GithubStarApi():
             self.git_data.repo_full_name)
 
         self.existence_flag = True
+        self.large_flag = False
+        self.star_flag = False
         self.check_existence()
         if self.existence_flag == False and self.server == True:
             return
 
-        self.large_flag = False
         self.get_commit_count()
         if self.commit_count > 1000 and self.server == True:
             self.large_flag = True
+            return
+
+        self.get_total_stars()
+        if self.total_stars > 4000 and self.server == True:
+            self.star_flag = True
             return
 
         self.total_stars = 0
@@ -43,13 +49,6 @@ class GithubStarApi():
 
     def get_star_chart(self):
         print('start get star list...')
-        self.get_total_stars()
-
-        self.star_flag = False
-        if self.total_stars > 4000 and self.server == True:
-            self.star_flag = True
-            return
-
         self.get_link_list()
         self.convert_line_chart()
         print('succeed got all stars!')
