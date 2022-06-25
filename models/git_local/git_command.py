@@ -62,8 +62,9 @@ class GitCommand():
                 print("\nFailed to clone, try again...")
 
         if not fail_count:
-            print('Failed to clone 10 times, g')
-            return False
+            if not os.path.exists(self.git_data.repo_dir):
+                print('Failed to clone 10 times, g')
+                return False
         print('clone successed!')
         return True
 
