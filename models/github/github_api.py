@@ -28,7 +28,7 @@ class GithubStarApi():
             return
 
         self.get_commit_count()
-        if self.commit_count > 1000 and self.server == True:
+        if self.commit_count > 3000 and self.server == True:
             self.large_flag = True
             return
 
