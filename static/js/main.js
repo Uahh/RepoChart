@@ -1,6 +1,7 @@
 const options = {
     data() {
         return {
+            protocol: 'http',
             url: window.location.host,
             activeName: 'circle',
             repoName: window.location.search.split('=')[1],
@@ -10,7 +11,6 @@ const options = {
             starDialog: false,
             startedDialog: false,
             networkDialog: false,
-            protocol: null,
             recommendList: [
                 { "value": "vuejs/vue"},
                 { "value": "Uahh/ToastFish"},

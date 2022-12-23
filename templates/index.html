@@ -55,7 +55,7 @@
             <el-col :span="15">
                 <el-tabs v-model="activeName" class="tab" tab-position="left" stretch="true" @tab-click="handleClick">
                     <el-tab-pane label="Circle" name="circle" lazy='true'>
-                        <circle-chart repo="{[ repo ]}" server="{[ server ]}" protocol="{[ protocol ]}"></circle-chart>
+                        <circle-chart repo="{[ repo ]}"></circle-chart>
                         <div class="content-box">
                             <h2>Pack repository in circle chart</h2>
                             <p>The chart reflect the importance of file in the repository.</p>
@@ -69,14 +69,14 @@
                         </div>
                     </el-tab-pane>
                     <el-tab-pane label="Square" name="square" lazy='true'>
-                        <square-chart repo="{[ repo ]}" server="{[ server ]}" protocol="{[ protocol ]}"></square-chart>
+                        <square-chart repo="{[ repo ]}"></square-chart>
                         <div class="content-box">
                             <h2>Files size chart and Sunset chart</h2>
                             <p>The chart reflect the size of file in the repository.</p>
                         </div>
                     </el-tab-pane>
                     <el-tab-pane label="Size Of Files Type" name="commitSizePie" lazy='true'>
-                        <commit-size-pie-chart repo="{[ repo ]}" server="{[ server ]}" protocol="{[ protocol ]}"></commit-size-pie-chart>
+                        <commit-size-pie-chart repo="{[ repo ]}"></commit-size-pie-chart>
                         <div class="content-box">
                             <h2>File type size pie chart</h2>
                             <p>The chart reflect the file type size percentage of the latest commits in the repository.</p>
@@ -84,14 +84,14 @@
                         </div>
                     </el-tab-pane>
                     <el-tab-pane label="Active Line" name="activeLine" lazy='true'>
-                        <active-chart repo="{[ repo ]}" server="{[ server ]}" protocol="{[ protocol ]}"></active-chart>
+                        <active-chart repo="{[ repo ]}"></active-chart>
                         <div class="content-box">
                             <h2>Active chart</h2>
                             <p>The chart reflects the activity level of the repository.</p>
                         </div>
                     </el-tab-pane>
                     <el-tab-pane label="Commit Size Line" name="commitSizeLine" lazy='true'>
-                        <commit-size-line-chart repo="{[ repo ]}" server="{[ server ]}" protocol="{[ protocol ]}"></commit-size-line-chart>
+                        <commit-size-line-chart repo="{[ repo ]}"></commit-size-line-chart>
                         <div class="content-box">
                             <h2>Commit line chart</h2>
                             <p>The chart reflect the file type size of latest commit in the repository.</p>
@@ -99,7 +99,7 @@
                         </div>
                     </el-tab-pane>
                     <el-tab-pane label="Star History" name="line" lazy='true'>
-                        <line-chart repo="{[ repo ]}" server="{[ server ]}" protocol="{[ protocol ]}"></line-chart>
+                        <line-chart repo="{[ repo ]}"></line-chart>
                         <div class="content-box">
                             <h2>Star History Chart</h2>
                             <p>View the repository star history.</p>
@@ -107,7 +107,7 @@
                         </div>
                     </el-tab-pane>
                     <el-tab-pane label="Lines Of Code" name="codeOfLines" lazy='true'>
-                        <code-of-lines-chart repo="{[ repo ]}" server="{[ server ]}" protocol="{[ protocol ]}"></code-of-lines-chart>
+                        <code-of-lines-chart repo="{[ repo ]}"></code-of-lines-chart>
                         <div class="content-box">
                             <h2>Line Of Code Chart</h2>
                             <p>View the repository total lines of code.</p>

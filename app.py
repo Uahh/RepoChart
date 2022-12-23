@@ -6,18 +6,6 @@ from flask import render_template
 from models.repo_chart import RepoChart
 from models.misc.repo_backup import RepoBackup
 
-parser = OptionParser()
-parser.add_option('--http', dest='protocol', action='store_true', default=False,
-                help="use HTTP protocol, default is HTTPS")
-parser.add_option('--host', dest='host',  default="192.168.31.11:52173",
-                help="set server ip.")
-options, _ = parser.parse_args()
-if options.protocol:
-    options.protocol = 'http'
-else:
-    options.protocol = 'https'
-
-host = options.host
 repo_backup = RepoBackup()
 
 app = Flask(__name__, template_folder='templates', static_folder='static')
@@ -33,15 +21,11 @@ def index():
         return render_template(
             'index.html',
             repo=repo_name,
-            server=host,
-            protocol=options.protocol
         )
     else:
         return render_template(
             'index.html',
-            repo='Uahh/RepoChart',
-            server=host,
-            protocol=options.protocol
+            repo='Uahh/RepoChart'
         )
 
 
